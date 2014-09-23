@@ -19,21 +19,26 @@ import com.eclipsesource.restfuse.annotation.HttpTest;
 public class UserServiceIT {
 	@Rule
 	public Destination destination = new Destination(this,
-			"http://localhost:4321/ssnoc/rest/users");
+			"http://localhost:8080/ssnoc");
 
 	@Context
 	public Response response;
 
-	@HttpTest(method = Method.GET, path = "/")
+	@HttpTest(method = Method.GET, path = "/users")
 	public void testUsersFound() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.POST, path = "/login", type = MediaType.APPLICATION_JSON, 
-			content = "{\"userName\":\"Surya\",\"password\":\"Kiran\"}")
+	@HttpTest(method = Method.POST, path = "/user/Cef/authenticate", type = MediaType.APPLICATION_JSON, 
+			content = "{\"userName\":\"Cefe\",\"password\":\"pass\"}")
 	public void testInvalidLogin() {
 		assertBadRequest(response);
 		String messg = response.getBody();
-		Assert.assertEquals("Invalid username: Surya", messg);
+		Assert.assertEquals("Invalid username: Cef", messg);
+	}
+	
+	@HttpTest(method = Method.GET, path = "/")
+	public void testFail(){
+		Assert.assertFalse(true);
 	}
 }
