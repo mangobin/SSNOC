@@ -24,6 +24,10 @@ public class Status {
 		}
 		return null;
 	}
+	
+	public void setUpdatedAtDate(Date updatedAt){
+		this.updatedAt = new SimpleDateFormat(DATE_FORMAT).format(updatedAt);
+	}
 
 	public String getUpdatedAt() {
 		return updatedAt;

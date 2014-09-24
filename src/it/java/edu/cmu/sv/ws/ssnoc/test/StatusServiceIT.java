@@ -1,7 +1,5 @@
 package edu.cmu.sv.ws.ssnoc.test;
 
-import static com.eclipsesource.restfuse.Assert.assertBadRequest;
-import static com.eclipsesource.restfuse.Assert.assertOk;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -62,6 +60,13 @@ public class StatusServiceIT {
 					+ "}")
 	public void testInvalidStatusCode(){
 		Assert.assertEquals(400, response.getStatus());
+	}
+	
+	@HttpTest(method = Method.GET, 
+			path = "/statuscrumbs/Cef", 
+			type = MediaType.APPLICATION_JSON)
+	public void testGetStatuses(){
+		Assert.assertEquals(200, response.getStatus());
 	}
 
 }

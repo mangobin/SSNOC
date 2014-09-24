@@ -1,6 +1,7 @@
 package edu.cmu.sv.ws.ssnoc.data.nosql.dao;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
+import edu.cmu.sv.ws.ssnoc.data.dao.IStatusDao;
 import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.nosql.dao.UserDAOImpl;
 
@@ -32,4 +33,7 @@ public class DAOFactory {
 		return new UserDAOImpl();
 	}
 	
+	public IStatusDao getStatusDAO(){
+		return new StatusDAOImpl();
+	}
 }

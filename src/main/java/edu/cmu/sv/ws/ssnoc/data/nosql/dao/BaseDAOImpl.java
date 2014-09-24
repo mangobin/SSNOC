@@ -7,7 +7,7 @@ import com.mongodb.WriteConcern;
 import edu.cmu.sv.ws.ssnoc.data.nosql.util.DBUtils;
 
 public class BaseDAOImpl<T> {
-
+	
 	protected DBCollection getCollection(String collectionName){
 		return getCollection(collectionName, getWriteConcern());
 	}

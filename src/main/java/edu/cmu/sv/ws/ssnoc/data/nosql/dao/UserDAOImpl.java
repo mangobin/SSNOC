@@ -3,10 +3,13 @@ package edu.cmu.sv.ws.ssnoc.data.nosql.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 
 import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
@@ -65,7 +68,7 @@ public class UserDAOImpl extends BaseDAOImpl<UserPO> implements IUserDAO {
 	protected BasicDBObject convertToDB(UserPO po){
 		BasicDBObject db = new BasicDBObject();
 		if(po.getUserIdStr() != null){
-			db.append(KEY_ID, po.getUserIdStr());
+			db.append(KEY_ID, new ObjectId(po.getUserIdStr()));
 		}
 		db.append(KEY_USERNAME, po.getUserName());
 		db.append(KEY_PASSWORD, po.getPassword());
