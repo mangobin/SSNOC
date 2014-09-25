@@ -10,6 +10,15 @@ import com.google.gson.Gson;
 public class User {
 	private String userName;
 	private String password;
+	private String createAt;
+
+	public String getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(String createAt) {
+		this.createAt = createAt;
+	}
 
 	public String getUserName() {
 		return userName;

@@ -128,6 +128,7 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 			stmt.setString(1, userPO.getUserName());
 			stmt.setString(2, userPO.getPassword());
 			stmt.setString(3, userPO.getSalt());
+			
 
 			int rowCount = stmt.executeUpdate();
 			Log.trace("Statement executed, and " + rowCount + " rows inserted.");

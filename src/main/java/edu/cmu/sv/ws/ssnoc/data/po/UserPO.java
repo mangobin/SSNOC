@@ -14,6 +14,15 @@ public class UserPO {
 	private String userName;
 	private String password;
 	private String salt;
+	private String createAt;
+
+	public String getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(String createAt) {
+		this.createAt = createAt;
+	}
 
 	public long getUserId() {
 		return userId;

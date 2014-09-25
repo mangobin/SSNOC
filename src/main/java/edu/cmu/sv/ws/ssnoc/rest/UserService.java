@@ -22,6 +22,7 @@ import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.User;
+import edu.cmu.sv.ws.ssnoc.dto.UserPassword;
 
 /**
  * This class contains the implementation of the RESTful API calls made with
@@ -33,15 +34,20 @@ import edu.cmu.sv.ws.ssnoc.dto.User;
 public class UserService extends BaseService {
 	/**
 	 * This method checks the validity of the user name and if it is valid, adds
-	 * it to the database
+	 * it to the database, return code 201 created.
 	 * 
+	 * If a user exists: return 200 OK
+	 * 
+	 * If a user exists, but the password is wrong, return 400 Bad request
+	 * 
+	 * Note: Last modified by Bin at 9:34 am on Sept. 24
 	 * @param user
 	 *            - An object of type User
 	 * @return - An object of type Response with the status of the request
 	 */
 	@POST
-	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/signup")
 	public Response addUser(User user) {
 		Log.enter(user);
@@ -81,25 +87,32 @@ public class UserService extends BaseService {
 		return created(resp);
 	}
 
+
 	/**
-	 * This method is used to login a user.
+	 * This method is used to login a user. 
 	 * 
-	 * @param user
-	 *            - User information to login
+	 * Note:Last modified by Bin at 8:41 am on Sept.24. 
 	 * 
-	 * @return - Status 200 when successful login. Else other status.
+	 * @param user's password
+	 * 
+	 * @return - Status 200 when successful login. 
+	 * 			 if password is wrong: 401 Unauthorized
+	 * 			 if user does not exist: 404 Not Found
 	 */
 	@POST
-	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{userName}/authenticate")
-	public Response loginUser(@PathParam("userName") String userName,
-			User user) {
+	public Response logintest(@PathParam("userName") String userName,
+			 UserPassword pass) {
+		User user = new User();
+		user.setUserName(userName);
+		user.setPassword(pass.getPassword());
 		Log.enter(userName, user);
 
 		try {
 			UserPO po = loadExistingUser(userName);
-			if (!validateUserPassword(user.getPassword(), po)) {
+			if (!validateUserPassword(pass.getPassword(), po)) {
 				throw new UnauthorizedUserException(userName);
 			}
 		} catch (Exception e) {
@@ -110,7 +123,7 @@ public class UserService extends BaseService {
 
 		return ok();
 	}
-
+	
 	/**
 	 * This method will validate the user's password based on what information
 	 * is sent from the UI, versus the information retrieved for that user from
@@ -141,7 +154,7 @@ public class UserService extends BaseService {
 	}
 
 	/**
-	 * All all information related to a particular userName.
+	 * All information related to a particular userName.
 	 * 
 	 * @param userName
 	 *            - User Name

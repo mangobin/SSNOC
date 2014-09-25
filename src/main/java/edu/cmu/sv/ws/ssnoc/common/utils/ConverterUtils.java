@@ -46,6 +46,7 @@ public class ConverterUtils {
 		UserPO po = new UserPO();
 		po.setUserName(dto.getUserName());
 		po.setPassword(dto.getPassword());
+		po.setCreateAt(dto.getCreateAt());
 
 		return po;
 	}
