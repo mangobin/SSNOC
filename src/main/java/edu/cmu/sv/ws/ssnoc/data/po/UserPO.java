@@ -11,6 +11,7 @@ import com.google.gson.Gson;
  */
 public class UserPO {
 	private long userId;
+	private String userIdStr;
 	private String userName;
 	private String password;
 	private String salt;
@@ -30,6 +31,14 @@ public class UserPO {
 
 	public void setUserId(long userId) {
 		this.userId = userId;
+	}
+	
+	public String getUserIdStr(){
+		return userIdStr;
+	}
+	
+	public void setUserIdStr(String userIdStr){
+		this.userIdStr = userIdStr;
 	}
 
 	public String getUserName() {

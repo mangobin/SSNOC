@@ -207,6 +207,13 @@ public class Log {
 			l.error(ERROR_PREFIX + getCallingMethodName() + msg);
 		}
 	}
+	
+	public static void error(String msg, Throwable t) {
+		Logger l = getLogger();
+		if (l.isErrorEnabled()) {
+			l.error(ERROR_PREFIX + getCallingMethodName() + msg, t);
+		}
+	}
 
 	public static void error(String msg, Object obj) {
 		Logger l = getLogger();

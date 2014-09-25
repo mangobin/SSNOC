@@ -24,15 +24,19 @@ public class UserServiceIT {
 	public Response response;
 
 
-//	@HttpTest(method = Method.POST, path = "/test/authenticate", type = MediaType.APPLICATION_JSON, 
-//			content = "{\"userName\":\"test\",\"password\":\"123\"}")
-//	public void testInvalidLogin() {
-//		//assertBadRequest(response);
-//		assertOk(response);
-//		String messg = response.getBody();
-////		Assert.assertEquals("Invalid username: Surya", messg);
-//	}
+	@HttpTest(method = Method.POST, path = "/user/Cef/authenticate", type = MediaType.APPLICATION_JSON, 
+			content = "{\"userName\":\"Cefe\",\"password\":\"pass\"}")
+	public void testInvalidLogin() {
+		Assert.assertBadRequest(response);
+		String messg = response.getBody();
+		org.junit.Assert.assertEquals("Invalid username: Cef", messg);
+	}
 	
+	@HttpTest(method = Method.GET, path = "/")
+	public void testFail(){
+		org.junit.Assert.assertFalse(true);
+		
+	}
 	
 	//****************************************************
 	//	Start of authentication test
@@ -42,6 +46,7 @@ public class UserServiceIT {
 	@HttpTest(method = Method.POST, path = "user/test/authenticate", type = MediaType.APPLICATION_JSON, 
 			content = "{\"password\":\"12\"}") 
 	public void testAuthenticateOne() {
+
 		assertOk(response);
 		String messg = response.getBody();
 	}
@@ -128,8 +133,8 @@ public class UserServiceIT {
 		Assert.assertOk(response);
 		String messg = response.getBody();
 		System.out.println(messg);
+
 	}
-	
 	
 	//	End of retrieve a user's record test
 	//*****************************************************
