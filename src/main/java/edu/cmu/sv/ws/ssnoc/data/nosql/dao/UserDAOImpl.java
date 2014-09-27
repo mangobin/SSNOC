@@ -29,7 +29,7 @@ public class UserDAOImpl extends BaseDAOImpl<UserPO> implements IUserDAO {
 	public void save(UserPO userPO) {
 		DBCollection coll = getCollection(COLLECTION_NAME);
 		BasicDBObject obj = convertToDB(userPO);
-		coll.insert(obj);
+		coll.save(obj);
 	}
 
 	@Override
