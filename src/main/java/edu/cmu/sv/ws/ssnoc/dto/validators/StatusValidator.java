@@ -8,8 +8,8 @@ import edu.cmu.sv.ws.ssnoc.dto.Status;
 
 public class StatusValidator extends AbstractValidator<Status> {
 	
-	private static Integer[] statusCodes = {0, 1, 2};
-	private static Set<Integer> acceptableStatusCodes = new HashSet<Integer>(Arrays.asList(statusCodes));
+	private static String[] statusCodes = {"GREEN","YELLOW","RED"};
+	private static Set<String> acceptableStatusCodes = new HashSet<String>(Arrays.asList(statusCodes));
 	
 	@Override
 	public boolean validate(Status entity) {

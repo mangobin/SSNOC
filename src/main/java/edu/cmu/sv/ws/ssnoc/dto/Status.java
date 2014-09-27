@@ -12,7 +12,7 @@ public class Status {
 
 	private String updatedAt;
 	
-	private int statusCode;
+	private String statusCode;
 	
 	private Location location;
 	
@@ -37,11 +37,11 @@ public class Status {
 		this.updatedAt = updatedAt;
 	}
 
-	public int getStatusCode() {
+	public String getStatusCode() {
 		return statusCode;
 	}
 
-	public void setStatusCode(int statusCode) {
+	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
 	}
 

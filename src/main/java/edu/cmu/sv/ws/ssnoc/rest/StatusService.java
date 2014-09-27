@@ -43,11 +43,19 @@ public class StatusService extends BaseService {
 			throw new ValidationException("Invalid Status");
 		}
 		
+		//set the status code as the lastStatusCode for the user
+//		existingUser.setLastStatusCode(status.getStatusCode());
+//		dao.save(existingUser);
+		
 		// save status to database
 		StatusPO.Builder builder = new StatusPO.Builder();
 		builder.setStatusCode(status.getStatusCode());
 		builder.setUpdatedAt(status.getUpdatedAtDate());
-		builder.setUserId(existingUser.getUserIdStr());
+		
+		//builder.setUserId(existingUser.getUserIdStr());
+		builder.setUserName(userName);
+		
+		
 		StatusPO po = builder.build();
 		
 		String id = DAOFactory.getInstance().getStatusDAO().save(po);
@@ -71,6 +79,7 @@ public class StatusService extends BaseService {
 		Status status = new Status();
 		status.setStatusCode(po.getStatusCode());
 		status.setUpdatedAtDate(po.getUpdatedAt());
+	
 		
 		Log.exit(status);
 		return status;

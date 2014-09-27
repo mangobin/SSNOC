@@ -19,7 +19,7 @@ public class StatusDAOImpl extends BaseDAOImpl<StatusPO> implements IStatusDao {
 	private static String COLLECTION_NAME = "statuses";
 	
 	private static String KEY_ID = "_id";
-	private static String KEY_USER_ID = "userId";
+	private static String KEY_USER_NAME = "userName";
 	private static String KEY_STATUS_CODE = "statusCode";
 	private static String KEY_UPDATED_AT = "updatedAt";
 	
@@ -63,7 +63,7 @@ public class StatusDAOImpl extends BaseDAOImpl<StatusPO> implements IStatusDao {
 
 		List<StatusPO> pos = new ArrayList<StatusPO>();
 		
-		BasicDBObject filter = new BasicDBObject(KEY_USER_ID, userId);
+		BasicDBObject filter = new BasicDBObject(KEY_USER_NAME, userId);
 		BasicDBObject sort = new BasicDBObject(KEY_UPDATED_AT, -1); //descending order
 
 		DBCursor cursor = coll.find(filter).sort(sort).skip(offset).limit(limit);
@@ -107,7 +107,7 @@ public class StatusDAOImpl extends BaseDAOImpl<StatusPO> implements IStatusDao {
 		if(po.getStatusId() != null){
 			db.append(KEY_ID, new ObjectId(po.getStatusId()));
 		}
-		db.append(KEY_USER_ID, po.getUserId());
+		db.append(KEY_USER_NAME, po.getUserName());
 		db.append(KEY_UPDATED_AT, po.getUpdatedAt());
 		db.append(KEY_STATUS_CODE, po.getStatusCode());
 		return db;
@@ -117,9 +117,9 @@ public class StatusDAOImpl extends BaseDAOImpl<StatusPO> implements IStatusDao {
 		StatusPO.Builder builder = new StatusPO.Builder();
 		
 		builder.setStatusId(db.getString(KEY_ID));
-		builder.setUserId(db.getString(KEY_USER_ID));
+		builder.setUserName(db.getString(KEY_USER_NAME));
 		builder.setUpdatedAt(db.getDate(KEY_UPDATED_AT));
-		builder.setStatusCode(db.getInt(KEY_STATUS_CODE));
+		builder.setStatusCode(db.getString(KEY_STATUS_CODE));
 		
 		return builder.build();
 	}

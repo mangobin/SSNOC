@@ -15,14 +15,34 @@ public class UserPO {
 	private String userName;
 	private String password;
 	private String salt;
-	private String createAt;
+	private String createdAt;
+	private String modifiedAt;
+	private String lastStatusCode = "GREEN";	
+	
+	public String getModifiedAt() {
+		
+		return modifiedAt;
+	}
+
+	public void setModifiedAt(String modifiedAt) {
+		this.modifiedAt = modifiedAt;
+	}
+
+	
+	public String getLastStatusCode() {
+		return lastStatusCode;
+	}
+
+	public void setLastStatusCode(String lastStatusCode) {
+		this.lastStatusCode = lastStatusCode;
+	}
 
 	public String getCreateAt() {
-		return createAt;
+		return createdAt;
 	}
 
 	public void setCreateAt(String createAt) {
-		this.createAt = createAt;
+		this.createdAt = createAt;
 	}
 
 	public long getUserId() {

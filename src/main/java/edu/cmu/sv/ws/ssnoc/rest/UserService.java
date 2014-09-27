@@ -4,6 +4,7 @@ import javax.crypto.SecretKey;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -14,6 +15,7 @@ import org.h2.util.StringUtils;
 
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.UnauthorizedUserException;
+import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownUserException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ValidationException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
@@ -103,7 +105,7 @@ public class UserService extends BaseService {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{userName}/authenticate")
-	public Response logintest(@PathParam("userName") String userName,
+	public Response loginUser(@PathParam("userName") String userName,
 			 UserPassword pass) {
 		User user = new User();
 		user.setUserName(userName);
@@ -180,4 +182,68 @@ public class UserService extends BaseService {
 		return user;
 	}
 
+	/**
+	 *	Update a user's record
+	 * @param userName
+	 *            - User Name
+	 * 
+	 * @return - If user name is updated: 201 Created
+	 * 			 If user name is not updated: 200 OK
+	 */
+	@PUT
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/{userName}")
+	public Response updateUser(@PathParam("userName") String userName, User user) {
+		Log.enter(user);
+
+		String newUserName = user.getUserName();
+		String newPassWord = user.getPassword();
+		User temp = new User();
+		
+		try {
+			IUserDAO dao = DAOFactory.getInstance().getUserDAO();
+			UserPO existingUser = dao.findByName(userName);
+			
+			if(existingUser == null) {
+				throw new UnknownUserException(userName);
+			} else if(newUserName != null && newPassWord !=null) {
+				existingUser.setUserName(newUserName);
+				existingUser.setPassword(newPassWord);
+				existingUser = SSNCipher.encryptPassword(existingUser);
+
+				dao.save(existingUser);
+				
+				temp =  ConverterUtils.convert(existingUser);
+
+				return created(temp);
+			} else if(newUserName != null) {
+				existingUser.setUserName(newUserName);
+				dao.save(existingUser);
+				temp =  ConverterUtils.convert(existingUser);
+				return created(temp);
+				
+			} else {
+				existingUser.setPassword(newPassWord);
+				existingUser = SSNCipher.encryptPassword(existingUser);
+
+				dao.save(existingUser);
+				
+				temp =  ConverterUtils.convert(existingUser);
+
+				
+			}
+			
+			
+			
+		}catch (Exception e) {
+			handleException(e);
+		} finally {
+			Log.exit();
+		}
+		
+
+		return ok(temp);
+
+	}
 }

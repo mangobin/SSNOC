@@ -10,14 +10,23 @@ import com.google.gson.Gson;
 public class User {
 	private String userName;
 	private String password;
-	private String createAt;
+	private String createdAt;
+	private String lastStatusCode;
+
+	public String getLastStatusCode() {
+		return lastStatusCode;
+	}
+
+	public void setLastStatusCode(String lastStatusCode) {
+		this.lastStatusCode = lastStatusCode;
+	}
 
 	public String getCreateAt() {
-		return createAt;
+		return createdAt;
 	}
 
 	public void setCreateAt(String createAt) {
-		this.createAt = createAt;
+		this.createdAt = createAt;
 	}
 
 	public String getUserName() {

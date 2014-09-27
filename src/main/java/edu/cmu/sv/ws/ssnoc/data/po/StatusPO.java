@@ -8,11 +8,11 @@ public class StatusPO {
 
 	private String statusId;
 	
-	private String userId;
+	private String userName;
 	
 	private Date updatedAt;
 	
-	private int statusCode;
+	private String statusCode;
 
 	public String getStatusId() {
 		return statusId;
@@ -22,12 +22,12 @@ public class StatusPO {
 		this.statusId = statusId;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public Date getUpdatedAt() {
@@ -38,11 +38,11 @@ public class StatusPO {
 		this.updatedAt = updatedAt;
 	}
 
-	public int getStatusCode() {
+	public String getStatusCode() {
 		return statusCode;
 	}
 
-	public void setStatusCode(int statusCode) {
+	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
 	}
 	
@@ -53,17 +53,17 @@ public class StatusPO {
 	
 	public static class Builder {
 		private String statusId;
-		private String userId;
+		private String userName;
 		private Date updatedAt;
-		private int statusCode;
+		private String statusCode;
 		
 		public Builder setStatusId(String statusId){
 			this.statusId = statusId;
 			return this;
 		}
 		
-		public Builder setUserId(String userId){
-			this.userId = userId;
+		public Builder setUserName(String userName){
+			this.userName = userName;
 			return this;
 		}
 		
@@ -72,7 +72,7 @@ public class StatusPO {
 			return this;
 		}
 		
-		public Builder setStatusCode(int statusCode){
+		public Builder setStatusCode(String statusCode){
 			this.statusCode = statusCode;
 			return this;
 		}
@@ -81,7 +81,7 @@ public class StatusPO {
 			StatusPO po = new StatusPO();
 			
 			po.setStatusId(statusId);
-			po.setUserId(userId);
+			po.setUserName(userName);
 			po.setUpdatedAt(updatedAt);
 			po.setStatusCode(statusCode);
 			
