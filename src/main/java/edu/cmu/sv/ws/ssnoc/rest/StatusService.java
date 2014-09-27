@@ -44,8 +44,8 @@ public class StatusService extends BaseService {
 		}
 		
 		//set the status code as the lastStatusCode for the user
-//		existingUser.setLastStatusCode(status.getStatusCode());
-//		dao.save(existingUser);
+		existingUser.setLastStatusCode(status.getStatusCode());
+		dao.save(existingUser);
 		
 		// save status to database
 		StatusPO.Builder builder = new StatusPO.Builder();

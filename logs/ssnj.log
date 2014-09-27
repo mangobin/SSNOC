@@ -52,3 +52,96 @@
 2014-09-26 19:39:37,446 TRACE e.c.s.w.s.r.StatusService [qtp1582915277-17] Exit - method : createStatus
 2014-09-26 19:39:37,476 TRACE e.c.s.w.s.r.UserService [qtp1582915277-21] Enter - method :  ## loginUser ## [Ljava.lang.Object;@298faa56
 2014-09-26 19:39:37,575 TRACE e.c.s.w.s.r.UserService [qtp1582915277-21] Exit - method : loginUser
+2014-09-26 19:57:25,270 TRACE e.c.s.w.s.r.StatusService [qtp486757210-18] Enter - method :  ## createStatus ## {"updatedAt":"2014-09-23 15:45","statusCode":"RED"}
+2014-09-26 19:57:25,272 DEBUG e.c.s.w.s.r.StatusService [qtp486757210-18] Searching for user: Cef
+2014-09-26 19:57:25,274 INFO e.c.s.w.s.d.n.d.DAOFactory [qtp486757210-18] Creating a new DAOFactory singleton instance.
+2014-09-26 19:57:25,318 TRACE e.c.s.w.s.r.StatusService [qtp486757210-18] Exit - method : createStatus
+2014-09-26 19:57:25,377 TRACE e.c.s.w.s.r.UserService [qtp486757210-15] Enter - method :  ## loginUser ## [Ljava.lang.Object;@69c40dad
+2014-09-26 19:57:25,536 TRACE e.c.s.w.s.r.UserService [qtp486757210-15] Exit - method : loginUser
+2014-09-26 19:58:01,735 TRACE e.c.s.w.s.r.StatusService [qtp1521445250-16] Enter - method :  ## createStatus ## {"updatedAt":"2014-09-23 15:45","statusCode":"RED"}
+2014-09-26 19:58:01,737 DEBUG e.c.s.w.s.r.StatusService [qtp1521445250-16] Searching for user: Cef
+2014-09-26 19:58:01,739 INFO e.c.s.w.s.d.n.d.DAOFactory [qtp1521445250-16] Creating a new DAOFactory singleton instance.
+2014-09-26 19:58:01,825 TRACE e.c.s.w.s.r.StatusService [qtp1521445250-16] Exit - method : createStatus
+2014-09-26 19:58:01,853 TRACE e.c.s.w.s.r.UserService [qtp1521445250-21] Enter - method :  ## loginUser ## [Ljava.lang.Object;@4de74ef
+2014-09-26 19:58:01,957 TRACE e.c.s.w.s.r.UserService [qtp1521445250-21] Exit - method : loginUser
+2014-09-26 20:00:34,140 TRACE e.c.s.w.s.r.StatusService [qtp1582915277-17] Enter - method :  ## createStatus ## {"updatedAt":"2014-09-23 15:45","statusCode":"RED"}
+2014-09-26 20:00:34,141 DEBUG e.c.s.w.s.r.StatusService [qtp1582915277-17] Searching for user: Cef
+2014-09-26 20:00:34,142 INFO e.c.s.w.s.d.n.d.DAOFactory [qtp1582915277-17] Creating a new DAOFactory singleton instance.
+2014-09-26 20:00:34,232 TRACE e.c.s.w.s.r.StatusService [qtp1582915277-17] Exit - method : createStatus
+2014-09-26 20:01:59,602 TRACE e.c.s.w.s.r.StatusService [qtp4914028-17] Enter - method :  ## createStatus ## {"updatedAt":"2014-09-23 15:45","statusCode":"RED"}
+2014-09-26 20:01:59,603 DEBUG e.c.s.w.s.r.StatusService [qtp4914028-17] Searching for user: Cef
+2014-09-26 20:01:59,604 INFO e.c.s.w.s.d.n.d.DAOFactory [qtp4914028-17] Creating a new DAOFactory singleton instance.
+2014-09-26 20:01:59,683 TRACE e.c.s.w.s.r.StatusService [qtp4914028-17] Exit - method : createStatus
+2014-09-26 20:01:59,715 TRACE e.c.s.w.s.r.UserService [qtp4914028-21] Enter - method :  ## updateUser ## {"password":"11"}
+2014-09-26 20:01:59,830 TRACE e.c.s.w.s.r.UserService [qtp4914028-21] Exit - method : updateUser
+2014-09-26 20:02:56,605 TRACE e.c.s.w.s.r.StatusService [qtp1538389244-17] Enter - method :  ## createStatus ## {"updatedAt":"2014-09-23 15:45","statusCode":"RED"}
+2014-09-26 20:02:56,607 DEBUG e.c.s.w.s.r.StatusService [qtp1538389244-17] Searching for user: Cef
+2014-09-26 20:02:56,609 INFO e.c.s.w.s.d.n.d.DAOFactory [qtp1538389244-17] Creating a new DAOFactory singleton instance.
+2014-09-26 20:02:56,674 TRACE e.c.s.w.s.r.StatusService [qtp1538389244-17] Exit - method : createStatus
+2014-09-26 20:02:56,707 TRACE e.c.s.w.s.r.UserService [qtp1538389244-21] Enter - method :  ## loginUser ## [Ljava.lang.Object;@7eb0f028
+2014-09-26 20:02:56,821 ERROR e.c.s.w.s.r.BaseService [qtp1538389244-21] Error in method: handleException
+edu.cmu.sv.ws.ssnoc.common.exceptions.UnauthorizedUserException: Unauthorized User: test
+	at edu.cmu.sv.ws.ssnoc.rest.UserService.loginUser(UserService.java:118) [classes/:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.7.0_67]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[?:1.7.0_67]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.7.0_67]
+	at java.lang.reflect.Method.invoke(Method.java:606) ~[?:1.7.0_67]
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory$1.invoke(ResourceMethodInvocationHandlerFactory.java:81) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:151) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:171) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:152) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:104) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:387) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:331) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:103) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:269) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:271) [jersey-common-2.9.jar:?]
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:267) [jersey-common-2.9.jar:?]
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:315) [jersey-common-2.9.jar:?]
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:297) [jersey-common-2.9.jar:?]
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:267) [jersey-common-2.9.jar:?]
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:297) [jersey-common-2.9.jar:?]
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:252) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:1025) [jersey-server-2.9.jar:?]
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:372) [jersey-container-servlet-core-2.9.jar:?]
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:382) [jersey-container-servlet-core-2.9.jar:?]
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:345) [jersey-container-servlet-core-2.9.jar:?]
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:220) [jersey-container-servlet-core-2.9.jar:?]
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:669) [jetty-servlet-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:457) [jetty-servlet-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:137) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:557) [jetty-security-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:231) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1075) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:384) [jetty-servlet-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:193) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1009) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:135) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:255) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:154) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:116) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.Server.handle(Server.java:368) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.AbstractHttpConnection.handleRequest(AbstractHttpConnection.java:488) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.AbstractHttpConnection.content(AbstractHttpConnection.java:943) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.AbstractHttpConnection$RequestHandler.content(AbstractHttpConnection.java:1004) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.http.HttpParser.parseNext(HttpParser.java:861) [jetty-http-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.http.HttpParser.parseAvailable(HttpParser.java:240) [jetty-http-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.server.AsyncHttpConnection.handle(AsyncHttpConnection.java:82) [jetty-server-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint.handle(SelectChannelEndPoint.java:628) [jetty-io-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint$1.run(SelectChannelEndPoint.java:52) [jetty-io-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:608) [jetty-util-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:543) [jetty-util-8.1.9.v20130131.jar:8.1.9.v20130131]
+	at java.lang.Thread.run(Thread.java:745) [?:1.7.0_67]
+2014-09-26 20:02:56,824 TRACE e.c.s.w.s.r.UserService [qtp1538389244-21] Exit - method : loginUser
+2014-09-26 20:03:32,523 TRACE e.c.s.w.s.r.StatusService [qtp1582915277-17] Enter - method :  ## createStatus ## {"updatedAt":"2014-09-23 15:45","statusCode":"RED"}
+2014-09-26 20:03:32,525 DEBUG e.c.s.w.s.r.StatusService [qtp1582915277-17] Searching for user: Cef
+2014-09-26 20:03:32,527 INFO e.c.s.w.s.d.n.d.DAOFactory [qtp1582915277-17] Creating a new DAOFactory singleton instance.
+2014-09-26 20:03:32,604 TRACE e.c.s.w.s.r.StatusService [qtp1582915277-17] Exit - method : createStatus
+2014-09-26 20:03:32,633 TRACE e.c.s.w.s.r.UserService [qtp1582915277-21] Enter - method :  ## loginUser ## [Ljava.lang.Object;@259a071d
+2014-09-26 20:03:32,734 TRACE e.c.s.w.s.r.UserService [qtp1582915277-21] Exit - method : loginUser
+2014-09-26 20:04:58,060 TRACE e.c.s.w.s.r.StatusService [qtp2001634124-17] Enter - method :  ## createStatus ## {"updatedAt":"2014-09-23 15:45","statusCode":"RED"}
+2014-09-26 20:04:58,062 DEBUG e.c.s.w.s.r.StatusService [qtp2001634124-17] Searching for user: Cef
+2014-09-26 20:04:58,063 INFO e.c.s.w.s.d.n.d.DAOFactory [qtp2001634124-17] Creating a new DAOFactory singleton instance.
+2014-09-26 20:04:58,132 TRACE e.c.s.w.s.r.StatusService [qtp2001634124-17] Exit - method : createStatus
+2014-09-26 20:04:58,159 TRACE e.c.s.w.s.r.UserService [qtp2001634124-21] Enter - method :  ## updateUser ## {"password":"12"}
+2014-09-26 20:04:58,310 TRACE e.c.s.w.s.r.UserService [qtp2001634124-21] Exit - method : updateUser
