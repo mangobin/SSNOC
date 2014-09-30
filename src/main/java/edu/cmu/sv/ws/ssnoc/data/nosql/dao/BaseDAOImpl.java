@@ -19,7 +19,7 @@ public class BaseDAOImpl<T> {
 	}
 
 	protected WriteConcern getWriteConcern(){
-		return WriteConcern.JOURNAL_SAFE;
+		return WriteConcern.ACKNOWLEDGED;
 	}
 	
 	protected BasicDBObject convertToDB(T po){

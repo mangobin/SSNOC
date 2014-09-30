@@ -11,6 +11,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 
+import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.data.dao.IStatusDao;
 import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 
@@ -28,11 +29,8 @@ public class StatusDAOImpl extends BaseDAOImpl<StatusPO> implements IStatusDao {
 		DBCollection coll = getCollection(COLLECTION_NAME);
 		BasicDBObject obj = convertToDB(statusPO);
 		WriteResult result = coll.save(obj);
-		if(result.getUpsertedId() != null){
-			return result.getUpsertedId().toString();
-		} else {
-			return null;
-		}
+		Log.debug("write result", obj.get("_id"));
+		return obj.getString("_id");
 	}
 
 	@Override
