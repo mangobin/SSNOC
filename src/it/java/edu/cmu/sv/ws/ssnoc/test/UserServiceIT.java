@@ -104,6 +104,14 @@ public class UserServiceIT {
 //		System.out.println(messg);
 //	}
 	
+	// sign up with invalid username
+	@HttpTest(method = Method.POST, path = "user/signup", type = MediaType.APPLICATION_JSON,
+			content = "{\"userName\":\"www\", \"password\":\"pass\",\"createdAt\":\"2014-09-29 09:15\"}")
+	public void testSignupInvalidUserName(){
+		Assert.assertBadRequest(response);
+		String messg = response.getBody();
+		System.out.println(messg);
+	}
 	
 	//	End of sign up tests
 	//*****************************************************
