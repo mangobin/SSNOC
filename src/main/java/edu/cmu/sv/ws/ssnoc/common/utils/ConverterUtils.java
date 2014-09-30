@@ -1,6 +1,9 @@
 package edu.cmu.sv.ws.ssnoc.common.utils;
 
+import edu.cmu.sv.ws.ssnoc.data.nosql.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
+import edu.cmu.sv.ws.ssnoc.dto.Status;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 
 /**
@@ -26,6 +29,13 @@ public class ConverterUtils {
 
 		User dto = new User();
 		dto.setUserName(po.getUserName());
+		StatusPO statusPO =DAOFactory.getInstance().getStatusDAO().findStatusById(po.getLastStatusID());
+		Status statusDTO = new Status();
+		statusDTO.setLocation(statusPO.getLocation());
+		statusDTO.setStatusCode(statusPO.getStatusCode());
+		statusDTO.setUpdatedAtDate(statusPO.getUpdatedAt());
+		dto.setLastStatusCode(statusDTO);
+		dto.setCreateAt(po.getCreateAt());
 
 		return dto;
 	}

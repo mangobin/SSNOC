@@ -44,8 +44,8 @@ public class StatusService extends BaseService {
 		}
 		
 		//set the status code as the lastStatusCode for the user
-		existingUser.setLastStatusCode(status.getStatusCode());
-		dao.save(existingUser);
+//		existingUser.setLastStatusCode(status.getStatusCode());
+//		dao.save(existingUser);
 		
 		// save status to database
 		StatusPO.Builder builder = new StatusPO.Builder();
@@ -59,6 +59,10 @@ public class StatusService extends BaseService {
 		StatusPO po = builder.build();
 		
 		String id = DAOFactory.getInstance().getStatusDAO().save(po);
+
+		//set the DB ID Key as the lastStatusID for the user
+		existingUser.setLastStatusID(id);
+		dao.save(existingUser);
 		
 		// return 201 -- created
 		Log.exit();

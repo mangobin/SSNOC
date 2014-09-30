@@ -27,7 +27,7 @@ public class StatusDAOImpl extends BaseDAOImpl<StatusPO> implements IStatusDao {
 	public String save(StatusPO statusPO) {
 		DBCollection coll = getCollection(COLLECTION_NAME);
 		BasicDBObject obj = convertToDB(statusPO);
-		WriteResult result = coll.insert(obj);
+		WriteResult result = coll.save(obj);
 		if(result.getUpsertedId() != null){
 			return result.getUpsertedId().toString();
 		} else {

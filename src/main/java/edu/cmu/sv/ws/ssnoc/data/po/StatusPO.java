@@ -4,6 +4,8 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 
+import edu.cmu.sv.ws.ssnoc.dto.Location;
+
 public class StatusPO {
 
 	private String statusId;
@@ -13,6 +15,17 @@ public class StatusPO {
 	private Date updatedAt;
 	
 	private String statusCode;
+
+	private Location location;
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
 
 	public String getStatusId() {
 		return statusId;

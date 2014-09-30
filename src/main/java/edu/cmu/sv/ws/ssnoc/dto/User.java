@@ -11,14 +11,14 @@ public class User {
 	private String userName;
 	private String password;
 	private String createdAt;
-	private String lastStatusCode;
+	private Status lastStatus;
 
-	public String getLastStatusCode() {
-		return lastStatusCode;
+	public Status getLastStatusCode() {
+		return lastStatus;
 	}
 
-	public void setLastStatusCode(String lastStatusCode) {
-		this.lastStatusCode = lastStatusCode;
+	public void setLastStatusCode(Status lastStatus) {
+		this.lastStatus = lastStatus;
 	}
 
 	public String getCreateAt() {

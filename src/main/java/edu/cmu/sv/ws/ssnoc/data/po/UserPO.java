@@ -17,7 +17,25 @@ public class UserPO {
 	private String salt;
 	private String createdAt;
 	private String modifiedAt;
-	private String lastStatusCode = "GREEN";	
+	private String lastStatusID;
+	
+	
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getLastStatusID() {
+		return lastStatusID;
+	}
+
+	public void setLastStatusID(String lastStatusID) {
+		this.lastStatusID = lastStatusID;
+	}
+
 	
 	public String getModifiedAt() {
 		
@@ -29,13 +47,6 @@ public class UserPO {
 	}
 
 	
-	public String getLastStatusCode() {
-		return lastStatusCode;
-	}
-
-	public void setLastStatusCode(String lastStatusCode) {
-		this.lastStatusCode = lastStatusCode;
-	}
 
 	public String getCreateAt() {
 		return createdAt;

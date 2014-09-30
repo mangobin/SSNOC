@@ -22,7 +22,7 @@ public class UserDAOImpl extends BaseDAOImpl<UserPO> implements IUserDAO {
 	private static String KEY_USERNAME = "username";
 	private static String KEY_PASSWORD = "password";
 	private static String KEY_SALT = "salt";
-	private static String KEY_LASTSTATUSCODE = "lastStatusCode";
+	private static String KEY_LAST_STATUS_ID = "lastStatusID";
 	private static String KEY_CREATEAT = "createdAt";
 
 	@Override
@@ -75,8 +75,8 @@ public class UserDAOImpl extends BaseDAOImpl<UserPO> implements IUserDAO {
 		db.append(KEY_USERNAME, po.getUserName());
 		db.append(KEY_PASSWORD, po.getPassword());
 		db.append(KEY_SALT, po.getSalt());
-		db.append(KEY_LASTSTATUSCODE, po.getLastStatusCode());
 		db.append(KEY_CREATEAT, po.getCreateAt());
+		db.append(KEY_LAST_STATUS_ID, po.getLastStatusID());
 		return db;
 	}
 	
@@ -86,8 +86,8 @@ public class UserDAOImpl extends BaseDAOImpl<UserPO> implements IUserDAO {
 		po.setUserName(db.getString(KEY_USERNAME));
 		po.setPassword(db.getString(KEY_PASSWORD));
 		po.setSalt(db.getString(KEY_SALT));
-		po.setLastStatusCode(db.getString(KEY_LASTSTATUSCODE));
 		po.setCreateAt(db.getString(KEY_CREATEAT));
+		po.setLastStatusID(db.getString(KEY_LAST_STATUS_ID));
 		return po;
 	}
 
