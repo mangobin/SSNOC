@@ -25,6 +25,7 @@ import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 import edu.cmu.sv.ws.ssnoc.dto.UserPassword;
+import edu.cmu.sv.ws.ssnoc.dto.validators.UserValidator;
 
 /**
  * This class contains the implementation of the RESTful API calls made with
@@ -74,12 +75,19 @@ public class UserService extends BaseService {
 					return ok(resp);
 				}
 			}
+			
+			UserValidator validator = new UserValidator();
+			
+			if(!validator.validate(user)){
+				throw new ValidationException("User name is not allowed");
+			}
 
 			UserPO po = ConverterUtils.convert(user);
 			po = SSNCipher.encryptPassword(po);
 
 			dao.save(po);
 			resp = ConverterUtils.convert(po);
+			
 		} catch (Exception e) {
 			handleException(e);
 		} finally {
