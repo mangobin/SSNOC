@@ -4,16 +4,17 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.cmu.sv.ws.ssnoc.common.utils.TimestampUtil;
 import edu.cmu.sv.ws.ssnoc.dto.Status;
 
 public class StatusValidator extends AbstractValidator<Status> {
 	
-	private static Integer[] statusCodes = {0, 1, 2};
-	private static Set<Integer> acceptableStatusCodes = new HashSet<Integer>(Arrays.asList(statusCodes));
+	private static String[] statusCodes = {"GREEN","YELLOW","RED"};
+	private static Set<String> acceptableStatusCodes = new HashSet<String>(Arrays.asList(statusCodes));
 	
 	@Override
 	public boolean validate(Status entity) {
-		return entity.getUpdatedAtDate() != null && 
+		return TimestampUtil.convert(entity.getUpdatedAt()) != null && 
 				acceptableStatusCodes.contains(entity.getStatusCode());
 	}
 

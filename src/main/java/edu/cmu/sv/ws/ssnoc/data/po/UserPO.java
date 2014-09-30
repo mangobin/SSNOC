@@ -1,5 +1,7 @@
 package edu.cmu.sv.ws.ssnoc.data.po;
 
+import java.util.Date;
+
 import com.google.gson.Gson;
 
 /**
@@ -11,18 +13,35 @@ import com.google.gson.Gson;
  */
 public class UserPO {
 	private long userId;
-	private String userIdStr;
 	private String userName;
 	private String password;
 	private String salt;
-	private String createAt;
-
-	public String getCreateAt() {
-		return createAt;
+	private Date createdAt;
+	private Date modifiedAt;
+	private long lastStatusID;
+	
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreateAt(String createAt) {
-		this.createAt = createAt;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public long getLastStatusID() {
+		return lastStatusID;
+	}
+
+	public void setLastStatusID(long lastStatusID) {
+		this.lastStatusID = lastStatusID;
+	}
+
+	public Date getModifiedAt() {
+		return modifiedAt;
+	}
+
+	public void setModifiedAt(Date modifiedAt) {
+		this.modifiedAt = modifiedAt;
 	}
 
 	public long getUserId() {
@@ -31,14 +50,6 @@ public class UserPO {
 
 	public void setUserId(long userId) {
 		this.userId = userId;
-	}
-	
-	public String getUserIdStr(){
-		return userIdStr;
-	}
-	
-	public void setUserIdStr(String userIdStr){
-		this.userIdStr = userIdStr;
 	}
 
 	public String getUserName() {

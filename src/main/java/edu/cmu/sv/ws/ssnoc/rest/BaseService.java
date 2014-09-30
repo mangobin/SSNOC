@@ -7,7 +7,7 @@ import edu.cmu.sv.ws.ssnoc.common.exceptions.CheckedException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownUserException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
-import edu.cmu.sv.ws.ssnoc.data.nosql.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 
 public class BaseService {

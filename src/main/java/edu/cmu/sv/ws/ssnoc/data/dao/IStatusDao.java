@@ -12,7 +12,7 @@ public interface IStatusDao {
 	 * @param statusPO
 	 *            - Status information to be saved.
 	 */
-	String save(StatusPO statusPO);
+	long save(StatusPO statusPO);
 	
 	/**
 	 * This method with search for the statusId in the available statuses
@@ -22,7 +22,7 @@ public interface IStatusDao {
 	 * 
 	 * @return - StatusPO with given statusId
 	 */
-	StatusPO findStatusById(String statusId);
+	StatusPO findStatusById(long statusId);
 
 	/**
 	 * This method will load all the latest statuses from the databases

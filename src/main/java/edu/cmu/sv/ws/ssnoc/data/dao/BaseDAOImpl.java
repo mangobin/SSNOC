@@ -45,6 +45,7 @@ public class BaseDAOImpl {
 	}
 
 	protected void handleException(Exception e) {
+		Log.trace("SQL Exception: " + e.getMessage());
 		Log.error(e);
 		throw new DBException(e);
 	}

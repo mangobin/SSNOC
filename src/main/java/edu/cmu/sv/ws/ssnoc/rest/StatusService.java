@@ -13,8 +13,9 @@ import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownStatusException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownUserException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ValidationException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
+import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
-import edu.cmu.sv.ws.ssnoc.data.nosql.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Status;
@@ -43,14 +44,19 @@ public class StatusService extends BaseService {
 			throw new ValidationException("Invalid Status");
 		}
 		
-		// save status to database
-		StatusPO.Builder builder = new StatusPO.Builder();
-		builder.setStatusCode(status.getStatusCode());
-		builder.setUpdatedAt(status.getUpdatedAtDate());
-		builder.setUserId(existingUser.getUserIdStr());
-		StatusPO po = builder.build();
+		//set the status code as the lastStatusCode for the user
+//		existingUser.setLastStatusCode(status.getStatusCode());
+//		dao.save(existingUser);
 		
-		String id = DAOFactory.getInstance().getStatusDAO().save(po);
+		// save status to database
+		status.setUserName(userName);;
+		StatusPO po = ConverterUtils.convert(status);
+		
+		long id = DAOFactory.getInstance().getStatusDAO().save(po);
+
+		//set the DB ID Key as the lastStatusID for the user
+		existingUser.setLastStatusID(id);
+		dao.save(existingUser);
 		
 		// return 201 -- created
 		Log.exit();
@@ -60,7 +66,7 @@ public class StatusService extends BaseService {
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{statusId}")
-	public Status findStatus(@PathParam("statusId") String statusId){
+	public Status findStatus(@PathParam("statusId") long statusId){
 		Log.enter(statusId);
 		
 		StatusPO po = DAOFactory.getInstance().getStatusDAO().findStatusById(statusId);
@@ -68,10 +74,8 @@ public class StatusService extends BaseService {
 			throw new UnknownStatusException(statusId);
 		}
 
-		Status status = new Status();
-		status.setStatusCode(po.getStatusCode());
-		status.setUpdatedAtDate(po.getUpdatedAt());
-		
+		Status status = ConverterUtils.convert(po);
+	
 		Log.exit(status);
 		return status;
 	}

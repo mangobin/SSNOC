@@ -1,32 +1,25 @@
 package edu.cmu.sv.ws.ssnoc.dto;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.google.gson.Gson;
 
 public class Status {
 	
-	private static String DATE_FORMAT = "YYYY-MM-DD HH:mm";
-
 	private String updatedAt;
 	
-	private int statusCode;
+	private String statusCode;
 	
-	private Location location;
+	private String userName;
 	
-	public Date getUpdatedAtDate() {
-		try {
-			return new SimpleDateFormat(DATE_FORMAT).parse(getUpdatedAt());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
+	private float locLat;
+	
+	private float locLng;
+	
+	public String getUserName() {
+		return userName;
 	}
-	
-	public void setUpdatedAtDate(Date updatedAt){
-		this.updatedAt = new SimpleDateFormat(DATE_FORMAT).format(updatedAt);
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getUpdatedAt() {
@@ -37,20 +30,28 @@ public class Status {
 		this.updatedAt = updatedAt;
 	}
 
-	public int getStatusCode() {
+	public String getStatusCode() {
 		return statusCode;
 	}
 
-	public void setStatusCode(int statusCode) {
+	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
 	}
 
-	public Location getLocation() {
-		return location;
+	public float getLocLat(){
+		return locLat;
 	}
-
-	public void setLocation(Location location) {
-		this.location = location;
+	
+	public void setLocLat(float locLat){
+		this.locLat = locLat;
+	}
+	
+	public float getLocLng(){
+		return locLng;
+	}
+	
+	public void setLocLng(float locLng){
+		this.locLng = locLng;
 	}
 	
 	@Override

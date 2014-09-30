@@ -10,14 +10,23 @@ import com.google.gson.Gson;
 public class User {
 	private String userName;
 	private String password;
-	private String createAt;
+	private String createdAt;
+	private Status lastStatus;
 
-	public String getCreateAt() {
-		return createAt;
+	public Status getLastStatusCode() {
+		return lastStatus;
 	}
 
-	public void setCreateAt(String createAt) {
-		this.createAt = createAt;
+	public void setLastStatusCode(Status lastStatus) {
+		this.lastStatus = lastStatus;
+	}
+
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createAt) {
+		this.createdAt = createAt;
 	}
 
 	public String getUserName() {
@@ -40,5 +49,4 @@ public class User {
 	public String toString() {
 		return new Gson().toJson(this);
 	}
-
 }

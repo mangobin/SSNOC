@@ -23,6 +23,7 @@ public class DBUtils {
 	static {
 		CREATE_TABLE_LST = new ArrayList<String>();
 		CREATE_TABLE_LST.add(SQL.CREATE_USERS);
+		CREATE_TABLE_LST.add(SQL.CREATE_STATUSES);
 	}
 
 	/**

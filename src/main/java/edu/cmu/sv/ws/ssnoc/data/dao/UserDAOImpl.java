@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
@@ -31,6 +33,7 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 		try (Connection conn = getConnection();
 				PreparedStatement stmt = conn.prepareStatement(query);) {
 			users = processResults(stmt);
+			conn.close();
 		} catch (SQLException e) {
 			handleException(e);
 			Log.exit(users);
@@ -57,7 +60,9 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				po.setUserName(rs.getString(2));
 				po.setPassword(rs.getString(3));
 				po.setSalt(rs.getString(4));
-
+				po.setCreatedAt(new Date(rs.getTimestamp(5).getTime()));
+				po.setModifiedAt(new Date(rs.getTimestamp(6).getTime()));
+				po.setLastStatusID(rs.getLong(7));
 				users.add(po);
 			}
 		} catch (SQLException e) {
@@ -101,6 +106,7 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 			} else {
 				po = users.get(0);
 			}
+			conn.close();
 		} catch (SQLException e) {
 			handleException(e);
 			Log.exit(po);
@@ -123,15 +129,32 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 			return;
 		}
 
-		try (Connection conn = getConnection();
-				PreparedStatement stmt = conn.prepareStatement(SQL.INSERT_USER)) {
-			stmt.setString(1, userPO.getUserName());
-			stmt.setString(2, userPO.getPassword());
-			stmt.setString(3, userPO.getSalt());
-			
-
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt;
+			// this isn't a good approach but it saves time
+			// if user doesn't exist, insert into DB, else update
+			if(findByName(userPO.getUserName()) == null){
+				stmt = conn.prepareStatement(SQL.INSERT_USER);
+				stmt.setString(1, userPO.getUserName());
+				stmt.setString(2, userPO.getPassword());
+				stmt.setString(3, userPO.getSalt());
+				stmt.setTimestamp(4, new Timestamp(userPO.getCreatedAt().getTime()));
+				stmt.setTimestamp(5, new Timestamp(new Date().getTime()));
+				stmt.setLong(6, 0); // by default no status
+			} else {
+				stmt = conn.prepareStatement(SQL.UPDATE_USER);
+				stmt.setString(1, userPO.getUserName());
+				stmt.setString(2, userPO.getPassword());
+				stmt.setString(3, userPO.getSalt());
+				stmt.setTimestamp(4, new Timestamp(userPO.getCreatedAt().getTime()));
+				stmt.setTimestamp(5, new Timestamp(new Date().getTime()));
+				stmt.setLong(6, userPO.getLastStatusID());
+				stmt.setLong(7, userPO.getUserId());
+			}
 			int rowCount = stmt.executeUpdate();
 			Log.trace("Statement executed, and " + rowCount + " rows inserted.");
+			conn.close();
 		} catch (SQLException e) {
 			handleException(e);
 		} finally {
