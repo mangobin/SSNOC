@@ -29,12 +29,18 @@ public class ConverterUtils {
 
 		User dto = new User();
 		dto.setUserName(po.getUserName());
-		StatusPO statusPO =DAOFactory.getInstance().getStatusDAO().findStatusById(po.getLastStatusID());
-		Status statusDTO = new Status();
-		statusDTO.setLocation(statusPO.getLocation());
-		statusDTO.setStatusCode(statusPO.getStatusCode());
-		statusDTO.setUpdatedAtDate(statusPO.getUpdatedAt());
-		dto.setLastStatusCode(statusDTO);
+		if(po.getLastStatusID() == null)
+			dto.setLastStatusCode(null);
+		else{
+
+			StatusPO statusPO =DAOFactory.getInstance().getStatusDAO().findStatusById(po.getLastStatusID());
+			Status statusDTO = new Status();
+			statusDTO.setLocation(statusPO.getLocation());
+			statusDTO.setStatusCode(statusPO.getStatusCode());
+			statusDTO.setUpdatedAtDate(statusPO.getUpdatedAt());
+			dto.setLastStatusCode(statusDTO);
+			
+		}
 		dto.setCreateAt(po.getCreateAt());
 
 		return dto;
