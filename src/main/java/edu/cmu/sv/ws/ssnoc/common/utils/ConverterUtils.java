@@ -72,7 +72,7 @@ public class ConverterUtils {
 		po.setUpdatedAt(TimestampUtil.convert(dto.getUpdatedAt()));
 		po.setLocLat(dto.getLocLat());
 		po.setLocLng(dto.getLocLng());
-		
+		po.setUserName(dto.getUserName());
 		return po;
 	}
 	
@@ -86,6 +86,7 @@ public class ConverterUtils {
 		dto.setUpdatedAt(TimestampUtil.convert(po.getUpdatedAt()));
 		dto.setLocLat(po.getLocLat());
 		dto.setLocLng(po.getLocLng());
+		dto.setUserName(po.getUserName());
 		
 		return dto;
 	}

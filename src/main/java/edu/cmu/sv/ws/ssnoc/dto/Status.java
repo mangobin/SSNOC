@@ -8,9 +8,19 @@ public class Status {
 	
 	private String statusCode;
 	
+	private String userName;
+	
 	private float locLat;
 	
 	private float locLng;
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	public String getUpdatedAt() {
 		return updatedAt;

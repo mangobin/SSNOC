@@ -49,8 +49,8 @@ public class StatusService extends BaseService {
 //		dao.save(existingUser);
 		
 		// save status to database
+		status.setUserName(userName);;
 		StatusPO po = ConverterUtils.convert(status);
-		po.setUserName(userName);
 		
 		long id = DAOFactory.getInstance().getStatusDAO().save(po);
 
