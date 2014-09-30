@@ -1,6 +1,6 @@
 package edu.cmu.sv.ws.ssnoc.common.utils;
 
-import edu.cmu.sv.ws.ssnoc.data.nosql.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Status;
@@ -14,6 +14,7 @@ import edu.cmu.sv.ws.ssnoc.dto.User;
  * 
  */
 public class ConverterUtils {
+	
 	/**
 	 * Convert UserPO to User DTO object.
 	 * 
@@ -29,19 +30,13 @@ public class ConverterUtils {
 
 		User dto = new User();
 		dto.setUserName(po.getUserName());
-		if(po.getLastStatusID() == null)
+		dto.setCreatedAt(TimestampUtil.convert(po.getCreatedAt()));
+		StatusPO statusPO = DAOFactory.getInstance().getStatusDAO().findStatusById(po.getLastStatusID());
+		if(statusPO != null){
+			dto.setLastStatusCode(convert(statusPO));
+		} else {
 			dto.setLastStatusCode(null);
-		else{
-
-			StatusPO statusPO =DAOFactory.getInstance().getStatusDAO().findStatusById(po.getLastStatusID());
-			Status statusDTO = new Status();
-			statusDTO.setLocation(statusPO.getLocation());
-			statusDTO.setStatusCode(statusPO.getStatusCode());
-			statusDTO.setUpdatedAtDate(statusPO.getUpdatedAt());
-			dto.setLastStatusCode(statusDTO);
-			
 		}
-		dto.setCreateAt(po.getCreateAt());
 
 		return dto;
 	}
@@ -62,8 +57,36 @@ public class ConverterUtils {
 		UserPO po = new UserPO();
 		po.setUserName(dto.getUserName());
 		po.setPassword(dto.getPassword());
-		po.setCreateAt(dto.getCreateAt());
+		po.setCreatedAt(TimestampUtil.convert(dto.getCreatedAt()));
 
 		return po;
+	}
+	
+	public static final StatusPO convert(Status dto){
+		if(dto == null){
+			return null;
+		}
+		
+		StatusPO po = new StatusPO();
+		po.setStatusCode(dto.getStatusCode());
+		po.setUpdatedAt(TimestampUtil.convert(dto.getUpdatedAt()));
+		po.setLocLat(dto.getLocLat());
+		po.setLocLng(dto.getLocLng());
+		
+		return po;
+	}
+	
+	public static final Status convert(StatusPO po){
+		if(po == null){
+			return null;
+		}
+		
+		Status dto = new Status();
+		dto.setStatusCode(po.getStatusCode());
+		dto.setUpdatedAt(TimestampUtil.convert(po.getUpdatedAt()));
+		dto.setLocLat(po.getLocLat());
+		dto.setLocLng(po.getLocLng());
+		
+		return dto;
 	}
 }

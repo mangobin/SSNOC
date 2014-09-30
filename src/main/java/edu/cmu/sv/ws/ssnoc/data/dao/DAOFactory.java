@@ -31,5 +31,14 @@ public class DAOFactory {
 	public IUserDAO getUserDAO() {
 		return new UserDAOImpl();
 	}
+	
+	/**
+	 * Method to get a new object implementing IStatusDAO
+	 * 
+	 * @return - Object implementing IStatusDAO
+	 */
+	public IStatusDao getStatusDAO() {
+		return new StatusDAOImpl();
+	}
 
 }

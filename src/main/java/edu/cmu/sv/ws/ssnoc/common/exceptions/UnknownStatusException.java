@@ -13,7 +13,7 @@ public class UnknownStatusException extends CheckedException {
 	/**
 	 * Default constructor to raise an unknown user validation exception.
 	 */
-	public UnknownStatusException(String statusId) {
+	public UnknownStatusException(long statusId) {
 		super("Unknown Status: " + statusId, null, Response
 				.status(Status.NOT_FOUND)
 				.entity("Unknown Status: " + statusId)

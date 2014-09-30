@@ -21,11 +21,11 @@ public class User {
 		this.lastStatus = lastStatus;
 	}
 
-	public String getCreateAt() {
+	public String getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreateAt(String createAt) {
+	public void setCreatedAt(String createAt) {
 		this.createdAt = createAt;
 	}
 
@@ -49,5 +49,4 @@ public class User {
 	public String toString() {
 		return new Gson().toJson(this);
 	}
-
 }

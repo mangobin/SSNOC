@@ -20,7 +20,7 @@ import edu.cmu.sv.ws.ssnoc.common.exceptions.ValidationException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.common.utils.SSNCipher;
-import edu.cmu.sv.ws.ssnoc.data.nosql.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.User;
@@ -70,7 +70,6 @@ public class UserService extends BaseService {
 					throw new ValidationException("User name already taken");
 				} else {
 					Log.debug("Yay!! Password is same for the existing user name.");
-
 					resp.setUserName(existingUser.getUserName());
 					return ok(resp);
 				}
@@ -230,20 +229,12 @@ public class UserService extends BaseService {
 				dao.save(existingUser);
 				temp =  ConverterUtils.convert(existingUser);
 				return created(temp);
-				
 			} else {
 				existingUser.setPassword(newPassWord);
 				existingUser = SSNCipher.encryptPassword(existingUser);
-
 				dao.save(existingUser);
-				
-				temp =  ConverterUtils.convert(existingUser);
-
-				
+				temp =  ConverterUtils.convert(existingUser);	
 			}
-			
-			
-			
 		}catch (Exception e) {
 			handleException(e);
 		} finally {

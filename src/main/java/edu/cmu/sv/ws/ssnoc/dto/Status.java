@@ -1,33 +1,16 @@
 package edu.cmu.sv.ws.ssnoc.dto;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.google.gson.Gson;
 
 public class Status {
 	
-	private static String DATE_FORMAT = "yyyy-MM-dd HH:mm";
-
 	private String updatedAt;
 	
 	private String statusCode;
 	
-	private Location location;
+	private float locLat;
 	
-	public Date getUpdatedAtDate() {
-		try {
-			return new SimpleDateFormat(DATE_FORMAT).parse(getUpdatedAt());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public void setUpdatedAtDate(Date updatedAt){
-		this.updatedAt = new SimpleDateFormat(DATE_FORMAT).format(updatedAt);
-	}
+	private float locLng;
 
 	public String getUpdatedAt() {
 		return updatedAt;
@@ -45,12 +28,20 @@ public class Status {
 		this.statusCode = statusCode;
 	}
 
-	public Location getLocation() {
-		return location;
+	public float getLocLat(){
+		return locLat;
 	}
-
-	public void setLocation(Location location) {
-		this.location = location;
+	
+	public void setLocLat(float locLat){
+		this.locLat = locLat;
+	}
+	
+	public float getLocLng(){
+		return locLng;
+	}
+	
+	public void setLocLng(float locLng){
+		this.locLng = locLng;
 	}
 	
 	@Override

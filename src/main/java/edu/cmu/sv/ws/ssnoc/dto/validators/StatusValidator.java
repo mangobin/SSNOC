@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.cmu.sv.ws.ssnoc.common.utils.TimestampUtil;
 import edu.cmu.sv.ws.ssnoc.dto.Status;
 
 public class StatusValidator extends AbstractValidator<Status> {
@@ -13,7 +14,7 @@ public class StatusValidator extends AbstractValidator<Status> {
 	
 	@Override
 	public boolean validate(Status entity) {
-		return entity.getUpdatedAtDate() != null && 
+		return TimestampUtil.convert(entity.getUpdatedAt()) != null && 
 				acceptableStatusCodes.contains(entity.getStatusCode());
 	}
 
