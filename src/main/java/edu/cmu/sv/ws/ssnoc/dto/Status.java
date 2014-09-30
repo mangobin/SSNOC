@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 
 public class Status {
 	
-	private static String DATE_FORMAT = "YYYY-MM-DD HH:mm";
+	private static String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
 	private String updatedAt;
 	
