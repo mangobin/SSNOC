@@ -158,7 +158,7 @@ public class SQL {
 			+ " author=?,"
 			+ " target=?,"
 			+ " message_type=?," 
-			+ " posted_at=?,"
+			+ " posted_at=?"
 			+ " where message_id=?";
 	
 	/**
