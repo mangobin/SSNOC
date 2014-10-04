@@ -1,8 +1,10 @@
 package edu.cmu.sv.ws.ssnoc.common.utils;
 
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
+import edu.cmu.sv.ws.ssnoc.dto.Message;
 import edu.cmu.sv.ws.ssnoc.dto.Status;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 
@@ -90,4 +92,29 @@ public class ConverterUtils {
 		
 		return dto;
 	}
+	
+	public static final Message convert(MessagePO po) {
+		if(po == null)
+			return null;
+		Message dto = new Message();
+		dto.setAuthor();
+		dto.setContent();
+		dto.setMessageID();
+		dto.setPostAt();
+		dto.setTarget();
+		
+		return dto;
+		
+	}
+	
+	public static final MessagePO convert(Message dto) {
+		if(dto == null)
+			return null;
+		MessagePO  po = new MessagePO();
+		
+		
+		return po;
+	}
+	
+	
 }
