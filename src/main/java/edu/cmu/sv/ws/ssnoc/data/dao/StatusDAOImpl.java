@@ -51,7 +51,6 @@ public class StatusDAOImpl extends BaseDAOImpl implements IStatusDao {
 			if(generatedKeys.next()){
 				insertedId = generatedKeys.getLong(1);
 			}
-			System.out.println("newly inserted status " + insertedId);
 			conn.close();
 		} catch(SQLException e){
 			handleException(e);
@@ -81,6 +80,7 @@ public class StatusDAOImpl extends BaseDAOImpl implements IStatusDao {
 			conn.close();
 		} catch (SQLException e){
 			handleException(e);
+		} finally {
 			Log.exit(po);
 		}
 		
@@ -157,7 +157,8 @@ public class StatusDAOImpl extends BaseDAOImpl implements IStatusDao {
 
 		Log.debug("Executing stmt = " + stmt);
 		List<StatusPO> statuses = new ArrayList<StatusPO>();
-		try (ResultSet rs = stmt.executeQuery()) {
+		try {
+			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				StatusPO po = new StatusPO();
 				po.setStatusId(rs.getLong(1));
@@ -167,6 +168,9 @@ public class StatusDAOImpl extends BaseDAOImpl implements IStatusDao {
 				po.setLocLat(rs.getFloat(5));
 				po.setLocLng(rs.getFloat(6));
 				statuses.add(po);
+			}
+			if(rs != null){
+				rs.close();
 			}
 		} catch (SQLException e) {
 			handleException(e);

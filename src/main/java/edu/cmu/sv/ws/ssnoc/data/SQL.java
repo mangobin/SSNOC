@@ -8,11 +8,12 @@ package edu.cmu.sv.ws.ssnoc.data;
  */
 public class SQL {
 	/*
-	 * List the USERS table name, and list all queries related to this table
+	 * List all tables names, and list all queries related to this table
 	 * here.
 	 */
 	public static final String SSN_USERS = "SSN_USERS";
 	public static final String SSN_STATUSES = "SSN_STATUSES";
+	public static final String SSN_MESSAGES = "SSN_MESSAGES";
 
 	/**
 	 * Query to check if a given table exists in the H2 database.
@@ -92,8 +93,7 @@ public class SQL {
 			+ " offset ?";
 
 	/**
-	 * Query to find a user details depending on his name. Note that this query
-	 * does a case insensitive search with the user name.
+	 * Query to find a status depending on statusId.
 	 */
 	public static final String FIND_STATUS_BY_ID = "select statusId, userName, updatedAt,"
 			+ " statusCode, locationLat, locationLng "
@@ -111,14 +111,14 @@ public class SQL {
 			+ " offset ?";
 	
 	/**
-	 * Query to insert a row into the users table.
+	 * Query to insert a row into the statuses table.
 	 */
 	public static final String INSERT_STATUS = "insert into " + SSN_STATUSES
 			+ " (userName, updatedAt, statusCode, locationLat, locationLng) "
 			+ " values (?, ?, ?, ?, ?)";
 	
 	/**
-	 * Query to update a row into the users table.
+	 * Query to update a row into the statuses table.
 	 */
 	public static final String UPDATE_STATUS = "update " + SSN_STATUSES + " set "
 			+ " userName=?,"
@@ -128,4 +128,63 @@ public class SQL {
 			+ " locationLng=?,"
 			+ " where statusId=?";
 
+	// ****************************************************************
+	// All queries related to MESSAGES
+	// ****************************************************************
+	
+	public static final String MESSAGE_TYPE_WALL = "WALL";
+	
+	/**
+	 * Query to create the MESSAGES table.
+	 */
+	public static final String CREATE_MESSAGES = "create table IF NOT EXISTS "
+			+ SSN_MESSAGES + " ( message_id IDENTITY PRIMARY KEY,"
+			+ " content VARCHAR," + " author VARCHAR(100),"
+			+ " target VARCHAR(100)," + " message_type VARCHAR(10), "
+			+ " posted_at DATETIME )";
+	
+	/**
+	 * Query to insert a row into the messages table.
+	 */
+	public static final String INSERT_MESSAGE = "insert into " + SSN_MESSAGES
+			+ " (content, author, target, message_type, posted_at) "
+			+ " values (?, ?, ?, ?, ?)";
+	
+	/**
+	 * Query to update a row into the messages table.
+	 */
+	public static final String UPDATE_MESSAGE = "update " + SSN_MESSAGES + " set "
+			+ " content=?,"
+			+ " author=?,"
+			+ " target=?,"
+			+ " message_type=?," 
+			+ " posted_at=?,"
+			+ " where message_id=?";
+	
+	/**
+	 * Query to find a message by message_id
+	 */
+	 public static final String FIND_MESSAGE_BY_ID = "select * from " 
+	 + SSN_MESSAGES
+	 + " where message_id=?";
+	 
+	 /**
+	  * Query to find the latest public wall messages
+	  */
+	 public static final String FIND_LATEST_WALL_MESSAGES = "select * from "
+		+ SSN_MESSAGES
+		+ " where UPPER(message_type) = " + " UPPER(" + MESSAGE_TYPE_WALL + ")" 
+		+ " order by posted_at desc"
+		+ " limit ?"
+		+ " offset ?";
+	 
+	 /**
+	  * Query to find latest messages of type
+	  */
+	 public static final String FIND_LATEST_MESSAGES_OF_TYPE = "select * from "
+				+ SSN_MESSAGES
+				+ " where UPPER(message_type) = " + " UPPER(?)" 
+				+ " order by posted_at desc"
+				+ " limit ?"
+				+ " offset ?";
 }
