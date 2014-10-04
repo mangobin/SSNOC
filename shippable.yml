@@ -1,20 +1,20 @@
 build_environment: ubuntu1204
 language: java
 jdk: 
-	- oraclejdk7
-	- openjdk7
+   - oraclejdk7
+   - openjdk7
 
 before_install: mvn clean
 before_script: cp ./h2db-empty.mv.db ~/h2db.mv.db
 
 after_success:
-	- mvn test
-	- mvn verify
-	- mvn package
+   - mvn test
+   - mvn verify
+   - mvn package
 
 notifications:
    email:
-	- cef.ramirez@sv.cmu.edu
-	- bin.lan@sv.cmu.edu
-	- nikhil.arora@sv.cmu.edu
-	- jian.jiao@sv.cmu.edu
+      - cef.ramirez@sv.cmu.edu
+      - bin.lan@sv.cmu.edu
+      - nikhil.arora@sv.cmu.edu
+      - jian.jiao@sv.cmu.edu
