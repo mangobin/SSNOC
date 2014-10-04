@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
@@ -18,12 +18,13 @@ import edu.cmu.sv.ws.ssnoc.data.SQL;
  */
 public class DBUtils {
 	private static boolean DB_TABLES_EXIST = false;
-	private static List<String> CREATE_TABLE_LST;
+	private static Map<String, String> CREATE_TABLE_MAP;
 
-	static {
-		CREATE_TABLE_LST = new ArrayList<String>();
-		CREATE_TABLE_LST.add(SQL.CREATE_USERS);
-		CREATE_TABLE_LST.add(SQL.CREATE_STATUSES);
+	static {		
+		CREATE_TABLE_MAP = new HashMap<String, String>();
+		CREATE_TABLE_MAP.put(SQL.SSN_USERS, SQL.CREATE_USERS);
+		CREATE_TABLE_MAP.put(SQL.SSN_STATUSES, SQL.CREATE_STATUSES);
+		CREATE_TABLE_MAP.put(SQL.SSN_MESSAGES, SQL.CREATE_MESSAGES);
 	}
 
 	/**
@@ -45,28 +46,25 @@ public class DBUtils {
 		if (DB_TABLES_EXIST) {
 			return;
 		}
-
-		final String CORE_TABLE_NAME = SQL.SSN_USERS;
-
-		try (Connection conn = getConnection();
+		
+		Log.info("Creating tables in database ...");
+		for(String tableName : CREATE_TABLE_MAP.keySet()){
+			try (Connection conn = getConnection();
 				Statement stmt = conn.createStatement();) {
-			if (!doesTableExistInDB(conn, CORE_TABLE_NAME)) {
-				Log.info("Creating tables in database ...");
-
-				for (String query : CREATE_TABLE_LST) {
-					Log.debug("Executing query: " + query);
-					boolean status = stmt.execute(query);
-					Log.debug("Query execution completed with status: "
-							+ status);
+					if(!doesTableExistInDB(conn, tableName)){
+						String query = CREATE_TABLE_MAP.get(tableName);
+						Log.debug("Executing query: " + query);
+						boolean status = stmt.execute(query);
+						Log.debug("Query execution completed with status: " + status);
+					}
+					conn.close();
+				} catch(Exception e){
+					Log.error("Error initializing table: " + tableName);
 				}
-
-				Log.info("Tables created successfully");
-			} else {
-				Log.info("Tables already exist in database. Not performing any action.");
-			}
-
-			DB_TABLES_EXIST = true;
 		}
+		Log.info("Tables initialized successfully");
+		DB_TABLES_EXIST = true;
+
 		Log.exit();
 	}
 

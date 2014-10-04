@@ -40,5 +40,13 @@ public class DAOFactory {
 	public IStatusDao getStatusDAO() {
 		return new StatusDAOImpl();
 	}
-
+	
+	/**
+	 * Method to get a new object implementing IStatusDAO
+	 * 
+	 * @return - Object implementing IStatusDAO
+	 */
+	public IMessageDAO getMessageDAO() {
+		return new MessageDAOImpl();
+	}
 }
