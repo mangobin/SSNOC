@@ -64,4 +64,29 @@ public class MessagePO {
 		this.postedAt = postedAt;
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		// Return true if the objects are identical.
+	     // (This is just an optimization, not required for correctness.)
+	     if (this == o) {
+	       return true;
+	     }
+
+	     // Return false if the other object has the wrong type.
+	     // This type may be an interface depending on the interface's specification.
+	     if (!(o instanceof MessagePO)) {
+	       return false;
+	     }
+
+	     // Cast to the appropriate type.
+	     // This will succeed because of the instanceof, and lets us access private fields.
+	     MessagePO lhs = (MessagePO) o;
+	     
+	     return this.content.equals(lhs.getContent()) 
+	    		 && this.author.equals(lhs.getAuthor())
+	    		 && this.messageType.equals(lhs.getMessageType())
+	    		 && this.postedAt.equals(lhs.getPostedAt())
+	    		 && this.target.equals(lhs.getTarget());
+	}
+	
 }
