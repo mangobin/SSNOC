@@ -1,4 +1,4 @@
-build_environment: Ubuntu 12.04
+build_environment: ubuntu1204
 language: java
 jdk: 
 	- oraclejdk7
