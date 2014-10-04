@@ -37,7 +37,7 @@ public class Message {
 	public String getPostedAt() {
 		return postedAt;
 	}
-	public void setPostAt(String postAt) {
+	public void setPostedAt(String postAt) {
 		this.postedAt = postAt;
 	}
 	public long getMessageID() {

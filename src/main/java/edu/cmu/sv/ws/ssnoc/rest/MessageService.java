@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
@@ -43,6 +44,7 @@ public class MessageService extends BaseService {
 			dtoMsg = ConverterUtils.convert(po);
 			
 		} catch (Exception e) {
+			throw new ServiceException(e);
 		} finally {
 			Log.exit(dtoMsg);
 		}
