@@ -97,11 +97,12 @@ public class ConverterUtils {
 		if(po == null)
 			return null;
 		Message dto = new Message();
-		dto.setAuthor();
-		dto.setContent();
-		dto.setMessageID();
-		dto.setPostAt();
-		dto.setTarget();
+		dto.setAuthor(po.getAuthor());
+		dto.setContent(po.getContent());
+		dto.setMessageID(po.getMessageId());
+		dto.setMessageType(po.getMessageType());
+		dto.setPostAt(TimestampUtil.convert(po.getPostedAt()));
+		dto.setTarget(po.getTarget());
 		
 		return dto;
 		
@@ -111,6 +112,12 @@ public class ConverterUtils {
 		if(dto == null)
 			return null;
 		MessagePO  po = new MessagePO();
+		po.setAuthor(dto.getAuthor());
+		po.setContent(dto.getContent());
+		po.setMessageId(dto.getMessageID());
+		po.setMessageType(dto.getMessageType());
+		po.setTarget(dto.getTarget());
+		po.setPostedAt(TimestampUtil.convert(dto.getPostAt()));
 		
 		
 		return po;

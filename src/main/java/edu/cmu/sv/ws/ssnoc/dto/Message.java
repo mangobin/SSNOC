@@ -8,7 +8,7 @@ public class Message {
 	private String messageType;
 	private String target;
 	private String postAt;
-	private int messageID;
+	private long messageID;
 	
 	public String getContent() {
 		return content;
@@ -40,10 +40,10 @@ public class Message {
 	public void setPostAt(String postAt) {
 		this.postAt = postAt;
 	}
-	public int getMessageID() {
+	public long getMessageID() {
 		return messageID;
 	}
-	public void setMessageID(int messageID) {
+	public void setMessageID(long messageID) {
 		this.messageID = messageID;
 	}
 	
