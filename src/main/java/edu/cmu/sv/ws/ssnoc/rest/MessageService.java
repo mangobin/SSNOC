@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
+import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IMessageDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
@@ -35,6 +36,7 @@ public class MessageService extends BaseService {
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 			
 			msg.setAuthor(userName);
+			msg.setMessageType(SQL.MESSAGE_TYPE_WALL);
 			MessagePO po = ConverterUtils.convert(msg);
 
 			dao.save(po);

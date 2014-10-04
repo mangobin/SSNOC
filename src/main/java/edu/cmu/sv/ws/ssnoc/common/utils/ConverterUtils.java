@@ -117,7 +117,7 @@ public class ConverterUtils {
 		po.setMessageId(dto.getMessageID());
 		po.setMessageType(dto.getMessageType());
 		po.setTarget(dto.getTarget());
-		po.setPostedAt(TimestampUtil.convert(dto.getPostAt()));
+		po.setPostedAt(TimestampUtil.convert(dto.getPostedAt()));
 		
 		
 		return po;
