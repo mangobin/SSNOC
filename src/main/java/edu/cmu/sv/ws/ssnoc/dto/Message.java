@@ -34,12 +34,14 @@ public class Message {
 	public void setTarget(String target) {
 		this.target = target;
 	}
-	public String getPostAt() {
+	
+	public String getPostedAt() {
 		return postedAt;
 	}
-	public void setPostAt(String postedAt) {
+	public void setPostedAt(String postedAt) {
 		this.postedAt = postedAt;
 	}
+	
 	public long getMessageID() {
 		return messageID;
 	}

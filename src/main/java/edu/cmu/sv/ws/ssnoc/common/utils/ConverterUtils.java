@@ -103,7 +103,7 @@ public class ConverterUtils {
 		dto.setContent(po.getContent());
 		dto.setMessageID(po.getMessageId());
 		dto.setMessageType(po.getMessageType());
-		dto.setPostAt(TimestampUtil.convert(po.getPostedAt()));
+		dto.setPostedAt(TimestampUtil.convert(po.getPostedAt()));
 		dto.setTarget(po.getTarget());
 		
 		return dto;
@@ -118,10 +118,8 @@ public class ConverterUtils {
 		po.setContent(dto.getContent());
 		po.setMessageId(dto.getMessageID());
 		po.setMessageType(dto.getMessageType());
-		po.setTarget(dto.getTarget());
-		po.setPostedAt(TimestampUtil.convert(dto.getPostAt()));
-		
-		
+		po.setTarget(dto.getTarget());				
+		po.setPostedAt(TimestampUtil.convert(dto.getPostedAt()));
 		return po;
 	}
 	
