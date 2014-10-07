@@ -68,5 +68,16 @@ public class MessageService extends BaseService {
 		return dto;
 	}
 	
+   ///message/sendignUserName/receivingUserName
+ 
+//
+//	@POST
+//	@Consumes({ MediaType.APPLICATION_JSON })
+//	@Produces({ MediaType.APPLICATION_JSON })
+//	@Path("/{sendingUserName}/{receivingUserName}")
+//	public Response sendChatMessages(@PathParam("sendingUserName") String sendingUsername,
+//			@PathParam("receivingUserName") String receivingUserName) {
+//		
+//	}
 
 }
