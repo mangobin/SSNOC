@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
+import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownMessageException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
@@ -40,7 +41,8 @@ public class MessageService extends BaseService {
 			msg.setMessageType(SQL.MESSAGE_TYPE_WALL);
 			MessagePO po = ConverterUtils.convert(msg);
 
-			dao.save(po);
+			long messageID = dao.save(po);
+			po.setMessageId(messageID);
 			dtoMsg = ConverterUtils.convert(po);
 			
 		} catch (Exception e) {
@@ -52,6 +54,19 @@ public class MessageService extends BaseService {
 		return created(dtoMsg);
 	}
 	
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/{messageID}")
+	public Message retrieveMesssageById(@PathParam("messageID") long messageID) {
+		Log.enter(messageID);
+		MessagePO po = DAOFactory.getInstance().getMessageDAO().findMessageById(messageID);
+		if(po == null){
+			throw new UnknownMessageException(messageID);
+		}
+		Message dto = ConverterUtils.convert(po);
+		Log.exit(dto);
+		return dto;
+	}
 	
 
 }
