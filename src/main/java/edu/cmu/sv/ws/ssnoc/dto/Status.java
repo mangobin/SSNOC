@@ -14,6 +14,16 @@ public class Status {
 	
 	private float locLng;
 	
+	private long statusId;
+	
+	public long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(long statusId) {
+		this.statusId = statusId;
+	}
+
 	public String getUserName() {
 		return userName;
 	}

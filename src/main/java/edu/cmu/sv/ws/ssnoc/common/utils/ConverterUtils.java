@@ -75,6 +75,7 @@ public class ConverterUtils {
 		po.setLocLat(dto.getLocLat());
 		po.setLocLng(dto.getLocLng());
 		po.setUserName(dto.getUserName());
+		po.setStatusId(dto.getStatusId());
 		return po;
 	}
 	
@@ -89,6 +90,7 @@ public class ConverterUtils {
 		dto.setLocLat(po.getLocLat());
 		dto.setLocLng(po.getLocLng());
 		dto.setUserName(po.getUserName());
+		dto.setStatusId(po.getStatusId());
 		
 		return dto;
 	}

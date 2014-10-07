@@ -35,6 +35,7 @@ public class MessageService extends BaseService {
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 			
 			msg.setAuthor(userName);
+			msg.setMessageType("WALL");
 			MessagePO po = ConverterUtils.convert(msg);
 
 			dao.save(po);
@@ -48,25 +49,6 @@ public class MessageService extends BaseService {
 		return created(dtoMsg);
 	}
 	
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	@Path("wall")
-	public List<Message> retrieveAllMsgOnPublicWall () {
-		List<MessagePO> list = new ArrayList<MessagePO>();
-		
-		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
-		list = dao.findLatestWallMessages(50, 0);
-		
-		List<Message> listDto = new ArrayList<Message>();
-		
-		for(MessagePO m : list) {
-			Message msg = ConverterUtils.convert(m);
-			listDto.add(msg);
-		}
-		
-		Log.exit(listDto);
-		return listDto;
-		
-	}
+	
 
 }
