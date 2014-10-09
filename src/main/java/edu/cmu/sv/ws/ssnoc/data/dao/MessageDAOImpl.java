@@ -13,6 +13,7 @@ import java.util.List;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 
 public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 
@@ -141,6 +142,68 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		}
 		
 		return messages;
+	}
+
+	@Override
+	public List<MessagePO> findChatHistoryBetweenTwoUsers(String userNameOne, String userNameTwo) {
+		Log.enter("Find Histroy messages between " + userNameOne 
+				+ ", and : " + userNameTwo + ")");
+		
+		List<MessagePO> messages = null;
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_ALL_MESSAGES_BETWEEN_TWO_USERS);
+			stmt.setString(1, userNameOne);
+			stmt.setString(2, userNameTwo);
+			stmt.setString(3, userNameTwo);
+			stmt.setString(4, userNameOne);
+			messages = processResults(stmt);
+			conn.close();
+		} catch(SQLException e){
+			handleException(e);
+		} finally {
+			Log.exit(messages);
+		}
+		
+		return messages;
+		
+	}
+
+	@Override
+	public List<UserPO> findChatBuddies(String userName) {
+		Log.enter("find chat buddies for user: "+userName);
+		List<UserPO> users = new ArrayList<UserPO>();
+		
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_AUTHOR);
+			stmt.setString(1, userName);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){
+				String tartgetBuddyName = rs.getString("target");
+				UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(tartgetBuddyName);
+				if(po != null)
+					users.add(po);
+			}
+			
+			stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_TARGET);
+			stmt.setString(1, userName);
+			rs = stmt.executeQuery();
+			while(rs.next()){
+				String authorBuddyName = rs.getString("author");
+				UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(authorBuddyName);
+				if(po != null)
+					users.add(po);
+			}
+			conn.close();
+		} catch(SQLException e){
+			handleException(e);
+		} finally {
+			Log.exit(users);
+		}
+		
+		
+		return users;
 	}
 
 }

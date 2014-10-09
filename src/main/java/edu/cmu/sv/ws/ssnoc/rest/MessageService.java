@@ -69,15 +69,35 @@ public class MessageService extends BaseService {
 	}
 	
    ///message/sendignUserName/receivingUserName
- 
-//
-//	@POST
-//	@Consumes({ MediaType.APPLICATION_JSON })
-//	@Produces({ MediaType.APPLICATION_JSON })
-//	@Path("/{sendingUserName}/{receivingUserName}")
-//	public Response sendChatMessages(@PathParam("sendingUserName") String sendingUsername,
-//			@PathParam("receivingUserName") String receivingUserName) {
-//		
-//	}
+
+	@POST
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/{sendingUserName}/{receivingUserName}")
+	public Response sendChatMessages(@PathParam("sendingUserName") String sendingUsername,
+			@PathParam("receivingUserName") String receivingUserName, Message msg) {
+		Log.enter(sendingUsername);
+		Log.enter(receivingUserName);
+		Log.enter(msg);
+		
+		msg.setAuthor(sendingUsername);
+		msg.setTarget(receivingUserName);
+		msg.setMessageType(SQL.MESSAGE_TYPE_CHAT);
+		
+		MessagePO po = ConverterUtils.convert(msg);
+		
+		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
+		long messageID = dao.save(po);
+		
+		po.setMessageId(messageID);
+		
+		Message dto = ConverterUtils.convert(po);
+		
+		Log.exit(dto);
+		
+		return created(dto);
+		
+		
+	}
 
 }

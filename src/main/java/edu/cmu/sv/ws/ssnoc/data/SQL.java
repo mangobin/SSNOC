@@ -133,7 +133,7 @@ public class SQL {
 	// ****************************************************************
 	
 	public static final String MESSAGE_TYPE_WALL = "WALL";
-	
+	public static final String MESSAGE_TYPE_CHAT = "CHAT";	
 	/**
 	 * Query to create the MESSAGES table.
 	 */
@@ -187,4 +187,22 @@ public class SQL {
 				+ " order by posted_at desc"
 				+ " limit ?"
 				+ " offset ?";
+	 
+	 public static final String FIND_ALL_MESSAGES_BETWEEN_TWO_USERS = "SELECT * FROM"
+			 	+ SSN_MESSAGES
+			 	+ "WHERE (author = ? AND target = ?)"
+			 	+ "OR (author = ? AND target = ?)"
+			 	+ "AND UPPER(message_type) = " + " UPPER(" + MESSAGE_TYPE_CHAT + ")"
+			 	+ "order by posted_at desc";
+	 
+	 public static final String FIND_CHAT_BUDDIES_AUTHOR= "SELECT target FROM"
+			 	+ SSN_MESSAGES
+			 	+ "WHERE author = ?"
+			 	+ "AND UPPER(message_type) = " + " UPPER(" + MESSAGE_TYPE_CHAT + ")";
+	 
+	 public static final String FIND_CHAT_BUDDIES_TARGET= "SELECT author FROM"
+			 	+ SSN_MESSAGES
+			 	+ "WHERE target = ?"
+			 	+ "AND UPPER(message_type) = " + " UPPER(" + MESSAGE_TYPE_CHAT + ")";
+	  
 }

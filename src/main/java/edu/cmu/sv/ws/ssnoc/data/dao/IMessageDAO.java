@@ -3,6 +3,7 @@ package edu.cmu.sv.ws.ssnoc.data.dao;
 import java.util.List;
 
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 
 public interface IMessageDAO {
 
@@ -33,4 +34,9 @@ public interface IMessageDAO {
 	 * @return - a messagePO or null
 	 */
 	MessagePO findMessageById(long messageId);
+	
+	List<MessagePO> findChatHistoryBetweenTwoUsers(String userNameOne, String userNameTwo);
+	
+	List<UserPO> findChatBuddies(String userName);
+	
 }

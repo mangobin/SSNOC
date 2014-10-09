@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -45,4 +46,28 @@ public class UsersService extends BaseService {
 		
 		return users;
 	}
+	
+//	/users/userName/chatbuddies
+
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/{userName}/chatbuddies")
+	public List<User> retrieveChatBuddies(@PathParam("userName") String userName) {
+		Log.enter("retrieve chat buddies for: "+ userName);
+		
+		List<UserPO> usersPO = DAOFactory.getInstance().getMessageDAO().findChatBuddies(userName);
+		
+		List<User> userDto = new ArrayList<User>();
+		
+		for(UserPO po : usersPO) {
+			User user = new User();
+			user = ConverterUtils.convert(po);
+			userDto.add(user);
+		}
+		
+		Log.exit(userDto);
+		
+		return userDto;
+	}
+	
 }
