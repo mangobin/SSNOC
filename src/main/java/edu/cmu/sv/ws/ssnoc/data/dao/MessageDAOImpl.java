@@ -179,6 +179,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_AUTHOR);
 			stmt.setString(1, userName);
+			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()){
 				String tartgetBuddyName = rs.getString("target");
@@ -189,6 +190,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			
 			stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_TARGET);
 			stmt.setString(1, userName);
+			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
 			rs = stmt.executeQuery();
 			while(rs.next()){
 				String authorBuddyName = rs.getString("author");
@@ -202,8 +204,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		} finally {
 			Log.exit(users);
 		}
-		
-		
+
 		return users;
 	}
 

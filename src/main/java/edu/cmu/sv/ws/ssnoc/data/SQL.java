@@ -198,11 +198,11 @@ public class SQL {
 	 public static final String FIND_CHAT_BUDDIES_AUTHOR= "SELECT target FROM "
 			 	+ SSN_MESSAGES
 			 	+ " WHERE author = ?"
-			 	+ " AND UPPER(message_type) = " + " UPPER(" + MESSAGE_TYPE_CHAT + ")";
+			 	+ " AND UPPER(message_type) = " + " UPPER(?)";
 	 
 	 public static final String FIND_CHAT_BUDDIES_TARGET= "SELECT author FROM "
 			 	+ SSN_MESSAGES
 			 	+ " WHERE target = ?"
-			 	+ " AND UPPER(message_type) = " + " UPPER(" + MESSAGE_TYPE_CHAT + ")";
+			 	+ " AND UPPER(message_type) = " + " UPPER(?)";
 	  
 }
