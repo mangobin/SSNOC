@@ -190,9 +190,9 @@ public class SQL {
 	 
 	 public static final String FIND_ALL_MESSAGES_BETWEEN_TWO_USERS = "SELECT * FROM "
 			 	+ SSN_MESSAGES
-			 	+ " WHERE (author = ? AND target = ?)"
-			 	+ " OR (author = ? AND target = ?)"
-			 	+ " AND UPPER(message_type) = " + " UPPER(" + MESSAGE_TYPE_CHAT + ")"
+			 	+ " WHERE ((author = ? AND target = ?)"
+			 	+ " OR (author = ? AND target = ?))"
+			 	+ " AND (UPPER(message_type) = " + " UPPER(" + MESSAGE_TYPE_CHAT + "))"
 			 	+ " order by posted_at desc";
 	 
 	 public static final String FIND_CHAT_BUDDIES_AUTHOR= "SELECT target FROM "
