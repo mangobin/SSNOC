@@ -192,7 +192,7 @@ public class SQL {
 			 	+ SSN_MESSAGES
 			 	+ " WHERE ((author = ? AND target = ?)"
 			 	+ " OR (author = ? AND target = ?))"
-			 	+ " AND (UPPER(message_type) = " + " UPPER(" + MESSAGE_TYPE_CHAT + "))"
+			 	+ " AND (UPPER(message_type) = " + " UPPER(?))"
 			 	+ " order by posted_at desc";
 	 
 	 public static final String FIND_CHAT_BUDDIES_AUTHOR= "SELECT target FROM "

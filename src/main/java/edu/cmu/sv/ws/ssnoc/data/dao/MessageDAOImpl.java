@@ -157,6 +157,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			stmt.setString(2, userNameTwo);
 			stmt.setString(3, userNameTwo);
 			stmt.setString(4, userNameOne);
+			stmt.setString(5, SQL.MESSAGE_TYPE_CHAT);
 			messages = processResults(stmt);
 			conn.close();
 		} catch(SQLException e){
