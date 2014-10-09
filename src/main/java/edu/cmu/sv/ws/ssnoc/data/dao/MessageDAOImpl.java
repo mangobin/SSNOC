@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
@@ -181,11 +182,16 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			stmt.setString(1, userName);
 			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
 			ResultSet rs = stmt.executeQuery();
+			HashSet<String> chatBuddiesSet = new HashSet<String>();
 			while(rs.next()){
 				String tartgetBuddyName = rs.getString("target");
-				UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(tartgetBuddyName);
-				if(po != null)
-					users.add(po);
+				if(!chatBuddiesSet.contains(tartgetBuddyName)) {
+					chatBuddiesSet.add(tartgetBuddyName);
+					UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(tartgetBuddyName);
+					if(po != null)
+						users.add(po);
+				}
+				
 			}
 			
 			stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_TARGET);
@@ -194,9 +200,14 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			rs = stmt.executeQuery();
 			while(rs.next()){
 				String authorBuddyName = rs.getString("author");
-				UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(authorBuddyName);
-				if(po != null)
-					users.add(po);
+
+				if(!chatBuddiesSet.contains(authorBuddyName)) {
+					chatBuddiesSet.add(authorBuddyName);
+					UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(authorBuddyName);
+					if(po != null)
+						users.add(po);
+				}
+				
 			}
 			conn.close();
 		} catch(SQLException e){
