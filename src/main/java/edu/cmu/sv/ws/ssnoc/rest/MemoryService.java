@@ -53,8 +53,8 @@ public class MemoryService extends BaseService {
 					int usedMemory = (int) (runtime.totalMemory() /1024);
 					int freeMemory = (int) (runtime.freeMemory() /1024);
 				    File[] roots = File.listRoots();
-				    int totalPersistent = (int) roots[0].getTotalSpace();
-				    int freePersistent = (int) roots[0].getUsableSpace();
+				    int totalPersistent = (int) roots[0].getTotalSpace()/1024;
+				    int freePersistent = (int) roots[0].getUsableSpace()/1024;
 				    int usedPersistent = totalPersistent - freePersistent;
 				    
 				    Date date = new Date();
