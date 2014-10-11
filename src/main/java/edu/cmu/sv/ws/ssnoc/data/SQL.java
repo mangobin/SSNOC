@@ -212,7 +212,7 @@ public class SQL {
 			 	+ SSN_MEMORY + " (memoryID IDENTITY PRIMARY KEY, "
 			 	+ " createdAt DATETIME, usedVolatile INT,"
 			 	+ " remainingVolatile INT, usedPersistent INT"
-			 	+ " remainingPersistent INT ";
+			 	+ " remainingPersistent INT )";
 	 
 	 public static final String INSERT_MEMORY = "INSERT INTO "+ SSN_MEMORY 
 			 	+ " (memoryID, createdAt, usedVolatile, remainingVolatile, usedPersistent, "
