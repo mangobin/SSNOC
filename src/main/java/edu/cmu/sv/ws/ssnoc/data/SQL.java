@@ -216,12 +216,12 @@ public class SQL {
 	 
 	 public static final String INSERT_MEMORY = "INSERT INTO "+ SSN_MEMORY 
 			 	+ " (memoryID, createdAt, usedVolatile, remainingVolatile, usedPersistent, "
-			 	+ " remainingPersistent)" + "value(?,?,?,?,?,?)";
+			 	+ " remainingPersistent)" + " value(?,?,?,?,?,?)";
 	 
 	 public static final String DELETE_MEMORY = "DELETE * FROM " + SSN_MEMORY;
 	 
 	 public static final String UPDATE_MEMORY = "UPDATE " +SSN_MEMORY + " SET "
-				+" memoryID=?, createdAt=?, usedVolatile=?, remainingVolatile=?, usedPersistent=?"
+				+" memoryID=?, createdAt=?, usedVolatile=?, remainingVolatile=?, usedPersistent=?, "
 				+" remainingPersistent=?";
 	 
 	 public static final String FIND_MEMORY_BY_ID = "SELECT * FROM "+ SSN_MEMORY
