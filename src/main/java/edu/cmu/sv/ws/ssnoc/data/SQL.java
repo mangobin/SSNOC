@@ -227,4 +227,7 @@ public class SQL {
 	 
 	 public static final String FIND_MEMORY_BY_ID = "SELECT * FROM "+ SSN_MEMORY
 			 	+" WHERE memoryID = ?";
+	 
+	 public static final String FIND_MEMORY_GREATER_THAN_DATE = "SELECT * FROM " + SSN_MEMORY 
+			 	+ " WHERE createdAt>=?";
 }

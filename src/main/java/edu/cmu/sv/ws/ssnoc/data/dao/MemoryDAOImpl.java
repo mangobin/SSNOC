@@ -87,6 +87,25 @@ public class MemoryDAOImpl extends BaseDAOImpl implements IMemoryDAO {
 		return po;
 	}
 	
+	@Override
+	public List<MemoryPO> findMemorySinceDate(Date timestamp){
+		Log.enter(timestamp);
+		
+		List<MemoryPO> list = null;
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_MEMORY_GREATER_THAN_DATE);
+			stmt.setTimestamp(1, new Timestamp(timestamp.getTime()));
+			list = processResults(stmt);
+			conn.close();
+		} catch(SQLException e){
+			handleException(e);
+		}
+		
+		Log.exit(list);
+		return list;
+	}
+	
 	private List<MemoryPO> processResults(PreparedStatement stmt) {
 		Log.enter(stmt);
 		if(stmt == null){
@@ -122,7 +141,6 @@ public class MemoryDAOImpl extends BaseDAOImpl implements IMemoryDAO {
 	
 	public void deleteAllMemoryCrumbs() {
 		Log.enter("enter delete all memory crumbs");
-		
 		try {
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.DELETE_MEMORY);
@@ -130,8 +148,6 @@ public class MemoryDAOImpl extends BaseDAOImpl implements IMemoryDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 
 }
