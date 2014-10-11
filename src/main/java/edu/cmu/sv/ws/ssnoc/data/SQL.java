@@ -218,7 +218,7 @@ public class SQL {
 			 	+ " (createdAt, usedVolatile, remainingVolatile, usedPersistent, "
 			 	+ " remainingPersistent)" + " values(?,?,?,?,?)";
 	 
-	 public static final String DELETE_MEMORY = "DELETE * FROM " + SSN_MEMORY;
+	 public static final String DELETE_MEMORY = "TRUNCATE TABLE " + SSN_MEMORY;
 	 
 	 public static final String UPDATE_MEMORY = "UPDATE " +SSN_MEMORY + " SET "
 				+" createdAt=?, usedVolatile=?, remainingVolatile=?, usedPersistent=?, "
