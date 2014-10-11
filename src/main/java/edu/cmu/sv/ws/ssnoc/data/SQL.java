@@ -216,7 +216,7 @@ public class SQL {
 	 
 	 public static final String INSERT_MEMORY = "INSERT INTO "+ SSN_MEMORY 
 			 	+ " (memoryID, createdAt, usedVolatile, remainingVolatile, usedPersistent, "
-			 	+ " remainingPersistent)" + " value(?,?,?,?,?,?)";
+			 	+ " remainingPersistent)" + " values(?,?,?,?,?,?)";
 	 
 	 public static final String DELETE_MEMORY = "DELETE * FROM " + SSN_MEMORY;
 	 

@@ -22,50 +22,32 @@ public class MemoryService extends BaseService {
 	@POST
 	@Path("/start")
 	public void startMemoryMeasurement() {
+		if(timer == null) {
+			timer = new Timer();
+			
+			timer.scheduleAtFixedRate(new TimerTask() {
+				  @Override
+				  public void run() {
+					  Runtime runtime = Runtime.getRuntime();
+						int usedMemory = (int) (runtime.totalMemory() /1024);
+						int freeMemory = (int) (runtime.freeMemory() /1024);
+					    File[] roots = File.listRoots();
+					    int totalPersistent = (int) roots[0].getTotalSpace()/1024;
+					    int freePersistent = (int) roots[0].getUsableSpace()/1024;
+					    int usedPersistent = totalPersistent - freePersistent;
+					    
+					    Date date = new Date();
+					    String temp = TimestampUtil.convert(date);
+					    Date date2 = TimestampUtil.convert(temp);
+					    
+					    MemoryPO po = new MemoryPO(date2, usedMemory, freeMemory, usedPersistent, freePersistent);
+					    DAOFactory.getInstance().getMemoryDAO().save(po);
+				  }
+				}, 1*1000, 1*1000);
+			
+			
+		}
 		
-		timer = new Timer();
-		
-		timer.schedule(new TimerTask() {
-			  @Override
-			  public void run() {
-				Runtime runtime = Runtime.getRuntime();
-				int usedMemory = (int) (runtime.totalMemory() /1024);
-				int freeMemory = (int) (runtime.freeMemory() /1024);
-			    File[] roots = File.listRoots();
-			    int totalPersistent = (int) roots[0].getTotalSpace()/1024;
-			    int freePersistent = (int) roots[0].getUsableSpace()/1024;
-			    int usedPersistent = totalPersistent - freePersistent;
-			    
-			    Date date = new Date();
-			    String temp = TimestampUtil.convert(date);
-			    Date date2 = TimestampUtil.convert(temp);
-			    
-			    MemoryPO po = new MemoryPO(date2, usedMemory, freeMemory, usedPersistent, freePersistent);
-			    DAOFactory.getInstance().getMemoryDAO().save(po);
-			  }
-			}, 1*60*1000);
-		
-		
-		timer.scheduleAtFixedRate(new TimerTask() {
-			  @Override
-			  public void run() {
-				  Runtime runtime = Runtime.getRuntime();
-					int usedMemory = (int) (runtime.totalMemory() /1024);
-					int freeMemory = (int) (runtime.freeMemory() /1024);
-				    File[] roots = File.listRoots();
-				    int totalPersistent = (int) roots[0].getTotalSpace()/1024;
-				    int freePersistent = (int) roots[0].getUsableSpace()/1024;
-				    int usedPersistent = totalPersistent - freePersistent;
-				    
-				    Date date = new Date();
-				    String temp = TimestampUtil.convert(date);
-				    Date date2 = TimestampUtil.convert(temp);
-				    
-				    MemoryPO po = new MemoryPO(date2, usedMemory, freeMemory, usedPersistent, freePersistent);
-				    DAOFactory.getInstance().getMemoryDAO().save(po);
-			  }
-			}, 1*60*1000, 1*60*1000);
-	
 	}
 	
 	@POST
@@ -73,6 +55,7 @@ public class MemoryService extends BaseService {
 	public void stopMemoryMeasurement() {
 		Log.enter("stop the memory measurement");
 		timer.cancel();
+		timer = null;
 	}
 	
 	@DELETE
