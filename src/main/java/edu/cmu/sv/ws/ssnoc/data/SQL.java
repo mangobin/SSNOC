@@ -215,14 +215,15 @@ public class SQL {
 			 	+ " remainingPersistent INT )";
 	 
 	 public static final String INSERT_MEMORY = "INSERT INTO "+ SSN_MEMORY 
-			 	+ " (memoryID, createdAt, usedVolatile, remainingVolatile, usedPersistent, "
-			 	+ " remainingPersistent)" + " values(?,?,?,?,?,?)";
+			 	+ " (createdAt, usedVolatile, remainingVolatile, usedPersistent, "
+			 	+ " remainingPersistent)" + " values(?,?,?,?,?)";
 	 
 	 public static final String DELETE_MEMORY = "DELETE * FROM " + SSN_MEMORY;
 	 
 	 public static final String UPDATE_MEMORY = "UPDATE " +SSN_MEMORY + " SET "
-				+" memoryID=?, createdAt=?, usedVolatile=?, remainingVolatile=?, usedPersistent=?, "
-				+" remainingPersistent=?";
+				+" createdAt=?, usedVolatile=?, remainingVolatile=?, usedPersistent=?, "
+				+" remainingPersistent=?"
+				+" where memoryID=?";
 	 
 	 public static final String FIND_MEMORY_BY_ID = "SELECT * FROM "+ SSN_MEMORY
 			 	+" WHERE memoryID = ?";
