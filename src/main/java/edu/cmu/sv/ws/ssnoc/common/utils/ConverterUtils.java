@@ -1,9 +1,11 @@
 package edu.cmu.sv.ws.ssnoc.common.utils;
 
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.po.MemoryPO;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
+import edu.cmu.sv.ws.ssnoc.dto.Memory;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
 import edu.cmu.sv.ws.ssnoc.dto.Status;
 import edu.cmu.sv.ws.ssnoc.dto.User;
@@ -121,6 +123,35 @@ public class ConverterUtils {
 		po.setTarget(dto.getTarget());				
 		po.setPostedAt(TimestampUtil.convert(dto.getPostedAt()));
 		return po;
+	}
+	
+	public static final MemoryPO convert(Memory dto) {
+		if(dto == null)
+			return null;
+		MemoryPO po = new MemoryPO();
+		po.setCreatedAt(TimestampUtil.convert(dto.getCreatedAt()));
+		po.setMemoryID(dto.getMemoryID());
+		po.setRemainingPersistent(dto.getRemainingPersistent());
+		po.setRemainingVolatile(dto.getRemainingVolatile());
+		po.setUsedPersistent(dto.getUsedPersistent());
+		po.setUsedVolatile(dto.getUsedVolatile());
+		
+		return po;
+	}
+	
+	public static final Memory convert(MemoryPO po) {
+		if(po == null)
+			return null;
+		Memory dto = new Memory();
+		dto.setCreatedAt(TimestampUtil.convert(po.getCreatedAt()));
+		dto.setMemoryID(po.getMemoryID());
+		dto.setRemainingPersistent(po.getRemainingPersistent());
+		dto.setRemainingVolatile(po.getRemainingVolatile());
+		dto.setUsedPersistent(po.getUsedPersistent());
+		dto.setUsedVolatile(po.getUsedVolatile());
+		
+		return dto;
+		
 	}
 	
 	

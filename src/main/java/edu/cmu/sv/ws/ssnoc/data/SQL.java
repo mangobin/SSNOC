@@ -14,6 +14,7 @@ public class SQL {
 	public static final String SSN_USERS = "SSN_USERS";
 	public static final String SSN_STATUSES = "SSN_STATUSES";
 	public static final String SSN_MESSAGES = "SSN_MESSAGES";
+	public static final String SSN_MEMORY = "SSN_MEMORY";
 
 	/**
 	 * Query to check if a given table exists in the H2 database.
@@ -204,5 +205,25 @@ public class SQL {
 			 	+ SSN_MESSAGES
 			 	+ " WHERE target = ?"
 			 	+ " AND UPPER(message_type) = " + " UPPER(?)";
-	  
+	 
+	 //memory related SQL
+	 
+	 public static final String CREATE_MEMORY = "CREATE TABLE IF NOT EXISTS "
+			 	+ SSN_MEMORY + " (memoryID IDENTITY PRIMARY KEY, "
+			 	+ " createdAt DATETIME, usedVolatile INT,"
+			 	+ " remainingVolatile INT, usedPersistent INT"
+			 	+ " remainingPersistent INT ";
+	 
+	 public static final String INSERT_MEMORY = "INSERT INTO "+ SSN_MEMORY 
+			 	+ " (memoryID, createdAt, usedVolatile, remainingVolatile, usedPersistent, "
+			 	+ " remainingPersistent)" + "value(?,?,?,?,?,?)";
+	 
+	 public static final String DELETE_MEMORY = "DELETE * FROM " + SSN_MEMORY;
+	 
+	 public static final String UPDATE_MEMORY = "UPDATE " +SSN_MEMORY + " SET "
+				+" memoryID=?, createdAt=?, usedVolatile=?, remainingVolatile=?, usedPersistent=?"
+				+" remainingPersistent=?";
+	 
+	 public static final String FIND_MEMORY_BY_ID = "SELECT * FROM "+ SSN_MEMORY
+			 	+" WHERE memoryID = ?";
 }

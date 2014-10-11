@@ -49,4 +49,8 @@ public class DAOFactory {
 	public IMessageDAO getMessageDAO() {
 		return new MessageDAOImpl();
 	}
+	
+	public IMemoryDAO getMemoryDAO() {
+		return new MemoryDAOImpl();
+	}
 }
