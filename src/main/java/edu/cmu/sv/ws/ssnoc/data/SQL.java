@@ -211,7 +211,7 @@ public class SQL {
 	 public static final String CREATE_MEMORY = "CREATE TABLE IF NOT EXISTS "
 			 	+ SSN_MEMORY + " (memoryID IDENTITY PRIMARY KEY, "
 			 	+ " createdAt DATETIME, usedVolatile INT,"
-			 	+ " remainingVolatile INT, usedPersistent INT"
+			 	+ " remainingVolatile INT, usedPersistent INT,"
 			 	+ " remainingPersistent INT )";
 	 
 	 public static final String INSERT_MEMORY = "INSERT INTO "+ SSN_MEMORY 
