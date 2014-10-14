@@ -170,6 +170,7 @@ public class MessageDAOFakeImpl extends BaseDAOImpl implements IMessageDAO{
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.DELETE_FAKE_MESSAGES);
 			stmt.executeUpdate();
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
