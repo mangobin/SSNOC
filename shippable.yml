@@ -1,7 +1,6 @@
 build_environment: ubuntu1204
 language: java
 jdk: 
-   - oraclejdk7
    - openjdk7
 
 before_install: mvn clean

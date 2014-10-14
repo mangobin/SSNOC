@@ -49,4 +49,21 @@ public class StatusCrumbs extends BaseService {
 		return statuses;
 	}
 	
+	@GET
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@XmlElementWrapper(name = "statuses")
+	public List<Status> recentStatuses(){
+		Log.enter();
+		
+		List<StatusPO> pos = DAOFactory.getInstance().getStatusDAO().loadLatestStatuses(100, 0);
+		List<Status> statuses = new ArrayList<Status>();
+		
+		for(StatusPO po : pos){
+			Status status = ConverterUtils.convert(po);
+			statuses.add(status);
+		}
+		
+		Log.exit(statuses);
+		return statuses;
+	}
 }
