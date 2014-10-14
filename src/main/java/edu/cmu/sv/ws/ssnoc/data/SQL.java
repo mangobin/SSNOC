@@ -15,6 +15,7 @@ public class SQL {
 	public static final String SSN_STATUSES = "SSN_STATUSES";
 	public static final String SSN_MESSAGES = "SSN_MESSAGES";
 	public static final String SSN_MEMORY = "SSN_MEMORY";
+	public static final String SSN_FAKE_MESSAGES = "SSN_FAKE_MESSAGES";
 
 	/**
 	 * Query to check if a given table exists in the H2 database.
@@ -144,10 +145,22 @@ public class SQL {
 			+ " target VARCHAR(100)," + " message_type VARCHAR(10), "
 			+ " posted_at DATETIME )";
 	
+	public static final String CREATE_FAKE_MESSAGES = "create table IF NOT EXISTS "
+			+ SSN_FAKE_MESSAGES + " ( message_id IDENTITY PRIMARY KEY,"
+			+ " content VARCHAR," + " author VARCHAR(100),"
+			+ " target VARCHAR(100)," + " message_type VARCHAR(10), "
+			+ " posted_at DATETIME )";
+	
+	public static final String DELETE_FAKE_MESSAGES = "TRUNCATE TABLE " + SSN_FAKE_MESSAGES;
+	
 	/**
 	 * Query to insert a row into the messages table.
 	 */
 	public static final String INSERT_MESSAGE = "insert into " + SSN_MESSAGES
+			+ " (content, author, target, message_type, posted_at) "
+			+ " values (?, ?, ?, ?, ?)";
+	
+	public static final String INSERT_FAKE_MESSAGE = "insert into " + SSN_FAKE_MESSAGES
 			+ " (content, author, target, message_type, posted_at) "
 			+ " values (?, ?, ?, ?, ?)";
 	
@@ -162,11 +175,23 @@ public class SQL {
 			+ " posted_at=?"
 			+ " where message_id=?";
 	
+	public static final String UPDATE_FAKE_MESSAGE = "update " + SSN_FAKE_MESSAGES + " set "
+			+ " content=?,"
+			+ " author=?,"
+			+ " target=?,"
+			+ " message_type=?," 
+			+ " posted_at=?"
+			+ " where message_id=?";
+	
 	/**
 	 * Query to find a message by message_id
 	 */
 	 public static final String FIND_MESSAGE_BY_ID = "select * from " 
 	 + SSN_MESSAGES
+	 + " where message_id=?";
+
+	 public static final String FIND_FAKE_MESSAGE_BY_ID = "select * from " 
+	 + SSN_FAKE_MESSAGES
 	 + " where message_id=?";
 	 
 	 /**
@@ -178,12 +203,20 @@ public class SQL {
 		+ " order by posted_at desc"
 		+ " limit ?"
 		+ " offset ?";
+
 	 
 	 /**
 	  * Query to find latest messages of type
 	  */
 	 public static final String FIND_LATEST_MESSAGES_OF_TYPE = "select * from "
 				+ SSN_MESSAGES
+				+ " where UPPER(message_type) = " + " UPPER(?)" 
+				+ " order by posted_at desc"
+				+ " limit ?"
+				+ " offset ?";
+
+	 public static final String FIND__FAKE_LATEST_MESSAGES_OF_TYPE = "select * from "
+				+ SSN_FAKE_MESSAGES
 				+ " where UPPER(message_type) = " + " UPPER(?)" 
 				+ " order by posted_at desc"
 				+ " limit ?"

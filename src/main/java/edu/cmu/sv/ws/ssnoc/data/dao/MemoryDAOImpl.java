@@ -139,6 +139,7 @@ public class MemoryDAOImpl extends BaseDAOImpl implements IMemoryDAO {
 		return memory;
 	}
 	
+	@Override
 	public void deleteAllMemoryCrumbs() {
 		Log.enter("enter delete all memory crumbs");
 		try {

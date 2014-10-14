@@ -18,6 +18,8 @@ import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 
 public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 
+	public static boolean FAKE = false;
+
 	@Override
 	public long save(MessagePO messagePO) {
 		Log.enter(messagePO);
@@ -28,18 +30,29 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		
 		long insertedId=-1;
 		
+		String actual_Insert_Sql;
+		String actual_Update_Sql;
+		if(FAKE) {
+			actual_Insert_Sql = SQL.INSERT_FAKE_MESSAGE;
+			actual_Update_Sql = SQL.UPDATE_FAKE_MESSAGE;
+		} else {
+			actual_Insert_Sql = SQL.INSERT_MESSAGE;
+			actual_Update_Sql = SQL.UPDATE_MESSAGE;
+		}
+		
+		
 		try {
 			Connection conn = getConnection();
 			PreparedStatement stmt;
 			if(findMessageById(messagePO.getMessageId()) == null){
-				stmt = conn.prepareStatement(SQL.INSERT_MESSAGE, Statement.RETURN_GENERATED_KEYS);
+				stmt = conn.prepareStatement(actual_Insert_Sql, Statement.RETURN_GENERATED_KEYS);
 				stmt.setString(1, messagePO.getContent());
 				stmt.setString(2, messagePO.getAuthor());
 				stmt.setString(3, messagePO.getTarget());
 				stmt.setString(4, messagePO.getMessageType());
 				stmt.setTimestamp(5, new Timestamp(messagePO.getPostedAt().getTime()));
 			} else {
-				stmt = conn.prepareStatement(SQL.UPDATE_MESSAGE);
+				stmt = conn.prepareStatement(actual_Update_Sql);
 				stmt.setString(1, messagePO.getContent());
 				stmt.setString(2, messagePO.getAuthor());
 				stmt.setString(3, messagePO.getTarget());
@@ -67,11 +80,16 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 	public List<MessagePO> findLatestWallMessages(int limit, int offset) {
 		Log.enter("Find latest wall messages (limit: " + limit 
 				+ ", offset: " + offset + ")");
+		String actual_Find_laset;
+		if(FAKE) 
+			actual_Find_laset = SQL.FIND__FAKE_LATEST_MESSAGES_OF_TYPE;
+		else
+			actual_Find_laset = SQL.FIND_LATEST_MESSAGES_OF_TYPE;
 		
 		List<MessagePO> messages = null;
 		try {
 			Connection conn = getConnection();
-			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_LATEST_MESSAGES_OF_TYPE);
+			PreparedStatement stmt = conn.prepareStatement(actual_Find_laset);
 			stmt.setString(1, SQL.MESSAGE_TYPE_WALL);
 			stmt.setInt(2, limit);
 			stmt.setInt(3, offset);
@@ -90,10 +108,16 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 	public MessagePO findMessageById(long messageId) {
 		Log.enter(messageId);
 		
+		String actual_Find_Message_By_ID;
+		if(FAKE)
+			actual_Find_Message_By_ID = SQL.FIND_FAKE_MESSAGE_BY_ID;
+		else
+			actual_Find_Message_By_ID = SQL.FIND_MESSAGE_BY_ID;
+		
 		MessagePO po = null;
 		try {
 			Connection conn = getConnection();
-			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_MESSAGE_BY_ID);
+			PreparedStatement stmt = conn.prepareStatement(actual_Find_Message_By_ID);
 			stmt.setLong(1, messageId);
 			List<MessagePO> messages = processResults(stmt);
 			
@@ -217,6 +241,18 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		}
 
 		return users;
+	} 
+	
+	@Override
+	public void deleteFakeMessageTable() {
+		Log.enter("enter delete all fake messages records");
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt = conn.prepareStatement(SQL.DELETE_FAKE_MESSAGES);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
