@@ -153,6 +153,8 @@ public class SQL {
 	
 	public static final String DELETE_FAKE_MESSAGES = "TRUNCATE TABLE " + SSN_FAKE_MESSAGES;
 	
+	public static final String DELETE_MESSAGES = "TRUNCATE TABLE " + SSN_MESSAGES;
+	
 	/**
 	 * Query to insert a row into the messages table.
 	 */
@@ -215,7 +217,7 @@ public class SQL {
 				+ " limit ?"
 				+ " offset ?";
 
-	 public static final String FIND__FAKE_LATEST_MESSAGES_OF_TYPE = "select * from "
+	 public static final String FIND_FAKE_LATEST_MESSAGES_OF_TYPE = "select * from "
 				+ SSN_FAKE_MESSAGES
 				+ " where UPPER(message_type) = " + " UPPER(?)" 
 				+ " order by posted_at desc"
@@ -263,4 +265,5 @@ public class SQL {
 	 
 	 public static final String FIND_MEMORY_GREATER_THAN_DATE = "SELECT * FROM " + SSN_MEMORY 
 			 	+ " WHERE createdAt>=?";
+
 }

@@ -39,6 +39,6 @@ public interface IMessageDAO {
 	
 	List<UserPO> findChatBuddies(String userName);
 	
-	void deleteFakeMessageTable();
+	void truncateMessageTable();
 	
 }

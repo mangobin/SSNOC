@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
@@ -16,9 +15,8 @@ import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 
-public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
-
-
+public class MessageDAOFakeImpl extends BaseDAOImpl implements IMessageDAO{
+	
 	@Override
 	public long save(MessagePO messagePO) {
 		Log.enter(messagePO);
@@ -33,14 +31,14 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			Connection conn = getConnection();
 			PreparedStatement stmt;
 			if(findMessageById(messagePO.getMessageId()) == null){
-				stmt = conn.prepareStatement(SQL.INSERT_MESSAGE, Statement.RETURN_GENERATED_KEYS);
+				stmt = conn.prepareStatement(SQL.INSERT_FAKE_MESSAGE, Statement.RETURN_GENERATED_KEYS);
 				stmt.setString(1, messagePO.getContent());
 				stmt.setString(2, messagePO.getAuthor());
 				stmt.setString(3, messagePO.getTarget());
 				stmt.setString(4, messagePO.getMessageType());
 				stmt.setTimestamp(5, new Timestamp(messagePO.getPostedAt().getTime()));
 			} else {
-				stmt = conn.prepareStatement(SQL.UPDATE_MESSAGE);
+				stmt = conn.prepareStatement(SQL.UPDATE_FAKE_MESSAGE);
 				stmt.setString(1, messagePO.getContent());
 				stmt.setString(2, messagePO.getAuthor());
 				stmt.setString(3, messagePO.getTarget());
@@ -72,7 +70,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		List<MessagePO> messages = null;
 		try {
 			Connection conn = getConnection();
-			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_LATEST_MESSAGES_OF_TYPE);
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_FAKE_LATEST_MESSAGES_OF_TYPE);
 			stmt.setString(1, SQL.MESSAGE_TYPE_WALL);
 			stmt.setInt(2, limit);
 			stmt.setInt(3, offset);
@@ -94,7 +92,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		MessagePO po = null;
 		try {
 			Connection conn = getConnection();
-			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_MESSAGE_BY_ID);
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_FAKE_MESSAGE_BY_ID);
 			stmt.setLong(1, messageId);
 			List<MessagePO> messages = processResults(stmt);
 			
@@ -152,21 +150,6 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 				+ ", and : " + userNameTwo + ")");
 		
 		List<MessagePO> messages = null;
-		try {
-			Connection conn = getConnection();
-			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_ALL_MESSAGES_BETWEEN_TWO_USERS);
-			stmt.setString(1, userNameOne);
-			stmt.setString(2, userNameTwo);
-			stmt.setString(3, userNameTwo);
-			stmt.setString(4, userNameOne);
-			stmt.setString(5, SQL.MESSAGE_TYPE_CHAT);
-			messages = processResults(stmt);
-			conn.close();
-		} catch(SQLException e){
-			handleException(e);
-		} finally {
-			Log.exit(messages);
-		}
 		
 		return messages;
 		
@@ -177,59 +160,18 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		Log.enter("find chat buddies for user: "+userName);
 		List<UserPO> users = new ArrayList<UserPO>();
 		
-		try {
-			Connection conn = getConnection();
-			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_AUTHOR);
-			stmt.setString(1, userName);
-			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
-			ResultSet rs = stmt.executeQuery();
-			HashSet<String> chatBuddiesSet = new HashSet<String>();
-			while(rs.next()){
-				String tartgetBuddyName = rs.getString("target");
-				if(!chatBuddiesSet.contains(tartgetBuddyName)) {
-					chatBuddiesSet.add(tartgetBuddyName);
-					UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(tartgetBuddyName);
-					if(po != null)
-						users.add(po);
-				}
-				
-			}
-			
-			stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_TARGET);
-			stmt.setString(1, userName);
-			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
-			rs = stmt.executeQuery();
-			while(rs.next()){
-				String authorBuddyName = rs.getString("author");
-
-				if(!chatBuddiesSet.contains(authorBuddyName)) {
-					chatBuddiesSet.add(authorBuddyName);
-					UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(authorBuddyName);
-					if(po != null)
-						users.add(po);
-				}
-				
-			}
-			conn.close();
-		} catch(SQLException e){
-			handleException(e);
-		} finally {
-			Log.exit(users);
-		}
-
 		return users;
 	} 
 	
 	@Override
 	public void truncateMessageTable() {
-		Log.enter("enter delete all  messages records");
+		Log.enter("enter delete all fake messages records");
 		try {
 			Connection conn = getConnection();
-			PreparedStatement stmt = conn.prepareStatement(SQL.DELETE_MESSAGES);
+			PreparedStatement stmt = conn.prepareStatement(SQL.DELETE_FAKE_MESSAGES);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
 }
