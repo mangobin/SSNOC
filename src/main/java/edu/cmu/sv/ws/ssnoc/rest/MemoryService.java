@@ -79,8 +79,8 @@ public class MemoryService extends BaseService {
 		Log.enter("getting memory from last " + hoursAgo + " hours");
 		
 		Calendar calendar = Calendar.getInstance();
-		//calendar.add(Calendar.HOUR_OF_DAY, -hoursAgo);
-		calendar.add(Calendar.MINUTE, -hoursAgo); // for testing purposes
+		calendar.add(Calendar.HOUR_OF_DAY, -hoursAgo);
+		//calendar.add(Calendar.MINUTE, -hoursAgo); // for testing purposes
 		Date date = calendar.getTime();
 
 	    List<MemoryPO> memoryPOs = DAOFactory.getInstance().getMemoryDAO().findMemorySinceDate(date);
