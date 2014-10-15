@@ -11,14 +11,20 @@ public class PerformanceService extends BaseService{
 	@POST
 	@Path("/setup")
 	public void setUpPerformance() {
-		DAOFactory.fake = true;
-		DAOFactory.getInstance().getMessageDAO().truncateMessageTable();
+		if(!DAOFactory.fake ) {
+			DAOFactory.fake = true;
+			DAOFactory.getInstance().getMessageDAO().truncateMessageTable();	
+		}
+		
 	}
 	
 	@POST
 	@Path("/teardown")
 	public void tearDownPerformance() {
-		DAOFactory.getInstance().getMessageDAO().truncateMessageTable();
-		DAOFactory.fake = false;
+		if(DAOFactory.fake ) {
+			DAOFactory.getInstance().getMessageDAO().truncateMessageTable();
+			DAOFactory.fake = false;
+	
+		}
 	}
 }

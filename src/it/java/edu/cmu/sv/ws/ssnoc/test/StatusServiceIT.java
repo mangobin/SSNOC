@@ -23,7 +23,7 @@ public class StatusServiceIT {
 	public Response response;
 	
 	@HttpTest(method = Method.POST, 
-			path = "/status/Cef", 
+			path = "/status/justForTest", 
 			type = MediaType.APPLICATION_JSON, 
 			content = "{\"updatedAt\" : \"2014-09-23 15:45\","
 					+ "\"statusCode\" : \"RED\" "

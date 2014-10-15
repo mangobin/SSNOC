@@ -2,6 +2,7 @@ package edu.cmu.sv.ws.ssnoc.test;
 
 import static com.eclipsesource.restfuse.Assert.assertOk;
 
+import org.eclipse.jetty.util.log.Log;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
@@ -11,8 +12,6 @@ import com.eclipsesource.restfuse.HttpJUnitRunner;
 import com.eclipsesource.restfuse.MediaType;
 import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.Response;
-import com.eclipsesource.restfuse.annotation.Context;
-import com.eclipsesource.restfuse.annotation.HttpTest;
 import com.eclipsesource.restfuse.annotation.*;
 
 @RunWith(HttpJUnitRunner.class)
@@ -43,8 +42,8 @@ public class UserServiceIT {
 	//	Three different cases
 	
 	// if the user name exists, and the password is correct
-	@HttpTest(method = Method.POST, path = "user/test/authenticate", type = MediaType.APPLICATION_JSON, 
-			content = "{\"password\":\"11\"}") 
+	@HttpTest(method = Method.POST, path = "user/justForTest/authenticate", type = MediaType.APPLICATION_JSON, 
+			content = "{\"password\":\"1234\"}") 
 	public void testAuthenticateOne() {
 
 		assertOk(response);
@@ -52,8 +51,8 @@ public class UserServiceIT {
 	}
 	
 	// if the user name exists, but the password is wrong
-	@HttpTest(method = Method.POST, path = "user/test/authenticate", type = MediaType.APPLICATION_JSON, 
-			content = "{\"password\":\"123\"}") 
+	@HttpTest(method = Method.POST, path = "user/justForTest/authenticate", type = MediaType.APPLICATION_JSON, 
+			content = "{\"password\":\"1233\"}") 
 	public void testAuthenticateTwo() {
 		Assert.assertUnauthorized(response);
 		String messg = response.getBody();
@@ -61,7 +60,7 @@ public class UserServiceIT {
 	
 	//	if the user name does not exist
 	@HttpTest(method = Method.POST, path = "user/non-existed-users/authenticate", type = MediaType.APPLICATION_JSON, 
-			content = "{\"password\":\"12\"}") 
+			content = "{\"password\":\"1234\"}") 
 	public void testAuthenticateThree() {
 		Assert.assertNotFound(response);
 		String messg = response.getBody();
@@ -78,7 +77,7 @@ public class UserServiceIT {
 	
 	//if a user already exists, and the password is correct.
 	@HttpTest(method = Method.POST, path = "user/signup", type = MediaType.APPLICATION_JSON, 
-			content = "{\"userName\":\"test\",\"password\":\"12\",\"createAt\":\"2014-09-24 09:15\"}" ) 
+			content = "{\"userName\":\"justForTest\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}" ) 
 	public void testSignupOne() {
 		assertOk(response);
 		String messg = response.getBody();
@@ -87,7 +86,7 @@ public class UserServiceIT {
 	
 	// if a user already exists, but the password is wrong.
 	@HttpTest(method = Method.POST, path = "user/signup", type = MediaType.APPLICATION_JSON, 
-			content = "{\"userName\":\"test\",\"password\":\"123\",\"createAt\":\"2014-09-24 09:15\"}" ) 
+			content = "{\"userName\":\"justForTest\",\"password\":\"1233\",\"createAt\":\"2014-09-24 09:15\"}" ) 
 	public void testSignupTwo() {
 		Assert.assertBadRequest(response);
 		String messg = response.getBody();
@@ -105,11 +104,13 @@ public class UserServiceIT {
 //	}
 	
 	// sign up with invalid username
+	@SuppressWarnings("deprecation")
 	@HttpTest(method = Method.POST, path = "user/signup", type = MediaType.APPLICATION_JSON,
 			content = "{\"userName\":\"www\", \"password\":\"pass\",\"createdAt\":\"2014-09-29 09:15\"}")
 	public void testSignupInvalidUserName(){
 		Assert.assertBadRequest(response);
 		String messg = response.getBody();
+		
 		System.out.println(messg);
 	}
 	
@@ -120,12 +121,13 @@ public class UserServiceIT {
 	//*****************************************************
 	//	Start of retrieve all users test
 	
+	@SuppressWarnings("deprecation")
 	@HttpTest(method = Method.GET, headers = {@Header(name = "Accept", value = "application/json")},
 			path = "users", type = MediaType.APPLICATION_XML, content = "") 
 	public void testRetrieveAllUsers() {
 		Assert.assertOk(response);
 		String messg = response.getBody();
-		System.out.println(messg);
+		Log.debug("3333333333"+messg);
 	}
 	
 	//	End of retrieve all users  test
@@ -136,7 +138,7 @@ public class UserServiceIT {
 	//	Start of retrieve a user's record test
 	
 	@HttpTest(method = Method.GET, headers = {@Header(name = "Accept", value = "application/json")},
-			path = "user/test",  content = "") 
+			path = "user/justForTest",  content = "") 
 	public void testRetrieveOneUserRec() {
 		Assert.assertOk(response);
 		String messg = response.getBody();
@@ -151,7 +153,7 @@ public class UserServiceIT {
 	//	Start of update a user's record test
 	
 	@HttpTest(method = Method.PUT, headers = {@Header(name = "Accept", value = "application/json")},
-			type = MediaType.APPLICATION_JSON, path = "user/test",  content = "{\"password\":\"12\"}") 
+			type = MediaType.APPLICATION_JSON, path = "user/justForTest",  content = "{\"password\":\"1234\"}") 
 	public void testUpdateOneUserRec() {
 		Assert.assertOk(response);
 		String messg = response.getBody();
