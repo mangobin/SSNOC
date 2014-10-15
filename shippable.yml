@@ -6,6 +6,9 @@ jdk:
 before_install: mvn clean
 before_script: cp ./h2db-empty.mv.db ~/h2db.mv.db
 
+script:
+   - mvn clean compile
+
 after_success:
    - mvn package -DskipTests
 
