@@ -27,6 +27,7 @@ import edu.cmu.sv.ws.ssnoc.dto.Memory;
 public class MemoryService extends BaseService {
 
 	private static Timer timer;
+	private static int SAMPLING_INTERVAL = 60 * 1000; // 1 minute sampling interval
 	
 	@POST
 	@Path("/start")
@@ -51,7 +52,7 @@ public class MemoryService extends BaseService {
 					    MemoryPO po = new MemoryPO(date2, usedMemory, freeMemory, usedPersistent, freePersistent);
 					    DAOFactory.getInstance().getMemoryDAO().save(po);
 				  }
-				}, 1*1000, 1*1000);
+				}, SAMPLING_INTERVAL, SAMPLING_INTERVAL);
 		}
 	}
 	
@@ -79,6 +80,7 @@ public class MemoryService extends BaseService {
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.HOUR_OF_DAY, -hoursAgo);
+		//calendar.add(Calendar.MINUTE, -hoursAgo); // for testing purposes
 		Date date = calendar.getTime();
 
 	    List<MemoryPO> memoryPOs = DAOFactory.getInstance().getMemoryDAO().findMemorySinceDate(date);
