@@ -4,10 +4,10 @@ public class Memory {
 
 	private String createdAt;
 	private long memoryID;
-	private int usedVolatile;
-	private int remainingVolatile;
-	private int usedPersistent;
-	private int remainingPersistent;
+	private long usedVolatile;
+	private long remainingVolatile;
+	private long usedPersistent;
+	private long remainingPersistent;
 	
 	public String getCreatedAt() {
 		return createdAt;
@@ -21,28 +21,28 @@ public class Memory {
 	public void setMemoryID(long memoryID) {
 		this.memoryID = memoryID;
 	}
-	public int getUsedVolatile() {
+	public long getUsedVolatile() {
 		return usedVolatile;
 	}
-	public void setUsedVolatile(int usedVolatile) {
+	public void setUsedVolatile(long usedVolatile) {
 		this.usedVolatile = usedVolatile;
 	}
-	public int getRemainingVolatile() {
+	public long getRemainingVolatile() {
 		return remainingVolatile;
 	}
-	public void setRemainingVolatile(int remainingVolatile) {
+	public void setRemainingVolatile(long remainingVolatile) {
 		this.remainingVolatile = remainingVolatile;
 	}
-	public int getUsedPersistent() {
+	public long getUsedPersistent() {
 		return usedPersistent;
 	}
-	public void setUsedPersistent(int usedPersistent) {
+	public void setUsedPersistent(long usedPersistent) {
 		this.usedPersistent = usedPersistent;
 	}
-	public int getRemainingPersistent() {
+	public long getRemainingPersistent() {
 		return remainingPersistent;
 	}
-	public void setRemainingPersistent(int remainingPersistent) {
+	public void setRemainingPersistent(long remainingPersistent) {
 		this.remainingPersistent = remainingPersistent;
 	}
 

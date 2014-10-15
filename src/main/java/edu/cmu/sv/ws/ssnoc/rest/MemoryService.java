@@ -27,7 +27,7 @@ import edu.cmu.sv.ws.ssnoc.dto.Memory;
 public class MemoryService extends BaseService {
 
 	private static Timer timer;
-	private static int SAMPLING_INTERVAL = 60 * 1000; // 1 minute sampling interval
+	private static int SAMPLING_INTERVAL = 1 * 1000; // 1 minute sampling interval
 	
 	@POST
 	@Path("/start")
@@ -38,18 +38,20 @@ public class MemoryService extends BaseService {
 				  @Override
 				  public void run() {
 					  Runtime runtime = Runtime.getRuntime();
-						int totalMemory = (int) (runtime.totalMemory() /1024);
-						int freeMemory = (int) (runtime.freeMemory() /1024);
-						int usedMemory = totalMemory - freeMemory;
-					    File root = new File("/");
-					    int totalPersistent = (int) root.getTotalSpace()/1024;
-					    int freePersistent = (int) root.getFreeSpace()/1024;
-					    int usedPersistent = totalPersistent - freePersistent;
-					    
-					    Date date = new Date();
-					    
-					    MemoryPO po = new MemoryPO(date, usedMemory, freeMemory, usedPersistent, freePersistent);
-					    DAOFactory.getInstance().getMemoryDAO().save(po);
+					  long totalMemory = (runtime.totalMemory());
+					  long freeMemory = (runtime.freeMemory());
+					  long usedMemory = (totalMemory - freeMemory)/1024;
+					  freeMemory = freeMemory/1024;
+					  File root = new File("/");
+					  long totalPersistent = root.getTotalSpace();
+					  long freePersistent = root.getFreeSpace();
+					  long usedPersistent = (totalPersistent - freePersistent)/1024;
+					  freePersistent = freePersistent/1024;
+				    
+					  Date date = new Date();
+				    
+					  MemoryPO po = new MemoryPO(date, usedMemory, freeMemory, usedPersistent, freePersistent);
+					  DAOFactory.getInstance().getMemoryDAO().save(po);
 				  }
 				}, SAMPLING_INTERVAL, SAMPLING_INTERVAL);
 		}

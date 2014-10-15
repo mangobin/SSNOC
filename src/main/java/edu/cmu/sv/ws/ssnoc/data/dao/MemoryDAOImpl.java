@@ -32,17 +32,17 @@ public class MemoryDAOImpl extends BaseDAOImpl implements IMemoryDAO {
 			if(findMemoryByID(memoryPO.getMemoryID()) == null){
 				stmt = conn.prepareStatement(SQL.INSERT_MEMORY, Statement.RETURN_GENERATED_KEYS);
 				stmt.setTimestamp(1, new Timestamp(memoryPO.getCreatedAt().getTime()));
-				stmt.setInt(2, memoryPO.getUsedVolatile());
-				stmt.setInt(3, memoryPO.getRemainingVolatile());
-				stmt.setInt(4, memoryPO.getUsedPersistent());
-				stmt.setInt(5, memoryPO.getRemainingPersistent());
+				stmt.setLong(2, memoryPO.getUsedVolatile());
+				stmt.setLong(3, memoryPO.getRemainingVolatile());
+				stmt.setLong(4, memoryPO.getUsedPersistent());
+				stmt.setLong(5, memoryPO.getRemainingPersistent());
 			} else {
 				stmt = conn.prepareStatement(SQL.UPDATE_MEMORY);
 				stmt.setTimestamp(1, new Timestamp(memoryPO.getCreatedAt().getTime()));
-				stmt.setInt(2, memoryPO.getUsedVolatile());
-				stmt.setInt(3, memoryPO.getRemainingVolatile());
-				stmt.setInt(4, memoryPO.getUsedPersistent());
-				stmt.setInt(5, memoryPO.getRemainingPersistent());
+				stmt.setLong(2, memoryPO.getUsedVolatile());
+				stmt.setLong(3, memoryPO.getRemainingVolatile());
+				stmt.setLong(4, memoryPO.getUsedPersistent());
+				stmt.setLong(5, memoryPO.getRemainingPersistent());
 				stmt.setLong(6, memoryPO.getMemoryID());
 			}
 			int rowCount = stmt.executeUpdate();
