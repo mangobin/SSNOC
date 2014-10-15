@@ -38,18 +38,17 @@ public class MemoryService extends BaseService {
 				  @Override
 				  public void run() {
 					  Runtime runtime = Runtime.getRuntime();
-						int usedMemory = (int) (runtime.totalMemory() /1024);
+						int totalMemory = (int) (runtime.totalMemory() /1024);
 						int freeMemory = (int) (runtime.freeMemory() /1024);
-					    File[] roots = File.listRoots();
-					    int totalPersistent = (int) roots[0].getTotalSpace()/1024;
-					    int freePersistent = (int) roots[0].getUsableSpace()/1024;
+						int usedMemory = totalMemory - freeMemory;
+					    File root = new File("/");
+					    int totalPersistent = (int) root.getTotalSpace()/1024;
+					    int freePersistent = (int) root.getFreeSpace()/1024;
 					    int usedPersistent = totalPersistent - freePersistent;
 					    
 					    Date date = new Date();
-					    String temp = TimestampUtil.convert(date);
-					    Date date2 = TimestampUtil.convert(temp);
 					    
-					    MemoryPO po = new MemoryPO(date2, usedMemory, freeMemory, usedPersistent, freePersistent);
+					    MemoryPO po = new MemoryPO(date, usedMemory, freeMemory, usedPersistent, freePersistent);
 					    DAOFactory.getInstance().getMemoryDAO().save(po);
 				  }
 				}, SAMPLING_INTERVAL, SAMPLING_INTERVAL);
