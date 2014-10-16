@@ -2,7 +2,10 @@ package edu.cmu.sv.ws.ssnoc.data.analyzers;
 
 import static org.junit.Assert.*;
 
+import java.awt.geom.Area;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.After;
@@ -38,16 +41,38 @@ public class ConnectionSetAnalzerTest {
 		users.add("Bin");
 		users.add("Cef");
 		users.add("Nikhil");
-		sut.loadUser(users);
+		sut.loadUsers(users);
 		assertEquals(sut.getConnectedSets().size(), 1);
 	}
 	
 	@Test
-	public void testThatUserConnectionsCreatesSeparateSets(){
+	public void testThatUserConnectionsGenerateNearbySets(){
 		Set<String> users = new HashSet<String>();
 		users.add("Bin");
 		users.add("Cef");
-		sut.loadUser(users);
+		sut.loadUsers(users);
+		UserConnections bin = new UserConnections("Bin");
+		bin.addConnection("Cef");
+		Set<String> unconnected = sut.processConnection(bin);
+		assertEquals(unconnected.size(), 1);
+		assertTrue(unconnected.contains("Bin"));
+		assertFalse(unconnected.contains("Cef"));
+	}
+	
+	@Test
+	public void testThatUserConnectionsGeneratesSetIncludingNonConnectedUsers(){
+		Set<String> users = new HashSet<String>();
+		users.add("Bin");
+		users.add("Cef");
+		users.add("Nikhil");
+		sut.loadUsers(users);
+		UserConnections bin = new UserConnections("Bin");
+		bin.addConnection("Cef");
+		Set<String> unconnected = sut.processConnection(bin);
+		assertEquals(unconnected.size(), 2);
+		assertTrue(unconnected.contains("Bin"));
+		assertFalse(unconnected.contains("Cef"));
+		assertTrue(unconnected.contains("Nikhil"));
 	}
 
 }

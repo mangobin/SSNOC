@@ -7,7 +7,7 @@ public class ConnectionSetAnalzer {
 
 	Set<String> superUserSet;
 	
-	public void loadUser(Set<String> users) {
+	public void loadUsers(Set<String> users) {
 		this.superUserSet = users;		
 	}
 
@@ -15,6 +15,14 @@ public class ConnectionSetAnalzer {
 		Set<Set<String>> connectedSets = new HashSet<Set<String>>();
 		connectedSets.add(superUserSet);
 		return connectedSets;
+	}
+
+	public Set<String> processConnection(UserConnections user) {
+		Set<String> users = new HashSet<String>(superUserSet);
+		for(String connection : user.getConnections()){
+			users.remove(connection);
+		}
+		return users;
 	}
 
 }
