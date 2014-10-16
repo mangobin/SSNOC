@@ -34,7 +34,7 @@ public class ExchangeInformationTest {
 
 	@Before
 	public void setUp() throws Exception {
-
+		
 	    Date date = new Date();
 	    temp = TimestampUtil.convert(date);
 	}
