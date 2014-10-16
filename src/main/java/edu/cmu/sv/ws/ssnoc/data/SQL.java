@@ -243,7 +243,7 @@ public class SQL {
 	 
 	 public static final String FIND_CHAT_MESSAGES_SINCE_DATE = "SELECT * FROM "
 			 	+ SSN_MESSAGES
-			 	+ " WHERE date >= ?"
+			 	+ " WHERE posted_at >= ?"
 			 	+ " AND UPPER(message_type) = " + " UPPER(?)";
 	 
 	 //memory related SQL
