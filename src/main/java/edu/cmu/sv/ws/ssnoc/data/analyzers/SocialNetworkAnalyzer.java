@@ -42,11 +42,18 @@ public class SocialNetworkAnalyzer {
 			Set<String> possibleSet = analyzer.processConnection(conn);
 			possibleSets.add(possibleSet);
 		}
+		
+		System.out.println("possible sets: " + possibleSets);
 			
 		Set<Set<String>> filteredSets = checker.processSets(possibleSets);
+		
+		System.out.println("filtered sets: " + filteredSets);
+		
 		for(Set<String> result : filteredSets){
 			refiner.addResult(result);
 		}
+		
+		System.out.println("refined sets: " + refiner.getResults());
 				
 		return new ArrayList<Set<String>>(refiner.getResults());
 	}

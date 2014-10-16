@@ -39,8 +39,8 @@ public class UserGroupsService extends BaseService {
 		Log.enter("getting unconnected users from last " + hoursAgo + " hours");
 		
 		Calendar calendar = Calendar.getInstance();
-		//calendar.add(Calendar.HOUR_OF_DAY, -hoursAgo);
-		calendar.add(Calendar.MINUTE, -hoursAgo); // for testing purposes
+		calendar.add(Calendar.HOUR_OF_DAY, -hoursAgo);
+		//calendar.add(Calendar.MINUTE, -hoursAgo); // for testing purposes
 		Date date = calendar.getTime();
 
 		List<UserPO> userPOs = DAOFactory.getInstance().getUserDAO().loadUsers();
@@ -61,6 +61,8 @@ public class UserGroupsService extends BaseService {
 	    sna.loadUsers(users);
 	    sna.loadMessages(messages);
 	    
+	    System.out.println("messages: " + messages);
+	    
 	    List<Set<String>> unconnectedUsers = sna.getUnconnectedUsers();
 	    List<UnconnectedSet> output = new ArrayList<UnconnectedSet>();
 	    for(Set<String> set : unconnectedUsers){
@@ -70,6 +72,8 @@ public class UserGroupsService extends BaseService {
 	    	output.add(us);
 	    }
 	    
+	    System.out.println("unconnected users: " + unconnectedUsers);
+	    	    
 	    Log.exit(output);
 	    return output;
 	}
