@@ -175,4 +175,9 @@ public class MessageDAOFakeImpl extends BaseDAOImpl implements IMessageDAO{
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public List<MessagePO> findChatMessagesSinceDate(Date date) {
+		return new ArrayList<MessagePO>();
+	}
 }

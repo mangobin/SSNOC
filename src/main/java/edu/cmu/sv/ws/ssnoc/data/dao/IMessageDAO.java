@@ -1,5 +1,6 @@
 package edu.cmu.sv.ws.ssnoc.data.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
@@ -38,6 +39,8 @@ public interface IMessageDAO {
 	List<MessagePO> findChatHistoryBetweenTwoUsers(String userNameOne, String userNameTwo);
 	
 	List<UserPO> findChatBuddies(String userName);
+	
+	List<MessagePO> findChatMessagesSinceDate(Date date);
 	
 	void truncateMessageTable();
 	
