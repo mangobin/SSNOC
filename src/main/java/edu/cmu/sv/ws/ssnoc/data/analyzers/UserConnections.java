@@ -16,6 +16,10 @@ public class UserConnections {
 		this.connections.add(user);
 	}
 
+	public String getUsername(){
+		return this.username;
+	}
+	
 	public Set<String> getConnections() {
 		return connections;
 	}
