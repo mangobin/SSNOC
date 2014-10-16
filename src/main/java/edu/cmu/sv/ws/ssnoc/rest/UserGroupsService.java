@@ -27,14 +27,14 @@ public class UserGroupsService extends BaseService {
 	@GET
 	@Path("/unconnected")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<Set<String>> getUnconnectedUsers(){
+	public List<List<String>> getUnconnectedUsers(){
 		return getUnconnectedUsersWithTimeWindow(Integer.MAX_VALUE);
 	}
 	
 	@GET
 	@Path("/unconnected/{timeWindowInHours}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<Set<String>> getUnconnectedUsersWithTimeWindow(@PathParam("timeWindowInHours") int hoursAgo){
+	public List<List<String>> getUnconnectedUsersWithTimeWindow(@PathParam("timeWindowInHours") int hoursAgo){
 		Log.enter("getting unconnected users from last " + hoursAgo + " hours");
 		
 		Calendar calendar = Calendar.getInstance();
@@ -61,9 +61,14 @@ public class UserGroupsService extends BaseService {
 	    sna.loadMessages(messages);
 	    
 	    List<Set<String>> unconnectedUsers = sna.getUnconnectedUsers();
+	    List<List<String>> output = new ArrayList<List<String>>();
+	    for(Set<String> set : unconnectedUsers){
+	    	List<String> result = new ArrayList<String>(set);
+	    	output.add(result);
+	    }
 	    
-	    Log.exit(unconnectedUsers);
-	    return unconnectedUsers;
+	    Log.exit(output);
+	    return output;
 	}
 	
 }
