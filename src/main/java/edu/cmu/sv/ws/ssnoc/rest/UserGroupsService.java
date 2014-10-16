@@ -19,6 +19,7 @@ import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
+import edu.cmu.sv.ws.ssnoc.dto.UnconnectedSet;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 
 @Path("/usergroups")
@@ -27,14 +28,14 @@ public class UserGroupsService extends BaseService {
 	@GET
 	@Path("/unconnected")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<List<String>> getUnconnectedUsers(){
+	public List<UnconnectedSet> getUnconnectedUsers(){
 		return getUnconnectedUsersWithTimeWindow(Integer.MAX_VALUE);
 	}
 	
 	@GET
 	@Path("/unconnected/{timeWindowInHours}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<List<String>> getUnconnectedUsersWithTimeWindow(@PathParam("timeWindowInHours") int hoursAgo){
+	public List<UnconnectedSet> getUnconnectedUsersWithTimeWindow(@PathParam("timeWindowInHours") int hoursAgo){
 		Log.enter("getting unconnected users from last " + hoursAgo + " hours");
 		
 		Calendar calendar = Calendar.getInstance();
@@ -61,10 +62,12 @@ public class UserGroupsService extends BaseService {
 	    sna.loadMessages(messages);
 	    
 	    List<Set<String>> unconnectedUsers = sna.getUnconnectedUsers();
-	    List<List<String>> output = new ArrayList<List<String>>();
+	    List<UnconnectedSet> output = new ArrayList<UnconnectedSet>();
 	    for(Set<String> set : unconnectedUsers){
+	    	UnconnectedSet us = new UnconnectedSet();
 	    	List<String> result = new ArrayList<String>(set);
-	    	output.add(result);
+	    	us.setUsers(result);
+	    	output.add(us);
 	    }
 	    
 	    Log.exit(output);
