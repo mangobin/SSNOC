@@ -47,8 +47,8 @@ public class UserServiceIT {
 	}
 	
 	@After
-	public void tearDown() {
-		
+	public void tearDown() throws SQLException {
+		DBUtils.truncateDatabase();
 	}
 	
 //	@HttpTest(method = Method.POST, path = "/user/Cef/authenticate", type = MediaType.APPLICATION_JSON, 
