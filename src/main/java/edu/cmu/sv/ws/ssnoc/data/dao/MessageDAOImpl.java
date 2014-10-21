@@ -232,5 +232,24 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public List<MessagePO> findChatMessagesSinceDate(Date date) {
+		Log.enter("find messages since date: " + date);
+		List<MessagePO> messages = null;
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_CHAT_MESSAGES_SINCE_DATE);
+			stmt.setTimestamp(1, new Timestamp(date.getTime()));
+			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
+			messages = processResults(stmt);
+			conn.close();
+		} catch(SQLException e){
+			handleException(e);
+		} finally {
+			Log.exit(messages);
+		}		
+		return messages;
+	}
 
 }

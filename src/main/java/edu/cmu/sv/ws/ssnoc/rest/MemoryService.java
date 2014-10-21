@@ -27,7 +27,7 @@ import edu.cmu.sv.ws.ssnoc.dto.Memory;
 public class MemoryService extends BaseService {
 
 	private static Timer timer;
-	private static int SAMPLING_INTERVAL = 1 * 1000; // 1 minute sampling interval
+	private static int SAMPLING_INTERVAL = 60 * 1000; // 1 minute sampling interval
 	
 	@POST
 	@Path("/start")
