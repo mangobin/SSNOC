@@ -61,7 +61,30 @@ public class DBUtils {
 
 		Log.exit();
 	}
+	
+	public static void truncateDatabase() throws SQLException {
+		Log.enter();
+		if (DB_TABLES_EXIST) {
+			return;
+		}
+		
+		Log.info("Truncating tables in database ...");
+		for(String tableName : CREATE_TABLE_MAP.keySet()){
+			try (Connection conn = getConnection();
+					PreparedStatement stmt = conn.prepareStatement(SQL.TRUNCATE_TABLE_IN_DB);) {
+					stmt.setString(1, tableName);
+					stmt.executeQuery();	
+					conn.close();
+				} catch(Exception e){
+					Log.error("Error Truncating table: " + tableName);
+				}
+		}
+		Log.info("Tables Truncating successfully");
+		DB_TABLES_EXIST = false;
 
+		Log.exit();
+	}
+  
 	/**
 	 * This method will initialize the database.
 	 * 
