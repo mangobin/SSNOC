@@ -8,7 +8,7 @@ public class StatusPO {
 
 	private long statusId;
 	
-	private String userName;
+//	private String userName;
 	
 	private Date updatedAt;
 	
@@ -17,6 +17,16 @@ public class StatusPO {
 	private float locLat;
 	
 	private float locLng;
+	
+	private long userId;
+	
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 
 	public float getLocLat(){
 		return locLat;
@@ -42,13 +52,13 @@ public class StatusPO {
 		this.statusId = statusId;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+//	public String getUserName() {
+//		return userName;
+//	}
+//
+//	public void setUserName(String userName) {
+//		this.userName = userName;
+//	}
 
 	public Date getUpdatedAt() {
 		return updatedAt;
@@ -73,7 +83,8 @@ public class StatusPO {
 	
 	public static class Builder {
 		private long statusId;
-		private String userName;
+		private long userId;
+//		private String userName;
 		private Date updatedAt;
 		private String statusCode;
 		private float locLat;
@@ -94,10 +105,14 @@ public class StatusPO {
 			return this;
 		}
 		
-		public Builder setUserName(String userName){
-			this.userName = userName;
+		public Builder setUserId(long userId) {
+			this.userId = userId;
 			return this;
 		}
+//		public Builder setUserName(String userName){
+//			this.userName = userName;
+//			return this;
+//		}
 		
 		public Builder setUpdatedAt(Date updatedAt){
 			this.updatedAt = updatedAt;
@@ -113,7 +128,7 @@ public class StatusPO {
 			StatusPO po = new StatusPO();
 			
 			po.setStatusId(statusId);
-			po.setUserName(userName);
+			po.setUserId(userId);
 			po.setUpdatedAt(updatedAt);
 			po.setStatusCode(statusCode);
 			po.setLocLat(locLat);

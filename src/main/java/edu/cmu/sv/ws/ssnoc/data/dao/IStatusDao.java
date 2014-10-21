@@ -40,12 +40,12 @@ public interface IStatusDao {
 	 * search performed is a case insensitive search to allow case mismatch
 	 * situations.
 	 * 
-	 * @param userName
+	 * @param userID
 	 *            - User id to search for.
 	 * 
 	 * @return - most recent StatusPO submitted by the user.
 	 */
-	StatusPO findLatestStatusByUserId(String userId);
+	StatusPO findLatestStatusByUserId(long userId);
 	
 	/**
 	 * This method with search for the latest statuses by his userName in the database. The
@@ -58,6 +58,6 @@ public interface IStatusDao {
 	 * 
 	 * @return - most recent StatusPOs submitted by the user.
 	 */
-	List<StatusPO> findLatestStatusesByUserId(String userId, int limit, int offset);
+	List<StatusPO> findLatestStatusesByUserId(long userId, int limit, int offset);
 	
 }

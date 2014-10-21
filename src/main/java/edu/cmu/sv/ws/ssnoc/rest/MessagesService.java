@@ -52,7 +52,11 @@ public class MessagesService extends BaseService {
 		List<MessagePO> list = new ArrayList<MessagePO>();
 		
 		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
-		list = dao.findChatHistoryBetweenTwoUsers(userName1, userName2);
+
+		long authorId = DAOFactory.getInstance().getUserDAO().findByName(userName1).getUserId();
+		long targetId = DAOFactory.getInstance().getUserDAO().findByName(userName2).getUserId();
+		
+		list = dao.findChatHistoryBetweenTwoUsers(authorId, targetId);
 		
 		List<Message> listDto = new ArrayList<Message>();
 		

@@ -37,7 +37,7 @@ public class StatusCrumbs extends BaseService {
 			throw new UnknownUserException(userName);
 		}
 		
-		List<StatusPO> pos = DAOFactory.getInstance().getStatusDAO().findLatestStatusesByUserId(existingUser.getUserName(), 100, 0);
+		List<StatusPO> pos = DAOFactory.getInstance().getStatusDAO().findLatestStatusesByUserId(existingUser.getUserId(), 100, 0);
 		List<Status> statuses = new ArrayList<Status>();
 		
 		for(StatusPO po : pos){

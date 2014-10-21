@@ -27,7 +27,7 @@ import edu.cmu.sv.ws.ssnoc.common.utils.TimestampUtil;
 public class ExchangeInformationTest {
 	@Rule
 	public Destination destination = new Destination(this,
-			"http://localhost:8080/ssnoc/");
+			"http://localhost:4321/ssnoc");
 	@Context
 	public Response response;
 	String temp;

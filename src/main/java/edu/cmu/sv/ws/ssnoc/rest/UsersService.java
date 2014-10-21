@@ -54,8 +54,8 @@ public class UsersService extends BaseService {
 	@Path("/{userName}/chatbuddies")
 	public List<User> retrieveChatBuddies(@PathParam("userName") String userName) {
 		Log.enter("retrieve chat buddies for: "+ userName);
-		
-		List<UserPO> usersPO = DAOFactory.getInstance().getMessageDAO().findChatBuddies(userName);
+		long userID = DAOFactory.getInstance().getUserDAO().findByName(userName).getUserId();
+		List<UserPO> usersPO = DAOFactory.getInstance().getMessageDAO().findChatBuddies(userID);
 		
 		List<User> userDto = new ArrayList<User>();
 		

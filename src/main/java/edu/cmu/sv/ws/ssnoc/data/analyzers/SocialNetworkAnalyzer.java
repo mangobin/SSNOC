@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 
@@ -32,6 +33,8 @@ public class SocialNetworkAnalyzer {
 	}
 	
 	public void loadMessages(List<Message> messages){
+		
+		//just do tricky thing there, get the userId
 		for(Message msg : messages){
 			connectionBuilder.addConnection(msg.getAuthor(), msg.getTarget());
 		}

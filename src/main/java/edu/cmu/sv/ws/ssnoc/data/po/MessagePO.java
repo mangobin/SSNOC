@@ -8,9 +8,9 @@ public class MessagePO {
 	
 	private String content;
 	
-	private String author;
+	private long author;
 	
-	private String target;
+	private long target;
 	
 	private String messageType;
 	
@@ -32,19 +32,19 @@ public class MessagePO {
 		this.content = content;
 	}
 
-	public String getAuthor() {
+	public long getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(long author) {
 		this.author = author;
 	}
 
-	public String getTarget() {
+	public long getTarget() {
 		return target;
 	}
 
-	public void setTarget(String target) {
+	public void setTarget(long target) {
 		this.target = target;
 	}
 
@@ -83,10 +83,10 @@ public class MessagePO {
 	     MessagePO lhs = (MessagePO) o;
 	     
 	     return this.content.equals(lhs.getContent()) 
-	    		 && this.author.equals(lhs.getAuthor())
+	    		 && this.author == lhs.getAuthor()
 	    		 && this.messageType.equals(lhs.getMessageType())
 	    		 && this.postedAt.equals(lhs.getPostedAt())
-	    		 && this.target.equals(lhs.getTarget());
+	    		 && this.target == lhs.getTarget();
 	}
 	
 }

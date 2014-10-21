@@ -33,15 +33,15 @@ public class MessageDAOFakeImpl extends BaseDAOImpl implements IMessageDAO{
 			if(findMessageById(messagePO.getMessageId()) == null){
 				stmt = conn.prepareStatement(SQL.INSERT_FAKE_MESSAGE, Statement.RETURN_GENERATED_KEYS);
 				stmt.setString(1, messagePO.getContent());
-				stmt.setString(2, messagePO.getAuthor());
-				stmt.setString(3, messagePO.getTarget());
+				stmt.setLong(2, messagePO.getAuthor());
+				stmt.setLong(3, messagePO.getTarget());
 				stmt.setString(4, messagePO.getMessageType());
 				stmt.setTimestamp(5, new Timestamp(messagePO.getPostedAt().getTime()));
 			} else {
 				stmt = conn.prepareStatement(SQL.UPDATE_FAKE_MESSAGE);
 				stmt.setString(1, messagePO.getContent());
-				stmt.setString(2, messagePO.getAuthor());
-				stmt.setString(3, messagePO.getTarget());
+				stmt.setLong(2, messagePO.getAuthor());
+				stmt.setLong(3, messagePO.getTarget());
 				stmt.setString(4, messagePO.getMessageType());
 				stmt.setTimestamp(5, new Timestamp(messagePO.getPostedAt().getTime()));
 				stmt.setLong(6, messagePO.getMessageId());
@@ -126,8 +126,8 @@ public class MessageDAOFakeImpl extends BaseDAOImpl implements IMessageDAO{
 				MessagePO po = new MessagePO();
 				po.setMessageId(rs.getLong(1));
 				po.setContent(rs.getString(2));
-				po.setAuthor(rs.getString(3));
-				po.setTarget(rs.getString(4));
+				po.setAuthor(rs.getLong(3));
+				po.setTarget(rs.getLong(4));
 				po.setMessageType(rs.getString(5));
 				po.setPostedAt(new Date(rs.getTimestamp(6).getTime()));
 				messages.add(po);
@@ -144,24 +144,7 @@ public class MessageDAOFakeImpl extends BaseDAOImpl implements IMessageDAO{
 		return messages;
 	}
 
-	@Override
-	public List<MessagePO> findChatHistoryBetweenTwoUsers(String userNameOne, String userNameTwo) {
-		Log.enter("Find Histroy messages between " + userNameOne 
-				+ ", and : " + userNameTwo + ")");
-		
-		List<MessagePO> messages = null;
-		
-		return messages;
-		
-	}
 
-	@Override
-	public List<UserPO> findChatBuddies(String userName) {
-		Log.enter("find chat buddies for user: "+userName);
-		List<UserPO> users = new ArrayList<UserPO>();
-		
-		return users;
-	} 
 	
 	@Override
 	public void truncateMessageTable() {
@@ -179,5 +162,16 @@ public class MessageDAOFakeImpl extends BaseDAOImpl implements IMessageDAO{
 	@Override
 	public List<MessagePO> findChatMessagesSinceDate(Date date) {
 		return new ArrayList<MessagePO>();
+	}
+
+	@Override
+	public List<MessagePO> findChatHistoryBetweenTwoUsers(long useroneID,
+			long usertwoID) {
+		return null;
+	}
+
+	@Override
+	public List<UserPO> findChatBuddies(long userID) {
+		return null;
 	}
 }

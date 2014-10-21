@@ -37,5 +37,7 @@ public interface IUserDAO {
 	 * @return - UserPO with the user information if a match is found.
 	 */
 	UserPO findByName(String userName);
+	
+	UserPO findByUserID(long userID);
 
 }

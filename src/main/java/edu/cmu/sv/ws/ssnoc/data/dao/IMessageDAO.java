@@ -36,9 +36,9 @@ public interface IMessageDAO {
 	 */
 	MessagePO findMessageById(long messageId);
 	
-	List<MessagePO> findChatHistoryBetweenTwoUsers(String userNameOne, String userNameTwo);
+	List<MessagePO> findChatHistoryBetweenTwoUsers(long useroneID, long usertwoID);
 	
-	List<UserPO> findChatBuddies(String userName);
+	List<UserPO> findChatBuddies(long userID);
 	
 	List<MessagePO> findChatMessagesSinceDate(Date date);
 	
