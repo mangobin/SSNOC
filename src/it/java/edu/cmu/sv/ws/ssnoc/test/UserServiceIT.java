@@ -2,7 +2,13 @@ package edu.cmu.sv.ws.ssnoc.test;
 
 import static com.eclipsesource.restfuse.Assert.assertOk;
 
+import java.sql.SQLException;
+
 import org.eclipse.jetty.util.log.Log;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
@@ -14,6 +20,8 @@ import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.Response;
 import com.eclipsesource.restfuse.annotation.*;
 
+import edu.cmu.sv.ws.ssnoc.data.util.DBUtils;
+
 @RunWith(HttpJUnitRunner.class)
 public class UserServiceIT {
 	@Rule
@@ -22,7 +30,27 @@ public class UserServiceIT {
 	@Context
 	public Response response;
 
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		DBUtils.setTestMode(true);
+		DBUtils.dropDatabase();
+	}
+	
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		DBUtils.setTestMode(false);
+	}
 
+	@Before
+	public void setUp() throws SQLException {
+		DBUtils.initializeDatabase();
+	}
+	
+	@After
+	public void tearDown() throws SQLException {
+		DBUtils.truncateDatabase();
+	}
+	
 //	@HttpTest(method = Method.POST, path = "/user/Cef/authenticate", type = MediaType.APPLICATION_JSON, 
 //			content = "{\"userName\":\"Cefe\",\"password\":\"pass\"}")
 //	public void testInvalidLogin() {
