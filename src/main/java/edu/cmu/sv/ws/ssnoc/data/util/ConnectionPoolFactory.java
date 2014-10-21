@@ -32,4 +32,13 @@ public class ConnectionPoolFactory {
 	public IConnectionPool getH2ConnectionPool() {
 		return H2ConnectionPoolImpl.getInstance();
 	}
+	
+	/**
+	 * This method will return an instance of the Test H2 ConnectionPool.
+	 * 
+	 * @return - H2 ConnectionPool
+	 */
+	public IConnectionPool getTestH2ConnectionPool(){
+		return H2TestConnectionPoolImpl.getInstance();
+	}
 }

@@ -19,6 +19,7 @@ import edu.cmu.sv.ws.ssnoc.data.SQL;
 public class DBUtils {
 	private static boolean DB_TABLES_EXIST = false;
 	private static Map<String, String> CREATE_TABLE_MAP;
+	private static boolean TEST_MODE = false;
 
 	static {		
 		CREATE_TABLE_MAP = new HashMap<String, String>();
@@ -29,6 +30,37 @@ public class DBUtils {
 		//create fake message table
 		CREATE_TABLE_MAP.put(SQL.SSN_FAKE_MESSAGES, SQL.CREATE_FAKE_MESSAGES);
 	}
+	
+	/*
+	 * This method will set the whether the database used is the real
+	 * one or the test one
+	 */
+	public static void setTestMode(boolean testMode){
+		TEST_MODE = testMode;
+	}
+	
+	public static void dropDatabase() throws SQLException {
+		Log.enter();
+		if (DB_TABLES_EXIST) {
+			return;
+		}
+		
+		Log.info("Dropping tables in database ...");
+		for(String tableName : CREATE_TABLE_MAP.keySet()){
+			try (Connection conn = getConnection();
+					PreparedStatement stmt = conn.prepareStatement(SQL.DROP_TABLE_IN_DB);) {
+					stmt.setString(1, tableName);
+					stmt.executeQuery();	
+					conn.close();
+				} catch(Exception e){
+					Log.error("Error dropping table: " + tableName);
+				}
+		}
+		Log.info("Tables dropped successfully");
+		DB_TABLES_EXIST = false;
+
+		Log.exit();
+	}
 
 	/**
 	 * This method will initialize the database.
@@ -38,7 +70,7 @@ public class DBUtils {
 	public static void initializeDatabase() throws SQLException {
 		createTablesInDB();
 	}
-
+	
 	/**
 	 * This method will create necessary tables in the database.
 	 * 
@@ -128,8 +160,13 @@ public class DBUtils {
 	 * @throws SQLException
 	 */
 	public static final Connection getConnection() throws SQLException {
-		IConnectionPool cp = ConnectionPoolFactory.getInstance()
-				.getH2ConnectionPool();
-		return cp.getConnection();
+		IConnectionPool pool = null;
+		if(!TEST_MODE){
+			pool = ConnectionPoolFactory.getInstance()
+					.getH2ConnectionPool();
+		} else {
+			pool = ConnectionPoolFactory.getInstance().getTestH2ConnectionPool();
+		}
+		return pool.getConnection();
 	}
 }
