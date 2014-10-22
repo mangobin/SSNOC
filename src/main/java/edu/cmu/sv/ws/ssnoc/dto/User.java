@@ -12,6 +12,24 @@ public class User {
 	private String password;
 	private String createdAt;
 	private Status lastStatus;
+	private String privilegeLevel;
+	private String accountStatus;
+
+	public String getPrivilegeLevel() {
+		return privilegeLevel;
+	}
+
+	public void setPrivilegeLevel(String privilegeLevel) {
+		this.privilegeLevel = privilegeLevel;
+	}
+
+	public String getAccountStatus() {
+		return accountStatus;
+	}
+
+	public void setAccountStatus(String accountStatus) {
+		this.accountStatus = accountStatus;
+	}
 
 	public Status getLastStatusCode() {
 		return lastStatus;

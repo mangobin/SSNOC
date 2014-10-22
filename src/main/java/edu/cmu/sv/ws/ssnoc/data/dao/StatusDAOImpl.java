@@ -31,14 +31,14 @@ public class StatusDAOImpl extends BaseDAOImpl implements IStatusDao {
 			PreparedStatement stmt;
 			if(findStatusById(statusPO.getStatusId()) == null){
 				stmt = conn.prepareStatement(SQL.INSERT_STATUS, Statement.RETURN_GENERATED_KEYS);
-				stmt.setString(1, statusPO.getUserName());
+				stmt.setLong(1, statusPO.getUserId());
 				stmt.setTimestamp(2, new Timestamp(statusPO.getUpdatedAt().getTime()));
 				stmt.setString(3, statusPO.getStatusCode());
 				stmt.setFloat(4, statusPO.getLocLat());
 				stmt.setFloat(5, statusPO.getLocLng());
 			} else {
 				stmt = conn.prepareStatement(SQL.UPDATE_STATUS);
-				stmt.setString(1, statusPO.getUserName());
+				stmt.setLong(1, statusPO.getUserId());
 				stmt.setTimestamp(2, new Timestamp(statusPO.getUpdatedAt().getTime()));
 				stmt.setString(3, statusPO.getStatusCode());
 				stmt.setFloat(4, statusPO.getLocLat());
@@ -106,13 +106,13 @@ public class StatusDAOImpl extends BaseDAOImpl implements IStatusDao {
 	}
 
 	@Override
-	public StatusPO findLatestStatusByUserId(String userId) {
+	public StatusPO findLatestStatusByUserId(long userId) {
 		Log.enter(userId);
 		StatusPO po = null;
 		try {
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_LATEST_STATUSES_BY_USER_ID);
-			stmt.setString(1, userId);
+			stmt.setLong(1, userId);
 			stmt.setInt(2, 1); // limit 1
 			stmt.setInt(3, 0); // offset 0
 			List<StatusPO> statuses = processResults(stmt);
@@ -128,14 +128,14 @@ public class StatusDAOImpl extends BaseDAOImpl implements IStatusDao {
 	}
 
 	@Override
-	public List<StatusPO> findLatestStatusesByUserId(String userId, int limit,
+	public List<StatusPO> findLatestStatusesByUserId(long userId, int limit,
 			int offset) {
 		Log.enter(userId);
 		List<StatusPO> statuses = null;
 		try {
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_LATEST_STATUSES_BY_USER_ID);
-			stmt.setString(1, userId);
+			stmt.setLong(1, userId);
 			stmt.setInt(2, limit);
 			stmt.setInt(3, offset);
 			statuses = processResults(stmt);
@@ -162,7 +162,7 @@ public class StatusDAOImpl extends BaseDAOImpl implements IStatusDao {
 			while (rs.next()) {
 				StatusPO po = new StatusPO();
 				po.setStatusId(rs.getLong(1));
-				po.setUserName(rs.getString(2));
+				po.setUserId(rs.getLong(2));
 				po.setUpdatedAt(new Date(rs.getTimestamp(3).getTime()));
 				po.setStatusCode(rs.getString(4));
 				po.setLocLat(rs.getFloat(5));

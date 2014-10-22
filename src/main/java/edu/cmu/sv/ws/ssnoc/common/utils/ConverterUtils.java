@@ -33,7 +33,7 @@ public class ConverterUtils {
 		}
 
 		User dto = new User();
-		dto.setUserName(po.getUserName());
+		
 		dto.setCreatedAt(TimestampUtil.convert(po.getCreatedAt()));
 		StatusPO statusPO = DAOFactory.getInstance().getStatusDAO().findStatusById(po.getLastStatusID());
 		if(statusPO != null){
@@ -41,6 +41,12 @@ public class ConverterUtils {
 		} else {
 			dto.setLastStatusCode(null);
 		}
+		dto.setAccountStatus(po.getAccountStatus());
+		dto.setPrivilegeLevel(po.getPrivilegeLevel());
+		
+
+		String userName = DAOFactory.getInstance().getUserDAO().findByUserID(po.getUserId()).getUserName();
+		dto.setUserName(userName);
 
 		return dto;
 	}
@@ -59,9 +65,16 @@ public class ConverterUtils {
 		}
 
 		UserPO po = new UserPO();
-		po.setUserName(dto.getUserName());
 		po.setPassword(dto.getPassword());
 		po.setCreatedAt(TimestampUtil.convert(dto.getCreatedAt()));
+		po.setAccountStatus(dto.getAccountStatus());
+		po.setPrivilegeLevel(dto.getPrivilegeLevel());
+		
+
+
+		long userId = DAOFactory.getInstance().getUserDAO().findByName(dto.getUserName()).getUserId();
+		po.setUserId(userId);
+		po.setUserName(dto.getUserName());
 
 		return po;
 	}
@@ -76,8 +89,10 @@ public class ConverterUtils {
 		po.setUpdatedAt(TimestampUtil.convert(dto.getUpdatedAt()));
 		po.setLocLat(dto.getLocLat());
 		po.setLocLng(dto.getLocLng());
-		po.setUserName(dto.getUserName());
 		po.setStatusId(dto.getStatusId());
+		
+		long userId = DAOFactory.getInstance().getUserDAO().findByName(dto.getUserName()).getUserId();
+		po.setUserId(userId);
 		return po;
 	}
 	
@@ -91,9 +106,10 @@ public class ConverterUtils {
 		dto.setUpdatedAt(TimestampUtil.convert(po.getUpdatedAt()));
 		dto.setLocLat(po.getLocLat());
 		dto.setLocLng(po.getLocLng());
-		dto.setUserName(po.getUserName());
 		dto.setStatusId(po.getStatusId());
 		
+		String userName = DAOFactory.getInstance().getUserDAO().findByUserID(po.getUserId()).getUserName();
+		dto.setUserName(userName);
 		return dto;
 	}
 	
@@ -101,13 +117,17 @@ public class ConverterUtils {
 		if(po == null)
 			return null;
 		Message dto = new Message();
-		dto.setAuthor(po.getAuthor());
+		
 		dto.setContent(po.getContent());
 		dto.setMessageID(po.getMessageId());
 		dto.setMessageType(po.getMessageType());
 		dto.setPostedAt(TimestampUtil.convert(po.getPostedAt()));
-		dto.setTarget(po.getTarget());
 		
+		
+		String author = DAOFactory.getInstance().getUserDAO().findByUserID(po.getAuthor()).getUserName();
+		String target = DAOFactory.getInstance().getUserDAO().findByUserID(po.getTarget()).getUserName();
+		dto.setAuthor(author);
+		dto.setTarget(target);
 		return dto;
 		
 	}
@@ -116,12 +136,19 @@ public class ConverterUtils {
 		if(dto == null)
 			return null;
 		MessagePO  po = new MessagePO();
-		po.setAuthor(dto.getAuthor());
+		
 		po.setContent(dto.getContent());
 		po.setMessageId(dto.getMessageID());
 		po.setMessageType(dto.getMessageType());
-		po.setTarget(dto.getTarget());				
+						
 		po.setPostedAt(TimestampUtil.convert(dto.getPostedAt()));
+
+		long authorId = DAOFactory.getInstance().getUserDAO().findByName(dto.getAuthor()).getUserId();
+
+		long targetId = DAOFactory.getInstance().getUserDAO().findByName(dto.getAuthor()).getUserId();
+		
+		po.setAuthor(authorId);
+		po.setTarget(targetId);
 		return po;
 	}
 	

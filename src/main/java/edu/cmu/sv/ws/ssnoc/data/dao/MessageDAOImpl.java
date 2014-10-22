@@ -35,15 +35,15 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			if(findMessageById(messagePO.getMessageId()) == null){
 				stmt = conn.prepareStatement(SQL.INSERT_MESSAGE, Statement.RETURN_GENERATED_KEYS);
 				stmt.setString(1, messagePO.getContent());
-				stmt.setString(2, messagePO.getAuthor());
-				stmt.setString(3, messagePO.getTarget());
+				stmt.setLong(2, messagePO.getAuthor());
+				stmt.setLong(3, messagePO.getTarget());
 				stmt.setString(4, messagePO.getMessageType());
 				stmt.setTimestamp(5, new Timestamp(messagePO.getPostedAt().getTime()));
 			} else {
 				stmt = conn.prepareStatement(SQL.UPDATE_MESSAGE);
 				stmt.setString(1, messagePO.getContent());
-				stmt.setString(2, messagePO.getAuthor());
-				stmt.setString(3, messagePO.getTarget());
+				stmt.setLong(2, messagePO.getAuthor());
+				stmt.setLong(3, messagePO.getTarget());
 				stmt.setString(4, messagePO.getMessageType());
 				stmt.setTimestamp(5, new Timestamp(messagePO.getPostedAt().getTime()));
 				stmt.setLong(6, messagePO.getMessageId());
@@ -128,8 +128,8 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 				MessagePO po = new MessagePO();
 				po.setMessageId(rs.getLong(1));
 				po.setContent(rs.getString(2));
-				po.setAuthor(rs.getString(3));
-				po.setTarget(rs.getString(4));
+				po.setAuthor(rs.getLong(3));
+				po.setTarget(rs.getLong(4));
 				po.setMessageType(rs.getString(5));
 				po.setPostedAt(new Date(rs.getTimestamp(6).getTime()));
 				messages.add(po);
@@ -147,18 +147,18 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 	}
 
 	@Override
-	public List<MessagePO> findChatHistoryBetweenTwoUsers(String userNameOne, String userNameTwo) {
-		Log.enter("Find Histroy messages between " + userNameOne 
-				+ ", and : " + userNameTwo + ")");
+	public List<MessagePO> findChatHistoryBetweenTwoUsers(long userIdOne, long userIdTwo) {
+		Log.enter("Find Histroy messages between " + userIdOne 
+				+ ", and : " + userIdTwo + ")");
 		
 		List<MessagePO> messages = null;
 		try {
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_ALL_MESSAGES_BETWEEN_TWO_USERS);
-			stmt.setString(1, userNameOne);
-			stmt.setString(2, userNameTwo);
-			stmt.setString(3, userNameTwo);
-			stmt.setString(4, userNameOne);
+			stmt.setLong(1, userIdOne);
+			stmt.setLong(2, userIdTwo);
+			stmt.setLong(3, userIdTwo);
+			stmt.setLong(4, userIdOne);
 			stmt.setString(5, SQL.MESSAGE_TYPE_CHAT);
 			messages = processResults(stmt);
 			conn.close();
@@ -173,22 +173,22 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 	}
 
 	@Override
-	public List<UserPO> findChatBuddies(String userName) {
-		Log.enter("find chat buddies for user: "+userName);
+	public List<UserPO> findChatBuddies(long userId) {
+		Log.enter("find chat buddies for userID: "+userId);
 		List<UserPO> users = new ArrayList<UserPO>();
 		
 		try {
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_AUTHOR);
-			stmt.setString(1, userName);
+			stmt.setLong(1, userId);
 			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
 			ResultSet rs = stmt.executeQuery();
-			HashSet<String> chatBuddiesSet = new HashSet<String>();
+			HashSet<Long> chatBuddiesSet = new HashSet<Long>();
 			while(rs.next()){
-				String tartgetBuddyName = rs.getString("target");
-				if(!chatBuddiesSet.contains(tartgetBuddyName)) {
-					chatBuddiesSet.add(tartgetBuddyName);
-					UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(tartgetBuddyName);
+				long tartgetBuddyId = rs.getLong("target");
+				if(!chatBuddiesSet.contains(tartgetBuddyId)) {
+					chatBuddiesSet.add(tartgetBuddyId);
+					UserPO  po = DAOFactory.getInstance().getUserDAO().findByUserID(tartgetBuddyId);
 					if(po != null)
 						users.add(po);
 				}
@@ -196,15 +196,15 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			}
 			
 			stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_TARGET);
-			stmt.setString(1, userName);
+			stmt.setLong(1, userId);
 			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
 			rs = stmt.executeQuery();
 			while(rs.next()){
-				String authorBuddyName = rs.getString("author");
+				long authorBuddyId = rs.getLong("author");
 
-				if(!chatBuddiesSet.contains(authorBuddyName)) {
-					chatBuddiesSet.add(authorBuddyName);
-					UserPO  po = DAOFactory.getInstance().getUserDAO().findByName(authorBuddyName);
+				if(!chatBuddiesSet.contains(authorBuddyId)) {
+					chatBuddiesSet.add(authorBuddyId);
+					UserPO  po = DAOFactory.getInstance().getUserDAO().findByUserID(authorBuddyId);
 					if(po != null)
 						users.add(po);
 				}

@@ -27,7 +27,7 @@ import edu.cmu.sv.ws.ssnoc.common.utils.TimestampUtil;
 public class ExchangeInformationTest {
 	@Rule
 	public Destination destination = new Destination(this,
-			"http://localhost:8080/ssnoc/");
+			"http://localhost:4321/ssnoc");
 	@Context
 	public Response response;
 	String temp;
@@ -57,7 +57,7 @@ public class ExchangeInformationTest {
 	
 	@HttpTest(method = Method.POST, headers = {@Header(name = "Accept", value = "application/json")},
 			path = "/message/justForTest",  type = MediaType.APPLICATION_JSON,
-			content = "{\"content\":\"I post a message on public wall second!\",\"postedAt\":\"2014-10-14 12:15\"}") 
+			content = "{\"content\":\"I post a message on public wall second!\",\"postedAt\":\"2014-10-16 11:00\"}") 
 	public void testCanPostPublicWallMessage() {
 		Assert.assertCreated(response);
 		String messg = response.getBody();
@@ -67,7 +67,7 @@ public class ExchangeInformationTest {
 	
 	@HttpTest(method = Method.POST, headers = {@Header(name = "Accept", value = "application/json")},
 			path = "/message/justForTest/BIN",  type = MediaType.APPLICATION_JSON,
-			content = "{\"content\":\"justForTest send a message to BIN!\",\"postedAt\":\"temp\"}") 
+			content = "{\"content\":\"justForTest send a message to BIN!\",\"postedAt\":\"2014-10-16 11:00\"}") 
 	public void testCanSendPrivateChatMessageToAnotherUser() {
 		Assert.assertCreated(response);
 		String messg = response.getBody();

@@ -37,13 +37,15 @@ public class SQL {
 			+ SSN_USERS + " ( user_id IDENTITY PRIMARY KEY,"
 			+ " user_name VARCHAR(100)," + " password VARCHAR(512),"
 			+ " salt VARCHAR(512)," + " createdAt DATETIME, "
-			+ " modifiedAt DATETIME, " + " lastStatusId BIGINT)";
+			+ " modifiedAt DATETIME, " + " lastStatusId BIGINT, "
+			+ " privilegeLevel VARCHAR(20), " + " accountStatus VARCHAR(20))";
+			
 
 	/**
 	 * Query to load all users in the system.
 	 */
 	public static final String FIND_ALL_USERS = "select user_id, user_name, password,"
-			+ " salt, createdAt, modifiedAt, lastStatusId " 
+			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus " 
 			+ " from " + SSN_USERS + " order by user_name";
 
 	/**
@@ -51,17 +53,24 @@ public class SQL {
 	 * does a case insensitive search with the user name.
 	 */
 	public static final String FIND_USER_BY_NAME = "select user_id, user_name, password,"
-			+ " salt, createdAt, modifiedAt, lastStatusId "
+			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus  "
 			+ " from "
 			+ SSN_USERS
 			+ " where UPPER(user_name) = UPPER(?)";
 
+	public static final String FIND_USER_BY_ID = "select user_id, user_name, password,"
+			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus  "
+			+ " from "
+			+ SSN_USERS
+			+ " where user_id = ?";
+	
 	/**
 	 * Query to insert a row into the users table.
 	 */
 	public static final String INSERT_USER = "insert into " + SSN_USERS
-			+ " (user_name, password, salt, createdAt, modifiedAt, lastStatusId) "
-			+ " values (?, ?, ?, ?, ?, ?)";
+			+ " (user_name, password, salt, createdAt, modifiedAt, lastStatusId, "
+			+ " privilegeLevel, accountStatus ) "
+			+ " values (?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	/**
 	 * Query to update a row into the users table.
@@ -73,6 +82,8 @@ public class SQL {
 			+ " createdAt=?," 
 			+ " modifiedAt=?,"
 			+ " lastStatusId=?"
+			+ " privilegeLevel=?,"
+			+ " accountStatus=?"
 			+ " where user_id=?";
 	
 	
@@ -84,14 +95,14 @@ public class SQL {
 	 */
 	public static final String CREATE_STATUSES = "create table IF NOT EXISTS "
 			+ SSN_STATUSES + " ( statusId IDENTITY PRIMARY KEY,"
-			+ " userName VARCHAR(100)," + " updatedAt DATETIME,"
+			+ " user_id BIGINT," + " updatedAt DATETIME,"
 			+ " statusCode VARCHAR(512),"
 			+ " locationLat REAL, " + " locationLng REAL)";
 
 	/**
 	 * Query to load all latest STATUSES in the system.
 	 */
-	public static final String FIND_LATEST_STATUSES = "select statusId, userName, updatedAt,"
+	public static final String FIND_LATEST_STATUSES = "select statusId, user_id, updatedAt,"
 			+ " statusCode, locationLat, locationLng " 
 			+ " from " + SSN_STATUSES + " order by updatedAt desc"
 			+ " limit ?"
@@ -100,17 +111,17 @@ public class SQL {
 	/**
 	 * Query to find a status depending on statusId.
 	 */
-	public static final String FIND_STATUS_BY_ID = "select statusId, userName, updatedAt,"
-			+ " statusCode, locationLat, locationLng "
+	public static final String FIND_STATUS_BY_ID = "select statusId, user_id, updatedAt,"
+			+ " statusCode, locationLat, locationLng, "
 			+ " from "
 			+ SSN_STATUSES
 			+ " where statusId = ?";
 
-	public static final String FIND_LATEST_STATUSES_BY_USER_ID = "select statusId, userName, updatedAt,"
+	public static final String FIND_LATEST_STATUSES_BY_USER_ID = "select statusId, user_id, updatedAt,"
 			+ " statusCode, locationLat, locationLng "
 			+ " from "
 			+ SSN_STATUSES
-			+ " where UPPER(userName) = UPPER(?)"
+			+ " where user_id = ?"
 			+ " order by updatedAt desc"
 			+ " limit ?"
 			+ " offset ?";
@@ -119,14 +130,14 @@ public class SQL {
 	 * Query to insert a row into the statuses table.
 	 */
 	public static final String INSERT_STATUS = "insert into " + SSN_STATUSES
-			+ " (userName, updatedAt, statusCode, locationLat, locationLng) "
+			+ " (user_id, updatedAt, statusCode, locationLat, locationLng) "
 			+ " values (?, ?, ?, ?, ?)";
 	
 	/**
 	 * Query to update a row into the statuses table.
 	 */
 	public static final String UPDATE_STATUS = "update " + SSN_STATUSES + " set "
-			+ " userName=?,"
+			+ " user_id=?,"
 			+ " updatedAt=?,"
 			+ " statusCode=?,"
 			+ " locationLat=?," 
@@ -144,14 +155,14 @@ public class SQL {
 	 */
 	public static final String CREATE_MESSAGES = "create table IF NOT EXISTS "
 			+ SSN_MESSAGES + " ( message_id IDENTITY PRIMARY KEY,"
-			+ " content VARCHAR," + " author VARCHAR(100),"
-			+ " target VARCHAR(100)," + " message_type VARCHAR(10), "
+			+ " content VARCHAR," + " author BIGINT,"
+			+ " target BIGINT," + " message_type VARCHAR(10), "
 			+ " posted_at DATETIME )";
 	
 	public static final String CREATE_FAKE_MESSAGES = "create table IF NOT EXISTS "
 			+ SSN_FAKE_MESSAGES + " ( message_id IDENTITY PRIMARY KEY,"
-			+ " content VARCHAR," + " author VARCHAR(100),"
-			+ " target VARCHAR(100)," + " message_type VARCHAR(10), "
+			+ " content VARCHAR," + " author BIGINT,"
+			+ " target BIGINT," + " message_type VARCHAR(10), "
 			+ " posted_at DATETIME )";
 	
 	public static final String DELETE_FAKE_MESSAGES = "TRUNCATE TABLE " + SSN_FAKE_MESSAGES;

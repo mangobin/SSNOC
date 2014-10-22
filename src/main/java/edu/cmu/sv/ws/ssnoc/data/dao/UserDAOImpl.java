@@ -63,6 +63,8 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				po.setCreatedAt(new Date(rs.getTimestamp(5).getTime()));
 				po.setModifiedAt(new Date(rs.getTimestamp(6).getTime()));
 				po.setLastStatusID(rs.getLong(7));
+				po.setPrivilegeLevel(rs.getString(8));
+				po.setAccountStatus(rs.getString(8));
 				users.add(po);
 			}
 		} catch (SQLException e) {
@@ -142,6 +144,8 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				stmt.setTimestamp(4, new Timestamp(userPO.getCreatedAt().getTime()));
 				stmt.setTimestamp(5, new Timestamp(new Date().getTime()));
 				stmt.setLong(6, 0); // by default no status
+				stmt.setString(7, userPO.getPrivilegeLevel());
+				stmt.setString(8, userPO.getAccountStatus());
 			} else {
 				stmt = conn.prepareStatement(SQL.UPDATE_USER);
 				stmt.setString(1, userPO.getUserName());
@@ -150,7 +154,9 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				stmt.setTimestamp(4, new Timestamp(userPO.getCreatedAt().getTime()));
 				stmt.setTimestamp(5, new Timestamp(new Date().getTime()));
 				stmt.setLong(6, userPO.getLastStatusID());
-				stmt.setLong(7, userPO.getUserId());
+				stmt.setString(7, userPO.getPrivilegeLevel());
+				stmt.setString(8, userPO.getAccountStatus());
+				stmt.setLong(9, userPO.getUserId());
 			}
 			int rowCount = stmt.executeUpdate();
 			Log.trace("Statement executed, and " + rowCount + " rows inserted.");
@@ -160,6 +166,37 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 		} finally {
 			Log.exit();
 		}
+	}
+
+	@Override
+	public UserPO findByUserID(long userID) {
+		Log.enter(userID);
+
+		if (userID < 0) {
+			Log.warn("Inside findByID method with NULL userID.");
+			return null;
+		}
+
+		UserPO po = null;
+		try (Connection conn = getConnection();
+				PreparedStatement stmt = conn
+						.prepareStatement(SQL.FIND_USER_BY_ID)) {
+			stmt.setLong(1, userID);
+			
+			List<UserPO> users = processResults(stmt);
+
+			if (users.size() == 0) {
+				Log.debug("No user account exists with userID = " + userID);
+			} else {
+				po = users.get(0);
+			}
+			conn.close();
+		} catch (SQLException e) {
+			handleException(e);
+			Log.exit(po);
+		}
+
+		return po;
 	}
 
 }

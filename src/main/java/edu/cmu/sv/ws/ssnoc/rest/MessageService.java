@@ -1,7 +1,5 @@
 package edu.cmu.sv.ws.ssnoc.rest;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -36,7 +34,6 @@ public class MessageService extends BaseService {
 		Message dtoMsg = new Message();
 		try{
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
-			
 			msg.setAuthor(userName);
 			msg.setMessageType(SQL.MESSAGE_TYPE_WALL);
 			MessagePO po = ConverterUtils.convert(msg);
@@ -79,7 +76,6 @@ public class MessageService extends BaseService {
 		Log.enter(sendingUsername);
 		Log.enter(receivingUserName);
 		Log.enter(msg);
-		
 		msg.setAuthor(sendingUsername);
 		msg.setTarget(receivingUserName);
 		msg.setMessageType(SQL.MESSAGE_TYPE_CHAT);
