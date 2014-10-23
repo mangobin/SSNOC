@@ -110,6 +110,7 @@ public class DBUtils {
 		StatusPO status = new StatusPO();
 		status.setUserId(userPO.getUserId());
 		status.setStatusCode("GREEN");
+		status.setUpdatedAt(new Date());
 
 		long id = DAOFactory.getInstance().getStatusDAO().save(status);
 		userPO.setLastStatusID(id);
