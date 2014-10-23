@@ -83,8 +83,13 @@ public class ConverterUtils {
 		po.setLocLng(dto.getLocLng());
 		po.setStatusId(dto.getStatusId());
 		
-		long userId = DAOFactory.getInstance().getUserDAO().findByName(dto.getUserName()).getUserId();
-		po.setUserId(userId);
+		UserPO user = DAOFactory.getInstance().getUserDAO().findByName(dto.getUserName());
+		if( user !=null) {
+			long userId = user.getUserId();	
+			po.setUserId(userId);
+		} 
+		
+		
 		return po;
 	}
 	
@@ -100,8 +105,12 @@ public class ConverterUtils {
 		dto.setLocLng(po.getLocLng());
 		dto.setStatusId(po.getStatusId());
 		
-		String userName = DAOFactory.getInstance().getUserDAO().findByUserID(po.getUserId()).getUserName();
-		dto.setUserName(userName);
+		UserPO user = DAOFactory.getInstance().getUserDAO().findByUserID(po.getUserId());
+		if(user != null) {
+			String userName = user.getUserName();
+			dto.setUserName(userName);
+				
+		}
 		return dto;
 	}
 	

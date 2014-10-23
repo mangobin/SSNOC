@@ -102,49 +102,18 @@ public class DBUtils {
 		userPO.setUserName("SSNAdmin");
 		userPO.setPassword("admin");
 		userPO.setPrivilegeLevel("Administrator");
-//		StatusPO status = new StatusPO();
-//		// save status to database
-//		status.setUserName(userPO.getUserName());
-//		status.setStatusCode("GREEN");
-//
-//		long id = DAOFactory.getInstance().getStatusDAO().save(po);
-//		userPO.setLastStatusID(id);
 		userPO = SSNCipher.encryptPassword(userPO);
-		try {
-			Connection conn = getConnection();
-			PreparedStatement stmt;
-			// this isn't a good approach but it saves time
-			// if user doesn't exist, insert into DB, else update
-			if(userPO.getUserName() == null){
-				stmt = conn.prepareStatement(SQL.INSERT_USER);
-				stmt.setString(1, userPO.getUserName());
-				stmt.setString(2, userPO.getPassword());
-				stmt.setString(3, userPO.getSalt());
-				stmt.setTimestamp(4, new Timestamp(userPO.getCreatedAt().getTime()));
-				stmt.setTimestamp(5, new Timestamp(new Date().getTime()));
-				stmt.setLong(6, 0); // by default no status
-				stmt.setString(7, userPO.getPrivilegeLevel());
-				stmt.setString(8, userPO.getAccountStatus());
-			} else {
-				stmt = conn.prepareStatement(SQL.UPDATE_USER);
-				stmt.setString(1, userPO.getUserName());
-				stmt.setString(2, userPO.getPassword());
-				stmt.setString(3, userPO.getSalt());
-				stmt.setTimestamp(4, new Timestamp(userPO.getCreatedAt().getTime()));
-				stmt.setTimestamp(5, new Timestamp(new Date().getTime()));
-				stmt.setLong(6, userPO.getLastStatusID());
-				stmt.setString(7, userPO.getPrivilegeLevel());
-				stmt.setString(8, userPO.getAccountStatus());
-				stmt.setLong(9, userPO.getUserId());
-			}
-			int rowCount = stmt.executeUpdate();
-			Log.trace("Statement executed, and " + rowCount + " rows inserted.");
-			conn.close();
-		} catch (SQLException e) {
-//			handleException(e);
-		} finally {
-			Log.exit();
-		}
+		DAOFactory.getInstance().getUserDAO().save(userPO);
+		UserPO user = DAOFactory.getInstance().getUserDAO().findByName(userPO.getUserName());
+		
+		StatusPO status = new StatusPO();
+		status.setUserId(userPO.getUserId());
+		status.setStatusCode("GREEN");
+
+		long id = DAOFactory.getInstance().getStatusDAO().save(status);
+		userPO.setLastStatusID(id);
+		DAOFactory.getInstance().getUserDAO().save(user);		
+		
 	}
 
 	/**

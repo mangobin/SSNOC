@@ -136,7 +136,7 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 			PreparedStatement stmt;
 			// this isn't a good approach but it saves time
 			// if user doesn't exist, insert into DB, else update
-			if(findByName(userPO.getUserName()) == null){
+			if(findByUserID(userPO.getUserId()) == null){
 				stmt = conn.prepareStatement(SQL.INSERT_USER);
 				stmt.setString(1, userPO.getUserName());
 				stmt.setString(2, userPO.getPassword());

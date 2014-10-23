@@ -222,7 +222,13 @@ public class UserService extends BaseService {
 				throw new UnknownUserException(userName);
 			}
 			if(newUserName != null ) {
-				existingUser.setUserName(newUserName);
+				UserPO existingSameNameUser = dao.findByName(newUserName);
+				if(existingSameNameUser != null) {
+					throw new ValidationException("User name already taken");
+				} else {
+					existingUser.setUserName(newUserName);
+				}
+				
 			}
 			if(newPassWord != null) {
 				existingUser.setPassword(newPassWord);
