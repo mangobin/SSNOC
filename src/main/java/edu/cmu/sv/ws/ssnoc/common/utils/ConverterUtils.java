@@ -33,7 +33,7 @@ public class ConverterUtils {
 		}
 
 		User dto = new User();
-		
+		dto.setUserName(po.getUserName());
 		dto.setCreatedAt(TimestampUtil.convert(po.getCreatedAt()));
 		StatusPO statusPO = DAOFactory.getInstance().getStatusDAO().findStatusById(po.getLastStatusID());
 		if(statusPO != null){
@@ -42,11 +42,7 @@ public class ConverterUtils {
 			dto.setLastStatusCode(null);
 		}
 		dto.setAccountStatus(po.getAccountStatus());
-		dto.setPrivilegeLevel(po.getPrivilegeLevel());
-		
-
-		String userName = DAOFactory.getInstance().getUserDAO().findByUserID(po.getUserId()).getUserName();
-		dto.setUserName(userName);
+		dto.setPrivilegeLevel(po.getPrivilegeLevel());		
 
 		return dto;
 	}
