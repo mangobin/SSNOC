@@ -218,23 +218,30 @@ public class UserService extends BaseService {
 			IUserDAO dao = DAOFactory.getInstance().getUserDAO();
 			UserPO existingUser = dao.findByName(userName);
 			
-			if(existingUser == null) 
+			if(existingUser == null) {
 				throw new UnknownUserException(userName);
-			
-			if(newUserName != null ) 
+			}
+			if(newUserName != null ) {
 				existingUser.setUserName(newUserName);
-			
+			}
 			if(newPassWord != null) {
 				existingUser.setPassword(newPassWord);
 				existingUser = SSNCipher.encryptPassword(existingUser);
 			} 
 			
-			if(newAccountStatus != null)
+			if(newAccountStatus != null) {
 				existingUser.setAccountStatus(newAccountStatus);
-			
-			if(newPrivilegeLevel != null) 
+			}
+			if(newPrivilegeLevel != null) { 
 				existingUser.setPrivilegeLevel(newPrivilegeLevel);
+			}
 			
+			UserValidator validator = new UserValidator();
+			
+			if(!validator.validate(user)){
+				throw new ValidationException("User name is not allowed");
+			}
+
 			dao.save(existingUser);
 			temp =  ConverterUtils.convert(existingUser);
 		}catch (Exception e) {
@@ -243,7 +250,7 @@ public class UserService extends BaseService {
 			Log.exit();
 		}
 		
-		if(newUserName != null)
+		if(newUserName != null && !newUserName.equals(userName))
 			return created(temp);
 		else
 			return ok(temp);
