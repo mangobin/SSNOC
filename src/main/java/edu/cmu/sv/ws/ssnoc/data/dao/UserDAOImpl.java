@@ -64,7 +64,7 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				po.setModifiedAt(new Date(rs.getTimestamp(6).getTime()));
 				po.setLastStatusID(rs.getLong(7));
 				po.setPrivilegeLevel(rs.getString(8));
-				po.setAccountStatus(rs.getString(8));
+				po.setAccountStatus(rs.getString(9));
 				users.add(po);
 			}
 		} catch (SQLException e) {
