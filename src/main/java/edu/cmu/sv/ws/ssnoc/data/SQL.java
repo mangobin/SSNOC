@@ -112,7 +112,7 @@ public class SQL {
 	 * Query to find a status depending on statusId.
 	 */
 	public static final String FIND_STATUS_BY_ID = "select statusId, user_id, updatedAt,"
-			+ " statusCode, locationLat, locationLng, "
+			+ " statusCode, locationLat, locationLng"
 			+ " from "
 			+ SSN_STATUSES
 			+ " where statusId = ?";
