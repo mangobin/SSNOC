@@ -97,7 +97,7 @@ public class DBUtils {
 	}
 	
 	private static void insertAdministrator() {
-		if(DAOFactory.getInstance().getUserDAO().findByName("Administrator") == null){
+		if(DAOFactory.getInstance().getUserDAO().findByName("SSNAdmin") == null){
 			Log.enter("insert default Administrator");
 			UserPO userPO = new UserPO();
 			userPO.setUserName("SSNAdmin");
