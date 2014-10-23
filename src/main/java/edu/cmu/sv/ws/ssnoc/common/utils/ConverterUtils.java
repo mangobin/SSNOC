@@ -65,16 +65,11 @@ public class ConverterUtils {
 		}
 
 		UserPO po = new UserPO();
+		po.setUserName(dto.getUserName());
 		po.setPassword(dto.getPassword());
 		po.setCreatedAt(TimestampUtil.convert(dto.getCreatedAt()));
 		po.setAccountStatus(dto.getAccountStatus());
 		po.setPrivilegeLevel(dto.getPrivilegeLevel());
-		
-
-
-		long userId = DAOFactory.getInstance().getUserDAO().findByName(dto.getUserName()).getUserId();
-		po.setUserId(userId);
-		po.setUserName(dto.getUserName());
 
 		return po;
 	}

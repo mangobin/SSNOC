@@ -17,8 +17,8 @@ public class SQL {
 	public static final String SSN_MEMORY = "SSN_MEMORY";
 	public static final String SSN_FAKE_MESSAGES = "SSN_FAKE_MESSAGES";
 	
-	public static final String DROP_TABLE_IN_DB = "DROP TABLE IF EXISTS ?";
-	public static final String TRUNCATE_TABLE_IN_DB = "TRUNCATE TABLE ?";
+	public static final String DROP_TABLE_IN_DB = "DROP TABLE IF EXISTS ";
+	public static final String TRUNCATE_TABLE_IN_DB = "TRUNCATE TABLE ";
 
 	/**
 	 * Query to check if a given table exists in the H2 database.
@@ -112,7 +112,7 @@ public class SQL {
 	 * Query to find a status depending on statusId.
 	 */
 	public static final String FIND_STATUS_BY_ID = "select statusId, user_id, updatedAt,"
-			+ " statusCode, locationLat, locationLng, "
+			+ " statusCode, locationLat, locationLng"
 			+ " from "
 			+ SSN_STATUSES
 			+ " where statusId = ?";

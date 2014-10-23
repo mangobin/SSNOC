@@ -41,19 +41,17 @@ public class DBUtils {
 	
 	public static void dropDatabase() throws SQLException {
 		Log.enter();
-		if (DB_TABLES_EXIST) {
-			return;
-		}
-		
+
 		Log.info("Dropping tables in database ...");
 		for(String tableName : CREATE_TABLE_MAP.keySet()){
-			try (Connection conn = getConnection();
-					PreparedStatement stmt = conn.prepareStatement(SQL.DROP_TABLE_IN_DB);) {
-					stmt.setString(1, tableName);
-					stmt.executeQuery();	
+			try {
+					Connection conn = getConnection();
+					Statement stmt = conn.createStatement();
+					stmt.execute(SQL.DROP_TABLE_IN_DB + tableName);	
 					conn.close();
 				} catch(Exception e){
 					Log.error("Error dropping table: " + tableName);
+					e.printStackTrace();
 				}
 		}
 		Log.info("Tables dropped successfully");
@@ -64,24 +62,19 @@ public class DBUtils {
 	
 	public static void truncateDatabase() throws SQLException {
 		Log.enter();
-		if (DB_TABLES_EXIST) {
-			return;
-		}
-		
 		Log.info("Truncating tables in database ...");
 		for(String tableName : CREATE_TABLE_MAP.keySet()){
-			try (Connection conn = getConnection();
-					PreparedStatement stmt = conn.prepareStatement(SQL.TRUNCATE_TABLE_IN_DB);) {
-					stmt.setString(1, tableName);
-					stmt.executeQuery();	
+			try {
+					Connection conn = getConnection();
+					Statement stmt = conn.createStatement();
+					stmt.execute(SQL.TRUNCATE_TABLE_IN_DB + tableName);	
 					conn.close();
 				} catch(Exception e){
 					Log.error("Error Truncating table: " + tableName);
+					e.printStackTrace();
 				}
 		}
 		Log.info("Tables Truncating successfully");
-		DB_TABLES_EXIST = false;
-
 		Log.exit();
 	}
   
