@@ -102,6 +102,7 @@ public class DBUtils {
 		userPO.setUserName("SSNAdmin");
 		userPO.setPassword("admin");
 		userPO.setPrivilegeLevel("Administrator");
+		userPO.setCreatedAt(new Date());
 		userPO = SSNCipher.encryptPassword(userPO);
 		DAOFactory.getInstance().getUserDAO().save(userPO);
 		UserPO user = DAOFactory.getInstance().getUserDAO().findByName(userPO.getUserName());
