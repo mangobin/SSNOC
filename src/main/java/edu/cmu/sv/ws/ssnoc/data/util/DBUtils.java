@@ -5,11 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
+import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
+import edu.cmu.sv.ws.ssnoc.common.utils.SSNCipher;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
+import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
+import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
+import edu.cmu.sv.ws.ssnoc.dto.Status;
 
 /**
  * This is a utility class to provide common functions to access and handle
@@ -85,8 +93,60 @@ public class DBUtils {
 	 */
 	public static void initializeDatabase() throws SQLException {
 		createTablesInDB();
+		insertAdministrator();
 	}
 	
+	private static void insertAdministrator() {
+		Log.enter("insert default Administrator");
+		UserPO userPO = new UserPO();
+		userPO.setUserName("SSNAdmin");
+		userPO.setPassword("admin");
+		userPO.setPrivilegeLevel("Administrator");
+//		StatusPO status = new StatusPO();
+//		// save status to database
+//		status.setUserName(userPO.getUserName());
+//		status.setStatusCode("GREEN");
+//
+//		long id = DAOFactory.getInstance().getStatusDAO().save(po);
+//		userPO.setLastStatusID(id);
+		userPO = SSNCipher.encryptPassword(userPO);
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt;
+			// this isn't a good approach but it saves time
+			// if user doesn't exist, insert into DB, else update
+			if(userPO.getUserName() == null){
+				stmt = conn.prepareStatement(SQL.INSERT_USER);
+				stmt.setString(1, userPO.getUserName());
+				stmt.setString(2, userPO.getPassword());
+				stmt.setString(3, userPO.getSalt());
+				stmt.setTimestamp(4, new Timestamp(userPO.getCreatedAt().getTime()));
+				stmt.setTimestamp(5, new Timestamp(new Date().getTime()));
+				stmt.setLong(6, 0); // by default no status
+				stmt.setString(7, userPO.getPrivilegeLevel());
+				stmt.setString(8, userPO.getAccountStatus());
+			} else {
+				stmt = conn.prepareStatement(SQL.UPDATE_USER);
+				stmt.setString(1, userPO.getUserName());
+				stmt.setString(2, userPO.getPassword());
+				stmt.setString(3, userPO.getSalt());
+				stmt.setTimestamp(4, new Timestamp(userPO.getCreatedAt().getTime()));
+				stmt.setTimestamp(5, new Timestamp(new Date().getTime()));
+				stmt.setLong(6, userPO.getLastStatusID());
+				stmt.setString(7, userPO.getPrivilegeLevel());
+				stmt.setString(8, userPO.getAccountStatus());
+				stmt.setLong(9, userPO.getUserId());
+			}
+			int rowCount = stmt.executeUpdate();
+			Log.trace("Statement executed, and " + rowCount + " rows inserted.");
+			conn.close();
+		} catch (SQLException e) {
+//			handleException(e);
+		} finally {
+			Log.exit();
+		}
+	}
+
 	/**
 	 * This method will create necessary tables in the database.
 	 * 
