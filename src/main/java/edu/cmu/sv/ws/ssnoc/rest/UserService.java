@@ -43,7 +43,7 @@ public class UserService extends BaseService {
 	 * 
 	 * If a user exists, but the password is wrong, return 400 Bad request
 	 * 
-	 * Note: Last modified by Bin at 9:34 am on Sept. 24
+	 * Note: Last modified by Bin at 6:17 pm on OCT. 23
 	 * @param user
 	 *            - An object of type User
 	 * @return - An object of type Response with the status of the request
@@ -84,6 +84,9 @@ public class UserService extends BaseService {
 			UserPO po = ConverterUtils.convert(user);
 			po = SSNCipher.encryptPassword(po);
 
+			//set default privilege level and account status
+			po.setAccountStatus("Active");
+			po.setPrivilegeLevel("Citizen");
 			dao.save(po);
 			resp = ConverterUtils.convert(po);
 			
@@ -206,43 +209,44 @@ public class UserService extends BaseService {
 
 		String newUserName = user.getUserName();
 		String newPassWord = user.getPassword();
+		String newAccountStatus = user.getAccountStatus();
+		String newPrivilegeLevel  = user.getPrivilegeLevel();
+		
 		User temp = new User();
 		
 		try {
 			IUserDAO dao = DAOFactory.getInstance().getUserDAO();
 			UserPO existingUser = dao.findByName(userName);
 			
-			if(existingUser == null) {
+			if(existingUser == null) 
 				throw new UnknownUserException(userName);
-			} else if(newUserName != null && newPassWord !=null) {
+			
+			if(newUserName != null ) 
 				existingUser.setUserName(newUserName);
+			
+			if(newPassWord != null) {
 				existingUser.setPassword(newPassWord);
 				existingUser = SSNCipher.encryptPassword(existingUser);
-
-				dao.save(existingUser);
-				
-				temp =  ConverterUtils.convert(existingUser);
-
-				return created(temp);
-			} else if(newUserName != null) {
-				existingUser.setUserName(newUserName);
-				dao.save(existingUser);
-				temp =  ConverterUtils.convert(existingUser);
-				return created(temp);
-			} else {
-				existingUser.setPassword(newPassWord);
-				existingUser = SSNCipher.encryptPassword(existingUser);
-				dao.save(existingUser);
-				temp =  ConverterUtils.convert(existingUser);	
-			}
+			} 
+			
+			if(newAccountStatus != null)
+				existingUser.setAccountStatus(newAccountStatus);
+			
+			if(newPrivilegeLevel != null) 
+				existingUser.setPrivilegeLevel(newPrivilegeLevel);
+			
+			dao.save(existingUser);
+			temp =  ConverterUtils.convert(existingUser);
 		}catch (Exception e) {
 			handleException(e);
 		} finally {
 			Log.exit();
 		}
 		
-
-		return ok(temp);
+		if(newUserName != null)
+			return created(temp);
+		else
+			return ok(temp);
 
 	}
 }
