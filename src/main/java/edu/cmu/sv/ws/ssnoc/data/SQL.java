@@ -81,7 +81,7 @@ public class SQL {
 			+ " salt=?,"
 			+ " createdAt=?," 
 			+ " modifiedAt=?,"
-			+ " lastStatusId=?"
+			+ " lastStatusId=?,"
 			+ " privilegeLevel=?,"
 			+ " accountStatus=?"
 			+ " where user_id=?";
@@ -141,7 +141,7 @@ public class SQL {
 			+ " updatedAt=?,"
 			+ " statusCode=?,"
 			+ " locationLat=?," 
-			+ " locationLng=?,"
+			+ " locationLng=?"
 			+ " where statusId=?";
 
 	// ****************************************************************
