@@ -1,6 +1,7 @@
 package edu.cmu.sv.ws.ssnoc.common.utils;
 
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.MemoryPO;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
@@ -114,11 +115,21 @@ public class ConverterUtils {
 		dto.setMessageType(po.getMessageType());
 		dto.setPostedAt(TimestampUtil.convert(po.getPostedAt()));
 		
+		IUserDAO dao = DAOFactory.getInstance().getUserDAO();
+		UserPO user = dao.findByUserID(po.getAuthor());
+		if(user != null){
+			dto.setAuthor(user.getUserName());
+		} else {
+			dto.setAuthor(null);
+		}
 		
-		String author = DAOFactory.getInstance().getUserDAO().findByUserID(po.getAuthor()).getUserName();
-		String target = DAOFactory.getInstance().getUserDAO().findByUserID(po.getTarget()).getUserName();
-		dto.setAuthor(author);
-		dto.setTarget(target);
+		user = dao.findByUserID(po.getTarget());
+		if(user != null){
+			dto.setTarget(user.getUserName());
+		} else {
+			dto.setTarget(null);
+		}
+		
 		return dto;
 		
 	}
@@ -133,13 +144,22 @@ public class ConverterUtils {
 		po.setMessageType(dto.getMessageType());
 						
 		po.setPostedAt(TimestampUtil.convert(dto.getPostedAt()));
-
-		long authorId = DAOFactory.getInstance().getUserDAO().findByName(dto.getAuthor()).getUserId();
-
-		long targetId = DAOFactory.getInstance().getUserDAO().findByName(dto.getTarget()).getUserId();
 		
-		po.setAuthor(authorId);
-		po.setTarget(targetId);
+		IUserDAO dao = DAOFactory.getInstance().getUserDAO();
+		UserPO user = dao.findByName(dto.getAuthor());
+		if(user != null){
+			po.setAuthor(user.getUserId());
+		} else {
+			po.setAuthor(0);
+		}
+		
+		user = dao.findByName(dto.getTarget());
+		if(user != null){
+			po.setTarget(user.getUserId());
+		} else {
+			po.setTarget(0);
+		}
+
 		return po;
 	}
 	
