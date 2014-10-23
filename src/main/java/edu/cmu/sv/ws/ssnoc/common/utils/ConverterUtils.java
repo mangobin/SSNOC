@@ -140,7 +140,7 @@ public class ConverterUtils {
 
 		long authorId = DAOFactory.getInstance().getUserDAO().findByName(dto.getAuthor()).getUserId();
 
-		long targetId = DAOFactory.getInstance().getUserDAO().findByName(dto.getAuthor()).getUserId();
+		long targetId = DAOFactory.getInstance().getUserDAO().findByName(dto.getTarget()).getUserId();
 		
 		po.setAuthor(authorId);
 		po.setTarget(targetId);
