@@ -43,5 +43,7 @@ public interface IMessageDAO {
 	List<MessagePO> findChatMessagesSinceDate(Date date);
 	
 	void truncateMessageTable();
+
+	List<MessagePO> findAllAnnouncement(int limit, int offset);
 	
 }

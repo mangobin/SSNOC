@@ -124,6 +124,9 @@ public class UserService extends BaseService {
 
 		try {
 			UserPO po = loadExistingUser(userName);
+			if(po.getAccountStatus().equals("Inactive")) {
+				throw new UnauthorizedUserException(userName);
+			}
 			if (!validateUserPassword(pass.getPassword(), po)) {
 				throw new UnauthorizedUserException(userName);
 			}
@@ -223,10 +226,13 @@ public class UserService extends BaseService {
 			}
 			if(newUserName != null ) {
 				UserPO existingSameNameUser = dao.findByName(newUserName);
-				if(existingSameNameUser != null) {
-					throw new ValidationException("User name already taken");
-				} else {
+				if(existingSameNameUser == null) {
 					existingUser.setUserName(newUserName);
+				}
+				else if(userName.equals(newUserName)) {
+					existingUser.setUserName(newUserName);
+				} else if(existingSameNameUser != null) {
+					throw new ValidationException("User name already taken");
 				}
 				
 			}

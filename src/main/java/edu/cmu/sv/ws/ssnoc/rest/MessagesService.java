@@ -14,6 +14,7 @@ import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IMessageDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
 
 
@@ -28,6 +29,54 @@ public class MessagesService extends BaseService {
 		
 		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 		list = dao.findLatestWallMessages(50, 0);
+		
+		List<Message> listDto = new ArrayList<Message>();
+		
+		for(MessagePO m : list) {
+			Message msg = ConverterUtils.convert(m);
+			listDto.add(msg);
+		}
+		
+		Log.exit(listDto);
+		return listDto;
+		
+	}
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/wall/visible")
+	public List<Message> retrieveAllVisibleMsgOnPublicWall () {
+		Log.enter("enter retrieve all visible message on public wall");
+		List<MessagePO> list = new ArrayList<MessagePO>();
+		
+		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
+		list = dao.findLatestWallMessages(50, 0);
+		
+		List<Message> listDto = new ArrayList<Message>();
+		
+		for(MessagePO m : list) {
+			UserPO po = DAOFactory.getInstance().getUserDAO().findByUserID(m.getAuthor());
+			if(po.getAccountStatus().equals("Active")) {
+				Message msg = ConverterUtils.convert(m);
+				listDto.add(msg);
+			
+			}
+		}
+		
+		Log.exit(listDto);
+		return listDto;
+		
+	}
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/announcement")
+	public List<Message> retrieveAllAnnouncement () {
+		Log.enter("enter retrieve All announcement");
+		List<MessagePO> list = new ArrayList<MessagePO>();
+		
+		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
+		list = dao.findAllAnnouncement(50, 0);
 		
 		List<Message> listDto = new ArrayList<Message>();
 		

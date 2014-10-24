@@ -174,4 +174,9 @@ public class MessageDAOFakeImpl extends BaseDAOImpl implements IMessageDAO{
 	public List<UserPO> findChatBuddies(long userID) {
 		return null;
 	}
+
+	@Override
+	public List<MessagePO> findAllAnnouncement(int limit, int offset) {
+		return null;
+	}
 }

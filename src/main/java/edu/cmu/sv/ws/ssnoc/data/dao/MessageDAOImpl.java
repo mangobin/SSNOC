@@ -86,6 +86,29 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		
 		return messages;
 	}
+	
+	@Override
+	public List<MessagePO> findAllAnnouncement(int limit, int offset) {
+		Log.enter("Find announcement (limit: " + limit 
+				+ ", offset: " + offset + ")");
+		
+		List<MessagePO> messages = null;
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_LATEST_MESSAGES_OF_TYPE);
+			stmt.setString(1, SQL.MESSAGE_TYPE_ANNOUNCEMENT);
+			stmt.setInt(2, limit);
+			stmt.setInt(3, offset);
+			messages = processResults(stmt);
+			conn.close();
+		} catch(SQLException e){
+			handleException(e);
+		} finally {
+			Log.exit(messages);
+		}
+		
+		return messages;
+	}
 
 	@Override
 	public MessagePO findMessageById(long messageId) {

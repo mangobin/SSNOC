@@ -150,6 +150,7 @@ public class SQL {
 	
 	public static final String MESSAGE_TYPE_WALL = "WALL";
 	public static final String MESSAGE_TYPE_CHAT = "CHAT";	
+	public static final String MESSAGE_TYPE_ANNOUNCEMENT = "PA";
 	/**
 	 * Query to create the MESSAGES table.
 	 */

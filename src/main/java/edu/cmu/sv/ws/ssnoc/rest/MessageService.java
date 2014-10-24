@@ -51,6 +51,32 @@ public class MessageService extends BaseService {
 		return created(dtoMsg);
 	}
 	
+	@POST
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/announcement")
+	public Response postAnnouncement(Message msg) {
+		Log.enter(msg);
+		
+		Message dtoMsg = new Message();
+		try{
+			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
+			msg.setMessageType(SQL.MESSAGE_TYPE_ANNOUNCEMENT);
+			MessagePO po = ConverterUtils.convert(msg);
+
+			long messageID = dao.save(po);
+			po.setMessageId(messageID);
+			dtoMsg = ConverterUtils.convert(po);
+			
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} finally {
+			Log.exit(dtoMsg);
+		}
+		
+		return created(dtoMsg);
+	}
+	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{messageID}")
