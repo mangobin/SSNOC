@@ -124,7 +124,7 @@ public class UserService extends BaseService {
 
 		try {
 			UserPO po = loadExistingUser(userName);
-			if(po.getAccountStatus().equals("Inactive")) {
+			if(po.getAccountStatus() != null && !po.getAccountStatus().equals("Active")) {
 				throw new UnauthorizedUserException(userName, "Account has been deactivated");
 			}
 			if (!validateUserPassword(pass.getPassword(), po)) {
