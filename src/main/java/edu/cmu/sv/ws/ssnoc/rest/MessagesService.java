@@ -59,7 +59,6 @@ public class MessagesService extends BaseService {
 			if(po.getAccountStatus().equals("Active")) {
 				Message msg = ConverterUtils.convert(m);
 				listDto.add(msg);
-			
 			}
 		}
 		
@@ -159,21 +158,11 @@ public class MessagesService extends BaseService {
 		UserPO targetPO = DAOFactory.getInstance().getUserDAO().findByName(userName2);
 		long authorId = authorPO.getUserId();
 		long targetId = targetPO.getUserId();
-		long invalidUserId;
-		if(authorPO.getAccountStatus().equals("Inactive")) {
-			invalidUserId = authorId;
-		} else if(targetPO.getAccountStatus().equals("Inactive")) {
-			invalidUserId = targetId;
-		} else {
-			invalidUserId = 0;
-		}
-		
-		list = dao.findChatHistoryBetweenTwoUsers(authorId, targetId);
 		
 		List<Message> listDto = new ArrayList<Message>();
-		
-		for(MessagePO m : list) {
-			if(m.getTarget() != invalidUserId && m.getAuthor() != invalidUserId) {
+		if(authorPO.getAccountStatus().equals("Active") && targetPO.getAccountStatus().equals("Active")) {
+			list = dao.findChatHistoryBetweenTwoUsers(authorId, targetId);
+			for(MessagePO m : list) {
 				Message msg = ConverterUtils.convert(m);
 				listDto.add(msg);
 			}

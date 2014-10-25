@@ -106,17 +106,18 @@ public class DBUtils {
 			userPO.setAccountStatus("Active");
 			userPO.setCreatedAt(new Date());
 			userPO = SSNCipher.encryptPassword(userPO);
+			userPO.setLastStatusID(0);
 			DAOFactory.getInstance().getUserDAO().save(userPO);
-			UserPO user = DAOFactory.getInstance().getUserDAO().findByName(userPO.getUserName());
 			
-			StatusPO status = new StatusPO();
-			status.setUserId(userPO.getUserId());
-			status.setStatusCode("GREEN");
-			status.setUpdatedAt(new Date());
-
-			long id = DAOFactory.getInstance().getStatusDAO().save(status);
-			userPO.setLastStatusID(id);
-			DAOFactory.getInstance().getUserDAO().save(user);	
+//			UserPO user = DAOFactory.getInstance().getUserDAO().findByName(userPO.getUserName());
+//			StatusPO status = new StatusPO();
+//			status.setUserId(userPO.getUserId());
+//			status.setStatusCode("GREEN");
+//			status.setUpdatedAt(new Date());
+//
+//			long id = DAOFactory.getInstance().getStatusDAO().save(status);
+//			userPO.setLastStatusID(0);
+//			DAOFactory.getInstance().getUserDAO().save(user);	
 		}
 	}
 
