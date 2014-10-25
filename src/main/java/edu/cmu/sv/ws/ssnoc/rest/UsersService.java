@@ -27,7 +27,7 @@ public class UsersService extends BaseService {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@XmlElementWrapper(name = "users")
 	public List<User> loadUsers() {
-		Log.enter();
+		Log.enter("all users");
 
 		List<User> users = null;
 		try {
@@ -47,7 +47,32 @@ public class UsersService extends BaseService {
 		return users;
 	}
 	
-//	/users/userName/chatbuddies
+	@GET
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path("/active")
+	public List<User> loadActiveUsers() {
+		Log.enter("load active users");
+
+		List<User> users = null;
+		try {
+			List<UserPO> userPOs = DAOFactory.getInstance().getUserDAO().loadUsers();
+
+			users = new ArrayList<User>();
+			for (UserPO po : userPOs) {
+				if(po != null && po.getAccountStatus().equals("Active")) {
+					User dto = ConverterUtils.convert(po);
+					users.add(dto);
+				}
+			}
+		} catch (Exception e) {
+			handleException(e);
+		} finally {
+			Log.exit(users);
+		}
+		
+		return users;
+	}
+	
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })

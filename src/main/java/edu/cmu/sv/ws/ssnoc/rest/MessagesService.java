@@ -92,8 +92,62 @@ public class MessagesService extends BaseService {
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/announcement/visible")
+	public List<Message> retrieveAllVisibleAnnouncement () {
+		Log.enter("enter retrieve All visible announcements");
+		List<MessagePO> list = new ArrayList<MessagePO>();
+		
+		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
+		list = dao.findAllAnnouncement(50, 0);
+		
+		List<Message> listDto = new ArrayList<Message>();
+		
+		for(MessagePO m : list) {
+			UserPO po = DAOFactory.getInstance().getUserDAO().findByUserID(m.getAuthor());
+			if(po.getAccountStatus().equals("Active")) {
+				Message msg = ConverterUtils.convert(m);
+				listDto.add(msg);
+			}
+		}
+		
+		Log.exit(listDto);
+		return listDto;
+		
+	}
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{userName1}/{userName2}")
 	public List<Message> retrieveAllMessagesBetweenTwoUsers (@PathParam("userName1") String userName1, 
+			@PathParam("userName2") String userName2) {
+		Log.enter(userName1);
+		Log.enter(userName2);
+		
+		List<MessagePO> list = new ArrayList<MessagePO>();
+		
+		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
+
+		long authorId = DAOFactory.getInstance().getUserDAO().findByName(userName1).getUserId();
+		long targetId = DAOFactory.getInstance().getUserDAO().findByName(userName2).getUserId();
+		
+		list = dao.findChatHistoryBetweenTwoUsers(authorId, targetId);
+		
+		List<Message> listDto = new ArrayList<Message>();
+		
+		for(MessagePO m : list) {
+			Message msg = ConverterUtils.convert(m);
+			listDto.add(msg);
+		}
+		
+		Log.exit(listDto);
+		return listDto;
+		
+	}
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/{userName1}/{userName2}/visible")
+	public List<Message> retrieveAllVisibleMessagesBetweenTwoUsers (@PathParam("userName1") String userName1, 
 			@PathParam("userName2") String userName2) {
 		Log.enter(userName1);
 		Log.enter(userName2);
