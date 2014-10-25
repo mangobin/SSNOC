@@ -16,4 +16,11 @@ public class UnauthorizedUserException extends CheckedException {
 				.entity("Unauthorized User: " + userName)
 				.type(MediaType.TEXT_PLAIN_TYPE).build());
 	}
+	
+	public UnauthorizedUserException(String userName, String reason){
+		super("Unauthorized User: " + userName + " (Reason:" + reason + ")", null, Response
+				.status(Status.UNAUTHORIZED)
+				.entity("Unauthorized User: " + userName + " (Reason:" + reason + ")")
+				.type(MediaType.TEXT_PLAIN_TYPE).build());
+	}
 }

@@ -124,11 +124,11 @@ public class UserService extends BaseService {
 
 		try {
 			UserPO po = loadExistingUser(userName);
-			if(po.getAccountStatus().equals("Inactive")) {
-				throw new UnauthorizedUserException(userName);
+			if(po.getAccountStatus() != null && !po.getAccountStatus().equals("Active")) {
+				throw new UnauthorizedUserException(userName, "Account has been deactivated");
 			}
 			if (!validateUserPassword(pass.getPassword(), po)) {
-				throw new UnauthorizedUserException(userName);
+				throw new UnauthorizedUserException(userName, "Invalid password");
 			}
 		} catch (Exception e) {
 			handleException(e);
@@ -231,7 +231,8 @@ public class UserService extends BaseService {
 				}
 				else if(userName.equals(newUserName)) {
 					existingUser.setUserName(newUserName);
-				} else if(existingSameNameUser != null) {
+				} 
+				else {
 					throw new ValidationException("User name already taken");
 				}
 				
