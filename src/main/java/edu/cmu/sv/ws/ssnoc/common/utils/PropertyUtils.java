@@ -24,6 +24,11 @@ public class PropertyUtils {
 	 * Database Connection URL.
 	 */
 	public static String DB_CONN_URL;
+	
+	/**
+	 * Test Database Connection URL.
+	 */
+	public static String DB_TEST_CONN_URL;
 
 	/**
 	 * User name used to connect to the database.
@@ -61,6 +66,7 @@ public class PropertyUtils {
 				prop.load(input);
 
 				DB_CONN_URL = prop.getProperty("dbConnURL");
+				DB_TEST_CONN_URL = prop.getProperty("testDbConnURL");
 				DB_USERNAME = prop.getProperty("dbUsername");
 				DB_PASSWORD = prop.getProperty("dbPassword");
 				DB_CONNECTION_POOL_SIZE = Integer.parseInt(prop
@@ -98,6 +104,11 @@ public class PropertyUtils {
 		if (DB_CONN_URL == null) {
 			Log.warn("Initializing DB_CONN_URL to system default values ...");
 			DB_CONN_URL = "jdbc:h2:file:~/h2db";
+		}
+		
+		if (DB_TEST_CONN_URL == null) {
+			Log.warn("Initializing DB_CONN_URL to system default values ...");
+			DB_TEST_CONN_URL = "jdbc:h2:file:~/h2db-test";
 		}
 
 		if (DB_USERNAME == null) {

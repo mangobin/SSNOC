@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -26,7 +27,7 @@ public class UsersService extends BaseService {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@XmlElementWrapper(name = "users")
 	public List<User> loadUsers() {
-		Log.enter();
+		Log.enter("all users");
 
 		List<User> users = null;
 		try {
@@ -45,4 +46,53 @@ public class UsersService extends BaseService {
 		
 		return users;
 	}
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path("/active")
+	public List<User> loadActiveUsers() {
+		Log.enter("load active users");
+
+		List<User> users = null;
+		try {
+			List<UserPO> userPOs = DAOFactory.getInstance().getUserDAO().loadUsers();
+
+			users = new ArrayList<User>();
+			for (UserPO po : userPOs) {
+				if(po != null && po.getAccountStatus().equals("Active")) {
+					User dto = ConverterUtils.convert(po);
+					users.add(dto);
+				}
+			}
+		} catch (Exception e) {
+			handleException(e);
+		} finally {
+			Log.exit(users);
+		}
+		
+		return users;
+	}
+	
+
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/{userName}/chatbuddies")
+	public List<User> retrieveChatBuddies(@PathParam("userName") String userName) {
+		Log.enter("retrieve chat buddies for: "+ userName);
+		long userID = DAOFactory.getInstance().getUserDAO().findByName(userName).getUserId();
+		List<UserPO> usersPO = DAOFactory.getInstance().getMessageDAO().findChatBuddies(userID);
+		
+		List<User> userDto = new ArrayList<User>();
+		
+		for(UserPO po : usersPO) {
+			User user = new User();
+			user = ConverterUtils.convert(po);
+			userDto.add(user);
+		}
+		
+		Log.exit(userDto);
+		
+		return userDto;
+	}
+	
 }

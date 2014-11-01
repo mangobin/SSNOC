@@ -7,6 +7,7 @@ import edu.cmu.sv.ws.ssnoc.common.logging.Log;
  */
 public class DAOFactory {
 	private static DAOFactory instance;
+	public static boolean fake = false;
 
 	/**
 	 * Singleton instance access method to get the instance of the class to
@@ -40,5 +41,20 @@ public class DAOFactory {
 	public IStatusDao getStatusDAO() {
 		return new StatusDAOImpl();
 	}
-
+	
+	/**
+	 * Method to get a new object implementing IStatusDAO
+	 * 
+	 * @return - Object implementing IStatusDAO
+	 */
+	public IMessageDAO getMessageDAO() {
+		if(fake)
+			return new MessageDAOFakeImpl();
+		else
+			return new MessageDAOImpl();
+	}
+	
+	public IMemoryDAO getMemoryDAO() {
+		return new MemoryDAOImpl();
+	}
 }

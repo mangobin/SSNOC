@@ -5,11 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
+import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
+import edu.cmu.sv.ws.ssnoc.common.utils.SSNCipher;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
+import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
+import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
+import edu.cmu.sv.ws.ssnoc.dto.Status;
 
 /**
  * This is a utility class to provide common functions to access and handle
@@ -18,14 +26,66 @@ import edu.cmu.sv.ws.ssnoc.data.SQL;
  */
 public class DBUtils {
 	private static boolean DB_TABLES_EXIST = false;
-	private static List<String> CREATE_TABLE_LST;
+	private static Map<String, String> CREATE_TABLE_MAP;
+	private static boolean TEST_MODE = false;
 
-	static {
-		CREATE_TABLE_LST = new ArrayList<String>();
-		CREATE_TABLE_LST.add(SQL.CREATE_USERS);
-		CREATE_TABLE_LST.add(SQL.CREATE_STATUSES);
+	static {		
+		CREATE_TABLE_MAP = new HashMap<String, String>();
+		CREATE_TABLE_MAP.put(SQL.SSN_USERS, SQL.CREATE_USERS);
+		CREATE_TABLE_MAP.put(SQL.SSN_STATUSES, SQL.CREATE_STATUSES);
+		CREATE_TABLE_MAP.put(SQL.SSN_MESSAGES, SQL.CREATE_MESSAGES);
+		CREATE_TABLE_MAP.put(SQL.SSN_MEMORY, SQL.CREATE_MEMORY);
+		//create fake message table
+		CREATE_TABLE_MAP.put(SQL.SSN_FAKE_MESSAGES, SQL.CREATE_FAKE_MESSAGES);
 	}
+	
+	/*
+	 * This method will set the whether the database used is the real
+	 * one or the test one
+	 */
+	public static void setTestMode(boolean testMode){
+		TEST_MODE = testMode;
+	}
+	
+	public static void dropDatabase() throws SQLException {
+		Log.enter();
 
+		Log.info("Dropping tables in database ...");
+		for(String tableName : CREATE_TABLE_MAP.keySet()){
+			try {
+					Connection conn = getConnection();
+					Statement stmt = conn.createStatement();
+					stmt.execute(SQL.DROP_TABLE_IN_DB + tableName);	
+					conn.close();
+				} catch(Exception e){
+					Log.error("Error dropping table: " + tableName);
+					e.printStackTrace();
+				}
+		}
+		Log.info("Tables dropped successfully");
+		DB_TABLES_EXIST = false;
+
+		Log.exit();
+	}
+	
+	public static void truncateDatabase() throws SQLException {
+		Log.enter();
+		Log.info("Truncating tables in database ...");
+		for(String tableName : CREATE_TABLE_MAP.keySet()){
+			try {
+					Connection conn = getConnection();
+					Statement stmt = conn.createStatement();
+					stmt.execute(SQL.TRUNCATE_TABLE_IN_DB + tableName);	
+					conn.close();
+				} catch(Exception e){
+					Log.error("Error Truncating table: " + tableName);
+					e.printStackTrace();
+				}
+		}
+		Log.info("Tables Truncating successfully");
+		Log.exit();
+	}
+  
 	/**
 	 * This method will initialize the database.
 	 * 
@@ -33,6 +93,32 @@ public class DBUtils {
 	 */
 	public static void initializeDatabase() throws SQLException {
 		createTablesInDB();
+		insertAdministrator();
+	}
+	
+	private static void insertAdministrator() {
+		if(DAOFactory.getInstance().getUserDAO().findByName("SSNAdmin") == null){
+			Log.enter("insert default Administrator");
+			UserPO userPO = new UserPO();
+			userPO.setUserName("SSNAdmin");
+			userPO.setPassword("admin");
+			userPO.setPrivilegeLevel("Administrator");
+			userPO.setAccountStatus("Active");
+			userPO.setCreatedAt(new Date());
+			userPO = SSNCipher.encryptPassword(userPO);
+			userPO.setLastStatusID(0);
+			DAOFactory.getInstance().getUserDAO().save(userPO);
+			
+//			UserPO user = DAOFactory.getInstance().getUserDAO().findByName(userPO.getUserName());
+//			StatusPO status = new StatusPO();
+//			status.setUserId(userPO.getUserId());
+//			status.setStatusCode("GREEN");
+//			status.setUpdatedAt(new Date());
+//
+//			long id = DAOFactory.getInstance().getStatusDAO().save(status);
+//			userPO.setLastStatusID(0);
+//			DAOFactory.getInstance().getUserDAO().save(user);	
+		}
 	}
 
 	/**
@@ -45,28 +131,25 @@ public class DBUtils {
 		if (DB_TABLES_EXIST) {
 			return;
 		}
-
-		final String CORE_TABLE_NAME = SQL.SSN_USERS;
-
-		try (Connection conn = getConnection();
+		
+		Log.info("Creating tables in database ...");
+		for(String tableName : CREATE_TABLE_MAP.keySet()){
+			try (Connection conn = getConnection();
 				Statement stmt = conn.createStatement();) {
-			if (!doesTableExistInDB(conn, CORE_TABLE_NAME)) {
-				Log.info("Creating tables in database ...");
-
-				for (String query : CREATE_TABLE_LST) {
-					Log.debug("Executing query: " + query);
-					boolean status = stmt.execute(query);
-					Log.debug("Query execution completed with status: "
-							+ status);
+					if(!doesTableExistInDB(conn, tableName)){
+						String query = CREATE_TABLE_MAP.get(tableName);
+						Log.debug("Executing query: " + query);
+						boolean status = stmt.execute(query);
+						Log.debug("Query execution completed with status: " + status);
+					}
+					conn.close();
+				} catch(Exception e){
+					Log.error("Error initializing table: " + tableName);
 				}
-
-				Log.info("Tables created successfully");
-			} else {
-				Log.info("Tables already exist in database. Not performing any action.");
-			}
-
-			DB_TABLES_EXIST = true;
 		}
+		Log.info("Tables initialized successfully");
+		DB_TABLES_EXIST = true;
+
 		Log.exit();
 	}
 
@@ -127,8 +210,13 @@ public class DBUtils {
 	 * @throws SQLException
 	 */
 	public static final Connection getConnection() throws SQLException {
-		IConnectionPool cp = ConnectionPoolFactory.getInstance()
-				.getH2ConnectionPool();
-		return cp.getConnection();
+		IConnectionPool pool = null;
+		if(!TEST_MODE){
+			pool = ConnectionPoolFactory.getInstance()
+					.getH2ConnectionPool();
+		} else {
+			pool = ConnectionPoolFactory.getInstance().getTestH2ConnectionPool();
+		}
+		return pool.getConnection();
 	}
 }

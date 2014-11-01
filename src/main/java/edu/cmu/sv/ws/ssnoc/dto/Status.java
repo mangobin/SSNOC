@@ -14,6 +14,26 @@ public class Status {
 	
 	private float locLng;
 	
+	private long statusId;
+	
+//	private long userId;
+//	
+//	public long getUserId() {
+//		return userId;
+//	}
+//
+//	public void setUserId(long userId) {
+//		this.userId = userId;
+//	}
+
+	public long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(long statusId) {
+		this.statusId = statusId;
+	}
+
 	public String getUserName() {
 		return userName;
 	}

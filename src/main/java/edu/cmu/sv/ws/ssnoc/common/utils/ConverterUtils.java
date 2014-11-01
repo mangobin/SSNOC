@@ -1,8 +1,13 @@
 package edu.cmu.sv.ws.ssnoc.common.utils;
 
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
+import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
+import edu.cmu.sv.ws.ssnoc.data.po.MemoryPO;
+import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
+import edu.cmu.sv.ws.ssnoc.dto.Memory;
+import edu.cmu.sv.ws.ssnoc.dto.Message;
 import edu.cmu.sv.ws.ssnoc.dto.Status;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 
@@ -37,6 +42,8 @@ public class ConverterUtils {
 		} else {
 			dto.setLastStatusCode(null);
 		}
+		dto.setAccountStatus(po.getAccountStatus());
+		dto.setPrivilegeLevel(po.getPrivilegeLevel());		
 
 		return dto;
 	}
@@ -58,6 +65,8 @@ public class ConverterUtils {
 		po.setUserName(dto.getUserName());
 		po.setPassword(dto.getPassword());
 		po.setCreatedAt(TimestampUtil.convert(dto.getCreatedAt()));
+		po.setAccountStatus(dto.getAccountStatus());
+		po.setPrivilegeLevel(dto.getPrivilegeLevel());
 
 		return po;
 	}
@@ -72,7 +81,15 @@ public class ConverterUtils {
 		po.setUpdatedAt(TimestampUtil.convert(dto.getUpdatedAt()));
 		po.setLocLat(dto.getLocLat());
 		po.setLocLng(dto.getLocLng());
-		po.setUserName(dto.getUserName());
+		po.setStatusId(dto.getStatusId());
+		
+		UserPO user = DAOFactory.getInstance().getUserDAO().findByName(dto.getUserName());
+		if( user !=null) {
+			long userId = user.getUserId();	
+			po.setUserId(userId);
+		} 
+		
+		
 		return po;
 	}
 	
@@ -86,8 +103,103 @@ public class ConverterUtils {
 		dto.setUpdatedAt(TimestampUtil.convert(po.getUpdatedAt()));
 		dto.setLocLat(po.getLocLat());
 		dto.setLocLng(po.getLocLng());
-		dto.setUserName(po.getUserName());
+		dto.setStatusId(po.getStatusId());
 		
+		UserPO user = DAOFactory.getInstance().getUserDAO().findByUserID(po.getUserId());
+		if(user != null) {
+			String userName = user.getUserName();
+			dto.setUserName(userName);
+				
+		}
 		return dto;
 	}
+	
+	public static final Message convert(MessagePO po) {
+		if(po == null)
+			return null;
+		Message dto = new Message();
+		
+		dto.setContent(po.getContent());
+		dto.setMessageID(po.getMessageId());
+		dto.setMessageType(po.getMessageType());
+		dto.setPostedAt(TimestampUtil.convert(po.getPostedAt()));
+		
+		IUserDAO dao = DAOFactory.getInstance().getUserDAO();
+		UserPO user = dao.findByUserID(po.getAuthor());
+		if(user != null){
+			dto.setAuthor(user.getUserName());
+		} else {
+			dto.setAuthor(null);
+		}
+		
+		user = dao.findByUserID(po.getTarget());
+		if(user != null){
+			dto.setTarget(user.getUserName());
+		} else {
+			dto.setTarget(null);
+		}
+		
+		return dto;
+		
+	}
+	
+	public static final MessagePO convert(Message dto) {
+		if(dto == null)
+			return null;
+		MessagePO  po = new MessagePO();
+		
+		po.setContent(dto.getContent());
+		po.setMessageId(dto.getMessageID());
+		po.setMessageType(dto.getMessageType());
+						
+		po.setPostedAt(TimestampUtil.convert(dto.getPostedAt()));
+		
+		IUserDAO dao = DAOFactory.getInstance().getUserDAO();
+		UserPO user = dao.findByName(dto.getAuthor());
+		if(user != null){
+			po.setAuthor(user.getUserId());
+		} else {
+			po.setAuthor(0);
+		}
+		
+		user = dao.findByName(dto.getTarget());
+		if(user != null){
+			po.setTarget(user.getUserId());
+		} else {
+			po.setTarget(0);
+		}
+
+		return po;
+	}
+	
+	public static final MemoryPO convert(Memory dto) {
+		if(dto == null)
+			return null;
+		MemoryPO po = new MemoryPO();
+		po.setCreatedAt(TimestampUtil.convert(dto.getCreatedAt()));
+		po.setMemoryID(dto.getMemoryID());
+		po.setRemainingPersistent(dto.getRemainingPersistent());
+		po.setRemainingVolatile(dto.getRemainingVolatile());
+		po.setUsedPersistent(dto.getUsedPersistent());
+		po.setUsedVolatile(dto.getUsedVolatile());
+		
+		return po;
+	}
+	
+	public static final Memory convert(MemoryPO po) {
+		if(po == null)
+			return null;
+		Memory dto = new Memory();
+		dto.setCreatedAt(TimestampUtil.convert(po.getCreatedAt()));
+		dto.setMemoryID(po.getMemoryID());
+		dto.setRemainingPersistent(po.getRemainingPersistent());
+		dto.setRemainingVolatile(po.getRemainingVolatile());
+		dto.setUsedPersistent(po.getUsedPersistent());
+		dto.setUsedVolatile(po.getUsedVolatile());
+		
+		return dto;
+		
+	}
+	
+	
 }

@@ -29,6 +29,7 @@ public class StatusService extends BaseService {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{userName}")
 	public Response createStatus(@PathParam("userName") String userName, Status status){
+		
 		Log.enter(status);
 		Log.debug("Searching for user: " + userName);
 		// verify user exists, if Not -- return 404?
@@ -58,9 +59,10 @@ public class StatusService extends BaseService {
 		existingUser.setLastStatusID(id);
 		dao.save(existingUser);
 		
+		Status dto = ConverterUtils.convert(po);
 		// return 201 -- created
 		Log.exit();
-		return created(id);
+		return created(dto);
 	}
 	
 	@GET

@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class TimestampUtil {
 
-	public static String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ssZ";
+	public static String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm";
 	
 	public static final Date convert(String timestamp){
 		try {

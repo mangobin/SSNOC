@@ -19,6 +19,24 @@ public class UserPO {
 	private Date createdAt;
 	private Date modifiedAt;
 	private long lastStatusID;
+	private String privilegeLevel;
+	private String accountStatus;
+
+	public String getPrivilegeLevel() {
+		return privilegeLevel;
+	}
+
+	public void setPrivilegeLevel(String privilegeLevel) {
+		this.privilegeLevel = privilegeLevel;
+	}
+
+	public String getAccountStatus() {
+		return accountStatus;
+	}
+
+	public void setAccountStatus(String accountStatus) {
+		this.accountStatus = accountStatus;
+	}
 	
 	public Date getCreatedAt() {
 		return createdAt;

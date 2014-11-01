@@ -43,7 +43,7 @@ public class UserService extends BaseService {
 	 * 
 	 * If a user exists, but the password is wrong, return 400 Bad request
 	 * 
-	 * Note: Last modified by Bin at 9:34 am on Sept. 24
+	 * Note: Last modified by Bin at 6:17 pm on OCT. 23
 	 * @param user
 	 *            - An object of type User
 	 * @return - An object of type Response with the status of the request
@@ -84,6 +84,9 @@ public class UserService extends BaseService {
 			UserPO po = ConverterUtils.convert(user);
 			po = SSNCipher.encryptPassword(po);
 
+			//set default privilege level and account status
+			po.setAccountStatus("Active");
+			po.setPrivilegeLevel("Citizen");
 			dao.save(po);
 			resp = ConverterUtils.convert(po);
 			
@@ -121,8 +124,11 @@ public class UserService extends BaseService {
 
 		try {
 			UserPO po = loadExistingUser(userName);
+			if(po.getAccountStatus() != null && !po.getAccountStatus().equals("Active")) {
+				throw new UnauthorizedUserException(userName, "Account has been deactivated");
+			}
 			if (!validateUserPassword(pass.getPassword(), po)) {
-				throw new UnauthorizedUserException(userName);
+				throw new UnauthorizedUserException(userName, "Invalid password");
 			}
 		} catch (Exception e) {
 			handleException(e);
@@ -206,6 +212,9 @@ public class UserService extends BaseService {
 
 		String newUserName = user.getUserName();
 		String newPassWord = user.getPassword();
+		String newAccountStatus = user.getAccountStatus();
+		String newPrivilegeLevel  = user.getPrivilegeLevel();
+		
 		User temp = new User();
 		
 		try {
@@ -214,35 +223,50 @@ public class UserService extends BaseService {
 			
 			if(existingUser == null) {
 				throw new UnknownUserException(userName);
-			} else if(newUserName != null && newPassWord !=null) {
-				existingUser.setUserName(newUserName);
-				existingUser.setPassword(newPassWord);
-				existingUser = SSNCipher.encryptPassword(existingUser);
-
-				dao.save(existingUser);
-				
-				temp =  ConverterUtils.convert(existingUser);
-
-				return created(temp);
-			} else if(newUserName != null) {
-				existingUser.setUserName(newUserName);
-				dao.save(existingUser);
-				temp =  ConverterUtils.convert(existingUser);
-				return created(temp);
-			} else {
-				existingUser.setPassword(newPassWord);
-				existingUser = SSNCipher.encryptPassword(existingUser);
-				dao.save(existingUser);
-				temp =  ConverterUtils.convert(existingUser);	
 			}
+			if(newUserName != null ) {
+				UserPO existingSameNameUser = dao.findByName(newUserName);
+				if(existingSameNameUser == null) {
+					existingUser.setUserName(newUserName);
+				}
+				else if(userName.equals(newUserName)) {
+					existingUser.setUserName(newUserName);
+				} 
+				else {
+					throw new ValidationException("User name already taken");
+				}
+				
+			}
+			if(newPassWord != null) {
+				existingUser.setPassword(newPassWord);
+				existingUser = SSNCipher.encryptPassword(existingUser);
+			} 
+			
+			if(newAccountStatus != null) {
+				existingUser.setAccountStatus(newAccountStatus);
+			}
+			if(newPrivilegeLevel != null) { 
+				existingUser.setPrivilegeLevel(newPrivilegeLevel);
+			}
+			
+			UserValidator validator = new UserValidator();
+			
+			if(!validator.validate(user)){
+				throw new ValidationException("User name is not allowed");
+			}
+
+			dao.save(existingUser);
+			temp =  ConverterUtils.convert(existingUser);
 		}catch (Exception e) {
 			handleException(e);
 		} finally {
 			Log.exit();
 		}
 		
-
-		return ok(temp);
+		if(newUserName != null && !newUserName.equals(userName))
+			return created(temp);
+		else
+			return ok(temp);
 
 	}
 }
