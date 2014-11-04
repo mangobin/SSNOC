@@ -1,13 +1,11 @@
 package edu.cmu.sv.ws.ssnoc.test;
 
-import static org.junit.Assert.*;
 
 import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.eclipsesource.restfuse.Assert;

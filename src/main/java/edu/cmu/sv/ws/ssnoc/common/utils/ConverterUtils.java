@@ -115,8 +115,10 @@ public class ConverterUtils {
 	}
 	
 	public static final Message convert(MessagePO po) {
-		if(po == null)
+		if(po == null) {
 			return null;
+		}
+			
 		Message dto = new Message();
 		
 		dto.setContent(po.getContent());
@@ -144,8 +146,9 @@ public class ConverterUtils {
 	}
 	
 	public static final MessagePO convert(Message dto) {
-		if(dto == null)
+		if(dto == null) {
 			return null;
+		}
 		MessagePO  po = new MessagePO();
 		
 		po.setContent(dto.getContent());
@@ -173,8 +176,9 @@ public class ConverterUtils {
 	}
 	
 	public static final MemoryPO convert(Memory dto) {
-		if(dto == null)
+		if(dto == null) {
 			return null;
+		}
 		MemoryPO po = new MemoryPO();
 		po.setCreatedAt(TimestampUtil.convert(dto.getCreatedAt()));
 		po.setMemoryID(dto.getMemoryID());
@@ -187,8 +191,9 @@ public class ConverterUtils {
 	}
 	
 	public static final Memory convert(MemoryPO po) {
-		if(po == null)
+		if(po == null) {
 			return null;
+		}
 		Memory dto = new Memory();
 		dto.setCreatedAt(TimestampUtil.convert(po.getCreatedAt()));
 		dto.setMemoryID(po.getMemoryID());

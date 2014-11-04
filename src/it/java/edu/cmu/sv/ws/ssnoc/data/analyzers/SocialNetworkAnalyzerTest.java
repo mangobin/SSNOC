@@ -20,9 +20,16 @@ public class SocialNetworkAnalyzerTest {
 	SocialNetworkAnalyzer sut;
 	List<User> users;
 	List<Message> messages;
+	static String cef;
+	static String bin;
+	static String nikhil;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		 cef = "Cef";
+		 bin = "Bin";
+		 nikhil = "Nikhil";
+		 
 	}
 
 	@AfterClass
@@ -42,11 +49,11 @@ public class SocialNetworkAnalyzerTest {
 	public void testThatWithNoMessageWeHaveOneSetOfAllUsers(){
 		users = new ArrayList<User>();
 		User user1 = new User();
-		user1.setUserName("Cef");
+		user1.setUserName(cef);
 		User user2 = new User();
-		user2.setUserName("Bin");
+		user2.setUserName(bin);
 		User user3 = new User();
-		user3.setUserName("Nikhil");
+		user3.setUserName(nikhil);
 		User user4 = new User();
 		user4.setUserName("Jian");
 		
@@ -67,9 +74,9 @@ public class SocialNetworkAnalyzerTest {
 		users = new ArrayList<User>();
 		messages = new ArrayList<Message>();
 		User user1 = new User();
-		user1.setUserName("Cef");
+		user1.setUserName(cef);
 		User user2 = new User();
-		user2.setUserName("Bin");
+		user2.setUserName(bin);
 
 		users.add(user1);
 		users.add(user2);
@@ -77,8 +84,8 @@ public class SocialNetworkAnalyzerTest {
 		sut.loadUsers(users);
 
 		Message msg = new Message();
-		msg.setAuthor("Cef");
-		msg.setTarget("Bin");
+		msg.setAuthor(cef);
+		msg.setTarget(bin);
 		messages.add(msg);
 		
 		sut.loadMessages(messages);
@@ -94,11 +101,11 @@ public class SocialNetworkAnalyzerTest {
 		users = new ArrayList<User>();
 		messages = new ArrayList<Message>();
 		User user1 = new User();
-		user1.setUserName("Cef");
+		user1.setUserName(cef);
 		User user2 = new User();
-		user2.setUserName("Bin");
+		user2.setUserName(bin);
 		User user3 = new User();
-		user3.setUserName("Nikhil");
+		user3.setUserName(nikhil);
 
 		users.add(user1);
 		users.add(user2);
@@ -107,8 +114,8 @@ public class SocialNetworkAnalyzerTest {
 		sut.loadUsers(users);
 
 		Message msg = new Message();
-		msg.setAuthor("Cef");
-		msg.setTarget("Bin");
+		msg.setAuthor(cef);
+		msg.setTarget(bin);
 		messages.add(msg);
 		
 		sut.loadMessages(messages);
@@ -124,11 +131,11 @@ public class SocialNetworkAnalyzerTest {
 		users = new ArrayList<User>();
 		messages = new ArrayList<Message>();
 		User user1 = new User();
-		user1.setUserName("Cef");
+		user1.setUserName(cef);
 		User user2 = new User();
-		user2.setUserName("Bin");
+		user2.setUserName(bin);
 		User user3 = new User();
-		user3.setUserName("Nikhil");
+		user3.setUserName(nikhil);
 
 		users.add(user1);
 		users.add(user2);
@@ -137,13 +144,13 @@ public class SocialNetworkAnalyzerTest {
 		sut.loadUsers(users);
 
 		Message msg = new Message();
-		msg.setAuthor("Cef");
-		msg.setTarget("Bin");
+		msg.setAuthor(cef);
+		msg.setTarget(bin);
 		messages.add(msg);
 		
 		Message msg2 = new Message();
-		msg2.setAuthor("Bin");
-		msg2.setTarget("Nikhil");
+		msg2.setAuthor(bin);
+		msg2.setTarget(nikhil);
 		messages.add(msg2);
 		
 		sut.loadMessages(messages);
@@ -151,13 +158,13 @@ public class SocialNetworkAnalyzerTest {
 		List<Set<String>> unconnected = sut.getUnconnectedUsers();
 		assertEquals(2, unconnected.size());
 		if(unconnected.get(0).size() == 1){
-			assertTrue(unconnected.get(0).contains("Bin"));
-			assertTrue(unconnected.get(1).contains("Cef"));
-			assertTrue(unconnected.get(1).contains("Nikhil"));
+			assertTrue(unconnected.get(0).contains(bin));
+			assertTrue(unconnected.get(1).contains(cef));
+			assertTrue(unconnected.get(1).contains(nikhil));
 		} else {
-			assertTrue(unconnected.get(0).contains("Cef"));
-			assertTrue(unconnected.get(0).contains("Nikhil"));
-			assertTrue(unconnected.get(1).contains("Bin"));
+			assertTrue(unconnected.get(0).contains(cef));
+			assertTrue(unconnected.get(0).contains(nikhil));
+			assertTrue(unconnected.get(1).contains(bin));
 		}
 	}
 	

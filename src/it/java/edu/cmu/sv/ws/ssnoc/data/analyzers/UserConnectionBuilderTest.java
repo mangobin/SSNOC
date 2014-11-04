@@ -13,9 +13,13 @@ import org.junit.Test;
 public class UserConnectionBuilderTest {
 	
 	UserConnectionBuilder sut;
+	static String cef;
+	static String bin;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		cef = "Cef";
+		bin = "Bin";
 	}
 
 	@AfterClass
@@ -33,33 +37,33 @@ public class UserConnectionBuilderTest {
 
 	@Test
 	public void testThatWeCanAddOneUser(){
-		sut.addUser("Bin");
+		sut.addUser(bin);
 		List<UserConnections> userConnections = sut.getUserConnections();
 		assertEquals(userConnections.size(), 1);
 	}
 	
 	@Test
 	public void testThatWeCanAddTwoUsers(){
-		sut.addUser("Bin");
-		sut.addUser("Cef");
+		sut.addUser(bin);
+		sut.addUser(cef);
 		List<UserConnections> userConnections = sut.getUserConnections();
 		assertEquals(userConnections.size(), 2);
 	}
 
 	@Test
 	public void testThatSendingAMessageWillAddAConnection(){
-		sut.addUser("Bin");
-		sut.addConnection("Bin", "Cef");
+		sut.addUser(bin);
+		sut.addConnection(bin, cef);
 		List<UserConnections> userConnections = sut.getUserConnections();
-		assertTrue(userConnections.get(0).getConnections().contains("Cef"));
+		assertTrue(userConnections.get(0).getConnections().contains(cef));
 	}
 	
 	@Test
 	public void testThatReceivingAMessageWillAddAConnection(){
-		sut.addUser("Bin");
-		sut.addConnection("Cef", "Bin");
+		sut.addUser(bin);
+		sut.addConnection(cef, bin);
 		List<UserConnections> userConnections = sut.getUserConnections();
-		assertTrue(userConnections.get(0).getConnections().contains("Cef"));
+		assertTrue(userConnections.get(0).getConnections().contains(cef));
 	}
 
 }
