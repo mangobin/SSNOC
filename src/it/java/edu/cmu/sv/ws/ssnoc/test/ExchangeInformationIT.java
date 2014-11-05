@@ -22,10 +22,10 @@ import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.TimestampUtil;
 
 @RunWith(HttpJUnitRunner.class)
-public class ExchangeInformationTest {
+public class ExchangeInformationIT {
 	@Rule
 	public Destination destination = new Destination(this,
-			"http://localhost:4321/ssnoc");
+			"http://localhost:1234/ssnoc");
 	@Context
 	public Response response;
 	String temp;

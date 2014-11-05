@@ -17,7 +17,7 @@ import com.eclipsesource.restfuse.annotation.HttpTest;
 public class StatusServiceIT {
 	@Rule
 	public Destination destination = new Destination(this,
-			"http://localhost:4321/ssnoc");
+			"http://localhost:1234/ssnoc");
 
 	@Context
 	public Response response;
