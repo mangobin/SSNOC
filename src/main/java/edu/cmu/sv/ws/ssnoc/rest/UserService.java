@@ -77,9 +77,7 @@ public class UserService extends BaseService {
 			
 			UserValidator validator = new UserValidator();
 			
-			if(!validator.validate(user)){
-				throw new ValidationException("User name is not allowed");
-			}
+			validUser(user, validator);
 
 			UserPO po = ConverterUtils.convert(user);
 			po = SSNCipher.encryptPassword(po);
@@ -224,36 +222,17 @@ public class UserService extends BaseService {
 			if(existingUser == null) {
 				throw new UnknownUserException(userName);
 			}
-			if(newUserName != null ) {
-				UserPO existingSameNameUser = dao.findByName(newUserName);
-				if(existingSameNameUser == null) {
-					existingUser.setUserName(newUserName);
-				}
-				else if(userName.equals(newUserName)) {
-					existingUser.setUserName(newUserName);
-				} 
-				else {
-					throw new ValidationException("User name already taken");
-				}
-				
-			}
-			if(newPassWord != null) {
-				existingUser.setPassword(newPassWord);
-				existingUser = SSNCipher.encryptPassword(existingUser);
-			} 
+			checkNewUserName(userName, newUserName, dao, existingUser);
 			
-			if(newAccountStatus != null) {
-				existingUser.setAccountStatus(newAccountStatus);
-			}
-			if(newPrivilegeLevel != null) { 
-				existingUser.setPrivilegeLevel(newPrivilegeLevel);
-			}
+			existingUser = setNewPasswordisNotNull(newPassWord, existingUser); 
+			
+			setAccountStatusIfNotNull(newAccountStatus, existingUser);
+			
+			setPrivilegeLevelIfNotNull(newPrivilegeLevel, existingUser);
 			
 			UserValidator validator = new UserValidator();
 			
-			if(!validator.validate(user)){
-				throw new ValidationException("User name is not allowed");
-			}
+			validUser(user, validator);
 
 			dao.save(existingUser);
 			temp =  ConverterUtils.convert(existingUser);
@@ -263,10 +242,86 @@ public class UserService extends BaseService {
 			Log.exit();
 		}
 		
-		if(newUserName != null && !newUserName.equals(userName))
+		if(newUserName != null && !newUserName.equals(userName)) {
 			return created(temp);
-		else
+		}
+		else {
 			return ok(temp);
+		}
 
+	}
+
+
+	/**
+	 * @param userName
+	 * @param newUserName
+	 * @param dao
+	 * @param existingUser
+	 */
+	private void checkNewUserName(String userName, String newUserName,
+			IUserDAO dao, UserPO existingUser) {
+		if(newUserName != null ) {
+			UserPO existingSameNameUser = dao.findByName(newUserName);
+			if(existingSameNameUser == null) {
+				existingUser.setUserName(newUserName);
+			}
+			else if(userName.equals(newUserName)) {
+				existingUser.setUserName(newUserName);
+			} 
+			else {
+				throw new ValidationException("User name already taken");
+			}
+			
+		}
+	}
+
+
+	/**
+	 * @param user
+	 * @param validator
+	 */
+	private void validUser(User user, UserValidator validator) {
+		if(!validator.validate(user)){
+			throw new ValidationException("User name is not allowed");
+		}
+	}
+
+
+	/**
+	 * @param newPrivilegeLevel
+	 * @param existingUser
+	 */
+	private void setPrivilegeLevelIfNotNull(String newPrivilegeLevel,
+			UserPO existingUser) {
+		if (newPrivilegeLevel != null) {
+			existingUser.setPrivilegeLevel(newPrivilegeLevel);
+		}
+	}
+
+
+	/**
+	 * @param newAccountStatus
+	 * @param existingUser
+	 */
+	private void setAccountStatusIfNotNull(String newAccountStatus,
+			UserPO existingUser) {
+		if(newAccountStatus != null) {
+			existingUser.setAccountStatus(newAccountStatus);
+		}
+	}
+
+
+	/**
+	 * @param newPassWord
+	 * @param existingUser
+	 * @return
+	 */
+	private UserPO setNewPasswordisNotNull(String newPassWord,
+			UserPO existingUser) {
+		if(newPassWord != null) {
+			existingUser.setPassword(newPassWord);
+			existingUser = SSNCipher.encryptPassword(existingUser);
+		}
+		return existingUser;
 	}
 }

@@ -207,32 +207,16 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
 			ResultSet rs = stmt.executeQuery();
 			HashSet<Long> chatBuddiesSet = new HashSet<Long>();
-			while(rs.next()){
-				long tartgetBuddyId = rs.getLong("target");
-				if(!chatBuddiesSet.contains(tartgetBuddyId)) {
-					chatBuddiesSet.add(tartgetBuddyId);
-					UserPO  po = DAOFactory.getInstance().getUserDAO().findByUserID(tartgetBuddyId);
-					if(po != null)
-						users.add(po);
-				}
-				
-			}
+			
+			findCharBuddyTarget(users, rs, chatBuddiesSet);
 			
 			stmt = conn.prepareStatement(SQL.FIND_CHAT_BUDDIES_TARGET);
 			stmt.setLong(1, userId);
 			stmt.setString(2, SQL.MESSAGE_TYPE_CHAT);
 			rs = stmt.executeQuery();
-			while(rs.next()){
-				long authorBuddyId = rs.getLong("author");
-
-				if(!chatBuddiesSet.contains(authorBuddyId)) {
-					chatBuddiesSet.add(authorBuddyId);
-					UserPO  po = DAOFactory.getInstance().getUserDAO().findByUserID(authorBuddyId);
-					if(po != null)
-						users.add(po);
-				}
-				
-			}
+			
+			findChatBuddyAuthor(users, rs, chatBuddiesSet);
+			
 			conn.close();
 		} catch(SQLException e){
 			handleException(e);
@@ -241,6 +225,49 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		}
 
 		return users;
+	}
+
+	/**
+	 * @param users
+	 * @param rs
+	 * @param chatBuddiesSet
+	 * @throws SQLException
+	 */
+	private void findChatBuddyAuthor(List<UserPO> users, ResultSet rs,
+			HashSet<Long> chatBuddiesSet) throws SQLException {
+		while(rs.next()){
+			long authorBuddyId = rs.getLong("author");
+
+			if(!chatBuddiesSet.contains(authorBuddyId)) {
+				chatBuddiesSet.add(authorBuddyId);
+				UserPO  po = DAOFactory.getInstance().getUserDAO().findByUserID(authorBuddyId);
+				if(po != null) {
+					users.add(po);
+				}
+			}
+			
+		}
+	}
+
+	/**
+	 * @param users
+	 * @param rs
+	 * @param chatBuddiesSet
+	 * @throws SQLException
+	 */
+	private void findCharBuddyTarget(List<UserPO> users, ResultSet rs,
+			HashSet<Long> chatBuddiesSet) throws SQLException {
+		while(rs.next()){
+			long tartgetBuddyId = rs.getLong("target");
+			if(!chatBuddiesSet.contains(tartgetBuddyId)) {
+				chatBuddiesSet.add(tartgetBuddyId);
+				UserPO  po = DAOFactory.getInstance().getUserDAO().findByUserID(tartgetBuddyId);
+				if(po != null) {
+					users.add(po);
+				}
+			}
+			
+		}
 	} 
 	
 	@Override

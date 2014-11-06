@@ -75,7 +75,6 @@ public class UserServiceIT {
 	public void testAuthenticateOne() {
 
 		assertOk(response);
-		String messg = response.getBody();
 	}
 	
 	// if the user name exists, but the password is wrong
@@ -83,7 +82,6 @@ public class UserServiceIT {
 			content = "{\"password\":\"1233\"}") 
 	public void testAuthenticateTwo() {
 		Assert.assertUnauthorized(response);
-		String messg = response.getBody();
 	}
 	
 	//	if the user name does not exist
@@ -91,7 +89,6 @@ public class UserServiceIT {
 			content = "{\"password\":\"1234\"}") 
 	public void testAuthenticateThree() {
 		Assert.assertNotFound(response);
-		String messg = response.getBody();
 	}
 	
 	//	End of authentication tests
@@ -132,7 +129,6 @@ public class UserServiceIT {
 //	}
 	
 	// sign up with invalid username
-	@SuppressWarnings("deprecation")
 	@HttpTest(method = Method.POST, path = "user/signup", type = MediaType.APPLICATION_JSON,
 			content = "{\"userName\":\"www\", \"password\":\"pass\",\"createdAt\":\"2014-09-29 09:15\"}")
 	public void testSignupInvalidUserName(){

@@ -48,10 +48,14 @@ public class DAOFactory {
 	 * @return - Object implementing IStatusDAO
 	 */
 	public IMessageDAO getMessageDAO() {
-		if(fake)
+		if(fake){
 			return new MessageDAOFakeImpl();
-		else
+		}
+			
+		else {
 			return new MessageDAOImpl();
+
+		}
 	}
 	
 	public IMemoryDAO getMemoryDAO() {
