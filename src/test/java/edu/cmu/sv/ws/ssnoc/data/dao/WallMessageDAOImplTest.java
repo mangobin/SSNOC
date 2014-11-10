@@ -61,5 +61,46 @@ public class WallMessageDAOImplTest {
 		assertEquals("WALL", messages.get(0).getMessageType());
 		assertEquals(date, messages.get(0).getPostedAt());
 	}
+	
+	@Test
+	public void testTruncatingMessageTable() {
+		Date date= new Date();
+		MessagePO input = new MessagePO();
+		input.setAuthor(1);
+		input.setContent("New Message");
+		input.setMessageType("WALL");
+		input.setPostedAt(date);
+		
+		MessageDAOImpl messageDAO = new MessageDAOImpl();
+		long ID =  messageDAO.save(input);
+		assertNotEquals(0, ID);
+		MessageDAOImpl messageDAO1 = new MessageDAOImpl();
+		messageDAO1.truncateMessageTable();
+		List<MessagePO> messages = messageDAO.findLatestWallMessages(1, 0);
+		assertTrue(messages.isEmpty());
+	}
+	
+	@Test
+	public void testUpdatingMessage() {
+		Date date= new Date();
+		MessagePO input = new MessagePO();
+		input.setAuthor(1);
+		input.setContent("New Message");
+		input.setMessageType("WALL");
+		input.setPostedAt(date);
+		
+		MessageDAOImpl messageDAO = new MessageDAOImpl();
+		long ID =  messageDAO.save(input);
+		assertNotEquals(0, ID);
+		MessagePO m = messageDAO.findMessageById(ID);
+		assertEquals("New Message", m.getContent());
+	
+		input.setContent("Updated Message");
+		MessageDAOImpl messageDAO1 = new MessageDAOImpl();
+		long ID1 = messageDAO1.save(input);
+		assertNotEquals(0, ID1);
+		MessagePO m1 = messageDAO.findMessageById(ID1);
+		assertEquals("Updated Message", m1.getContent());
+	}
 
 }
