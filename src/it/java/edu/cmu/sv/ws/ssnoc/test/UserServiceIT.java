@@ -2,14 +2,8 @@ package edu.cmu.sv.ws.ssnoc.test;
 
 import static com.eclipsesource.restfuse.Assert.assertOk;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import org.eclipse.jetty.util.log.Log;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
@@ -23,8 +17,6 @@ import com.eclipsesource.restfuse.annotation.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import edu.cmu.sv.ws.ssnoc.data.util.DBUtils;
-import edu.cmu.sv.ws.ssnoc.dto.Message;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 
 @RunWith(HttpJUnitRunner.class)
@@ -140,128 +132,4 @@ public class UserServiceIT {
 		Assert.assertOk(response);
 	}
 		
-	//****************************************************
-	//	Start of authentication test
-	//	Three different cases
-	/*
-	// if the user name exists, and the password is correct
-	@HttpTest(method = Method.POST, path = "user/justForTest/authenticate", type = MediaType.APPLICATION_JSON, 
-			content = "{\"password\":\"1234\"}") 
-	public void testAuthenticateOne() {
-
-		assertOk(response);
-	}
-	
-	// if the user name exists, but the password is wrong
-	@HttpTest(method = Method.POST, path = "user/justForTest/authenticate", type = MediaType.APPLICATION_JSON, 
-			content = "{\"password\":\"1233\"}") 
-	public void testAuthenticateTwo() {
-		Assert.assertUnauthorized(response);
-	}
-	
-	//	if the user name does not exist
-	@HttpTest(method = Method.POST, path = "user/non-existed-users/authenticate", type = MediaType.APPLICATION_JSON, 
-			content = "{\"password\":\"1234\"}") 
-	public void testAuthenticateThree() {
-		Assert.assertNotFound(response);
-	}
-	
-	//	End of authentication tests
-	//*****************************************************
-	
-	
-	
-	//*****************************************************
-	//	Start of sign up tests
-	//	Three different cases for sign up tests
-	
-	//if a user already exists, and the password is correct.
-	@HttpTest(method = Method.POST, path = "user/signup", type = MediaType.APPLICATION_JSON, 
-			content = "{\"userName\":\"justForTest\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}" ) 
-	public void testSignupOne() {
-		assertOk(response);
-		String messg = response.getBody();
-		System.out.println(messg);
-	}
-	
-	// if a user already exists, but the password is wrong.
-	@HttpTest(method = Method.POST, path = "user/signup", type = MediaType.APPLICATION_JSON, 
-			content = "{\"userName\":\"justForTest\",\"password\":\"1233\",\"createAt\":\"2014-09-24 09:15\"}" ) 
-	public void testSignupTwo() {
-		Assert.assertBadRequest(response);
-		String messg = response.getBody();
-		System.out.println(messg);
-	}
-	
-	//sign up as a new user. 
-	//note: every time you run this, you should replace the user name with a new one
-//	@HttpTest(method = Method.POST, path = "user/signup", type = MediaType.APPLICATION_JSON, 
-//			content = "{\"userName\":\"Cef\",\"password\":\"pass\",\"createAt\":\"2014-09-24 09:15\"}" ) 
-//	public void testSignupThree() {
-//		Assert.assertCreated(response);
-//		String messg = response.getBody();
-//		System.out.println(messg);
-//	}
-	
-	// sign up with invalid username
-	@HttpTest(method = Method.POST, path = "user/signup", type = MediaType.APPLICATION_JSON,
-			content = "{\"userName\":\"www\", \"password\":\"pass\",\"createdAt\":\"2014-09-29 09:15\"}")
-	public void testSignupInvalidUserName(){
-		Assert.assertBadRequest(response);
-		String messg = response.getBody();
-		
-		System.out.println(messg);
-	}
-	
-	//	End of sign up tests
-	//*****************************************************
-	
-	
-	//*****************************************************
-	//	Start of retrieve all users test
-	
-	@SuppressWarnings("deprecation")
-	@HttpTest(method = Method.GET, headers = {@Header(name = "Accept", value = "application/json")},
-			path = "users", type = MediaType.APPLICATION_XML, content = "") 
-	public void testRetrieveAllUsers() {
-		Assert.assertOk(response);
-		String messg = response.getBody();
-		Log.debug("3333333333"+messg);
-	}
-	
-	//	End of retrieve all users  test
-	//*****************************************************
-	
-	
-	//*****************************************************
-	//	Start of retrieve a user's record test
-	
-	@HttpTest(method = Method.GET, headers = {@Header(name = "Accept", value = "application/json")},
-			path = "user/justForTest",  content = "") 
-	public void testRetrieveOneUserRec() {
-		Assert.assertOk(response);
-		String messg = response.getBody();
-		System.out.println(messg);
-
-	}
-	
-	//	End of retrieve a user's record test
-	//*****************************************************
-	
-	//*****************************************************
-	//	Start of update a user's record test
-	
-	@HttpTest(method = Method.PUT, headers = {@Header(name = "Accept", value = "application/json")},
-			type = MediaType.APPLICATION_JSON, path = "user/justForTest",  content = "{\"password\":\"1234\"}") 
-	public void testUpdateOneUserRec() {
-		Assert.assertOk(response);
-		String messg = response.getBody();
-		System.out.println(messg);
-
-	}
-	
-	//	End of update a user's record test
-	//*****************************************************
-	
-	*/
 }
