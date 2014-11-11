@@ -3,6 +3,7 @@ package edu.cmu.sv.ws.ssnoc.test;
 import static com.eclipsesource.restfuse.Assert.assertOk;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.eclipse.jetty.util.log.Log;
 import org.junit.After;
@@ -19,56 +20,130 @@ import com.eclipsesource.restfuse.MediaType;
 import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.Response;
 import com.eclipsesource.restfuse.annotation.*;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import edu.cmu.sv.ws.ssnoc.data.util.DBUtils;
+import edu.cmu.sv.ws.ssnoc.dto.Message;
+import edu.cmu.sv.ws.ssnoc.dto.User;
 
 @RunWith(HttpJUnitRunner.class)
 public class UserServiceIT {
 	@Rule
 	public Destination destination = new Destination(this,
-			"http://localhost:1234/ssnoc/");
+			"http://localhost:1234/ssnoc");
 	@Context
 	public Response response;
+	
+	// get all users, should exist
+	@HttpTest(order=1, method=Method.GET, path="/users", headers={@Header(name="Accept", value="application/json")})
+	public void testGetUnknownUsers(){
+		assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		for(User user : objects){
+			if(user.getUserName().equalsIgnoreCase("testUser")){ // testUser should not be known at this point
+				org.junit.Assert.fail("User found in list of users when it should not exist");
+			}
+		}
+	}
 
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		DBUtils.setTestMode(true);
-		DBUtils.dropDatabase();
+	// get user = 404
+	@HttpTest(order=1, method=Method.GET, path="/user/testUser", headers={@Header(name="Accept", value="application/json")})
+	public void testGetNonExistentUser(){
+		Assert.assertNotFound(response);
 	}
 	
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		DBUtils.setTestMode(false);
-	}
-
-	@Before
-	public void setUp() throws SQLException {
-		DBUtils.initializeDatabase();
+	// authenticate = 404 
+	@HttpTest(order=1, method=Method.POST, path="/user/testUser/authenticate", 
+			headers={@Header(name="Accept", value="application/json")},
+			type=MediaType.APPLICATION_JSON, content="{\"password\":\"1234\"}")
+	public void testAuthNonExistentUser(){
+		Assert.assertNotFound(response);
 	}
 	
-	@After
-	public void tearDown() throws SQLException {
-		DBUtils.truncateDatabase();
+	// update - 404
+	@HttpTest(order=1, method=Method.PUT, path="/user/testUser", headers={@Header(name="Accept", value="application/json")},
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"password\":\"4321\"}")
+	public void testUpdateUserNotFound(){
+		Assert.assertNotFound(response);
 	}
 	
-//	@HttpTest(method = Method.POST, path = "/user/Cef/authenticate", type = MediaType.APPLICATION_JSON, 
-//			content = "{\"userName\":\"Cefe\",\"password\":\"pass\"}")
-//	public void testInvalidLogin() {
-//		Assert.assertBadRequest(response);
-//		String messg = response.getBody();
-//		org.junit.Assert.assertEquals("Invalid username: Cef", messg);
-//	}
-//	
-//	@HttpTest(method = Method.GET, path = "/")
-//	public void testFail(){
-//		org.junit.Assert.assertFalse(true);
-//		
-//	}
+	// sign up - 201
+	@HttpTest(order=2, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
+			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"testUser\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
+	public void testSignup(){
+		Assert.assertCreated(response);
+	}
 	
+	// sign up - 200
+	@HttpTest(order=3, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
+			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"testUser\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
+	public void testSignupExisting(){
+		Assert.assertOk(response);
+	}
+	
+	// authenticate = 200
+	@HttpTest(order=3, method=Method.POST, path="/user/testUser/authenticate", 
+			headers={@Header(name="Accept", value="application/json")},
+			type=MediaType.APPLICATION_JSON, content="{\"password\":\"1234\"}")
+	public void testAuthExistingUser(){
+		Assert.assertOk(response);
+	}
+	
+	// authenticate = 401
+	@HttpTest(order=3, method=Method.POST, path="/user/testUser/authenticate", 
+			headers={@Header(name="Accept", value="application/json")},
+			type=MediaType.APPLICATION_JSON, content="{\"password\":\"4321\"}")
+	public void testAuthInvalidPassword(){
+		Assert.assertUnauthorized(response);
+	}
+	
+	// get all users, should exist
+	@HttpTest(order=3, method=Method.GET, path="/users", headers={@Header(name="Accept", value="application/json")})
+	public void testGetExistingUsers(){
+		assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		boolean userFound = false;
+		for(User user : objects){
+			if(user.getUserName().equalsIgnoreCase("testUser")){
+				userFound = true;
+				break;
+			}
+		}
+		org.junit.Assert.assertTrue("User not found in list of users", userFound);
+	}
+	
+	// update - 201 (change password)
+	@HttpTest(order=4, method=Method.PUT, path="/user/testUser", headers={@Header(name="Accept", value="application/json")},
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"password\":\"4321\"}")
+	public void testUpdateUserPassword(){
+		Assert.assertCreated(response);
+	}
+	
+	// update - 200
+	@HttpTest(order=4, method=Method.PUT, path="/user/testUser", headers={@Header(name="Accept", value="application/json")},
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"userName\":\"testUser\"}")
+	public void testUpdateUserWithNoChanges(){
+		Assert.assertOk(response);
+	}
+	
+	// authenticate with new password
+	@HttpTest(order=5, method=Method.POST, path="/user/testUser/authenticate", 
+			headers={@Header(name="Accept", value="application/json")},
+			type=MediaType.APPLICATION_JSON, content="{\"password\":\"4321\"}")
+	public void testAuthExistingUserAfterUpdate(){
+		Assert.assertOk(response);
+	}
+		
 	//****************************************************
 	//	Start of authentication test
 	//	Three different cases
-	
+	/*
 	// if the user name exists, and the password is correct
 	@HttpTest(method = Method.POST, path = "user/justForTest/authenticate", type = MediaType.APPLICATION_JSON, 
 			content = "{\"password\":\"1234\"}") 
@@ -188,5 +263,5 @@ public class UserServiceIT {
 	//	End of update a user's record test
 	//*****************************************************
 	
-	
+	*/
 }

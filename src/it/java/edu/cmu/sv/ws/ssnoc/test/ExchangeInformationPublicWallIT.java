@@ -79,4 +79,8 @@ public class ExchangeInformationPublicWallIT {
 		org.junit.Assert.assertEquals("test wall message", msg.getContent());
 		org.junit.Assert.assertEquals("user1", msg.getAuthor());
 	}
+	
+	/*
+	 * TODO: Get Message by ID
+	 */
 }
