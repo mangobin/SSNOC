@@ -92,15 +92,22 @@ public class WallMessageDAOImplTest {
 		MessageDAOImpl messageDAO = new MessageDAOImpl();
 		long ID =  messageDAO.save(input);
 		assertNotEquals(0, ID);
-		MessagePO m = messageDAO.findMessageById(ID);
-		assertEquals("New Message", m.getContent());
-	
-		input.setContent("Updated Message");
+		MessagePO m = messageDAO.findMessageById(ID);		
+		m.setContent("Updated Message");
+		
 		MessageDAOImpl messageDAO1 = new MessageDAOImpl();
-		long ID1 = messageDAO1.save(input);
-		assertNotEquals(0, ID1);
-		MessagePO m1 = messageDAO.findMessageById(ID1);
+		messageDAO1.save(m);
+		assertNotEquals(0, ID);
+		MessagePO m1 = messageDAO1.findMessageById(ID);
 		assertEquals("Updated Message", m1.getContent());
+	}
+	
+	@Test
+	public void testSavingNullMessage() {
+		
+		MessageDAOImpl messageDAO = new MessageDAOImpl();
+		long ID =  messageDAO.save(null);
+		assertEquals(-1, ID);
 	}
 
 }
