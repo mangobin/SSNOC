@@ -35,6 +35,10 @@ public class MessageService extends BaseService {
 		
 		Message dtoMsg = new Message();
 		try{
+			
+			if(userName == null) {
+				throw new ServiceException();
+			}
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 			msg.setAuthor(userName);
 			msg.setMessageType(SQL.MESSAGE_TYPE_WALL);
@@ -66,6 +70,9 @@ public class MessageService extends BaseService {
 		
 		Message dtoMsg = new Message();
 		try{
+			if(msg.getAuthor() == null) {
+				throw new ServiceException();
+			}
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 			msg.setMessageType(SQL.MESSAGE_TYPE_ANNOUNCEMENT);
 			MessagePO po = ConverterUtils.convert(msg);
@@ -112,6 +119,9 @@ public class MessageService extends BaseService {
 		Log.enter(sendingUsername);
 		Log.enter(receivingUserName);
 		Log.enter(msg);
+		if(sendingUsername == null || receivingUserName == null) {
+			throw new ServiceException();
+		}
 		msg.setAuthor(sendingUsername);
 		msg.setTarget(receivingUserName);
 		msg.setMessageType(SQL.MESSAGE_TYPE_CHAT);
