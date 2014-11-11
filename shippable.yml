@@ -11,8 +11,8 @@ before_script: cp ./h2db-empty.mv.db ~/h2db.mv.db
 after_success:
    - mvn clean cobertura:cobertura
    - mvn test
-#   - mvn verify
-#   - mvn package -DskipTests
+   - mvn verify
+   - mvn package -DskipTests
 
 notifications:
    email:
