@@ -26,7 +26,7 @@ import edu.cmu.sv.ws.ssnoc.data.util.DBUtils;
 public class UserServiceIT {
 	@Rule
 	public Destination destination = new Destination(this,
-			"http://localhost:4321/ssnoc/");
+			"http://localhost:1234/ssnoc/");
 	@Context
 	public Response response;
 

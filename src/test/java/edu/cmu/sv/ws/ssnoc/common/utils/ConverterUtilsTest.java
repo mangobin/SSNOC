@@ -4,12 +4,21 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.data.util.DBUtils;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
 
 public class ConverterUtilsTest {
+	
+	@Before
+	public void setup() throws Exception {
+		DBUtils.setTestMode(true);
+		DBUtils.initializeDatabase();
+		DBUtils.truncateDatabase();
+	}
 
 	@Test
 	public void testConvertMessagePoToDto() {
@@ -35,7 +44,6 @@ public class ConverterUtilsTest {
 		input.setMessageID(1);
 		input.setMessageType("ABC");
 		input.setPostedAt("2014-01-01 01:01");
-		
 		
 		MessagePO output = ConverterUtils.convert(input);
 		
