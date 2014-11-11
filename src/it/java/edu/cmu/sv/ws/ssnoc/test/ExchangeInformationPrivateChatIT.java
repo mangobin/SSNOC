@@ -33,13 +33,19 @@ public class ExchangeInformationPrivateChatIT {
 
 	// setup tests
 	// create two users
-	@HttpTest(order=1, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
-			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"user1\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
+	@HttpTest(order=1, 
+			method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/user/signup", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"userName\":\"user1\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
 	public void setupUser1(){
 		org.junit.Assert.assertTrue("Response should be 200 or 201, but was " + response.getStatus(), response.getStatus() == 200 || response.getStatus() == 201); 
 	}
 	
-	@HttpTest(order=1, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=1, 
+			method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"user2\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
 	public void setupUser2(){
 		org.junit.Assert.assertTrue("Response should be 200 or 201, but was " + response.getStatus(), response.getStatus() == 200 || response.getStatus() == 201); 
@@ -48,7 +54,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get empty chat messages between two users
 	 */
-	@HttpTest(order=2, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=2, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/messages/user1/user2")
 	public void testGetEmptyChatMessages(){
 		assertOk(response);
@@ -60,7 +67,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get empty chat buddies of user1 
 	 */
-	@HttpTest(order=2, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=2, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/users/user1/chatbuddies")
 	public void testEmptyUser1ChatBuddies(){
 		assertOk(response);
@@ -72,7 +80,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get empty chat buddies of user2 
 	 */
-	@HttpTest(order=2, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=2, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/users/user2/chatbuddies")
 	public void testEmptyUser2ChatBuddies(){
 		assertOk(response);
@@ -84,8 +93,11 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Send a message from user1 to user2
 	 */
-	@HttpTest(order=3, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
-			path="/message/user1/user2", type=MediaType.APPLICATION_JSON, content="{\"content\":\"test message from user1 to user2\", \"postedAt\":\"2014-09-24 09:15\"}")
+	@HttpTest(order=3, method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/user1/user2", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"content\":\"test message from user1 to user2\", \"postedAt\":\"2014-09-24 09:15\"}")
 	public void testSendMessageFromUser1ToUser2(){
 		Assert.assertCreated(response);
 		Message msg = new Gson().fromJson(response.getBody(), Message.class);
@@ -98,7 +110,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get empty chat messages between two users
 	 */
-	@HttpTest(order=4, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=4, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/messages/user1/user2")
 	public void testGetChatMessagesBetweenUser1AndUser2(){
 		assertOk(response);
@@ -115,7 +128,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get chat buddies of user1 
 	 */
-	@HttpTest(order=4, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=4, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/users/user1/chatbuddies")
 	public void testUser1ChatBuddies(){
 		assertOk(response);
@@ -129,7 +143,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get chat buddies of user2 
 	 */
-	@HttpTest(order=4, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=4, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/users/user2/chatbuddies")
 	public void testUser2ChatBuddies(){
 		assertOk(response);

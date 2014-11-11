@@ -28,7 +28,10 @@ public class UserServiceIT {
 	public Response response;
 	
 	// get all users, should exist
-	@HttpTest(order=1, method=Method.GET, path="/users", headers={@Header(name="Accept", value="application/json")})
+	@HttpTest(order=1, 
+			method=Method.GET, 
+			path="/users", 
+			headers={@Header(name="Accept", value="application/json")})
 	public void testGetUnknownUsers(){
 		assertOk(response);
 		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
@@ -41,21 +44,31 @@ public class UserServiceIT {
 	}
 
 	// get user = 404
-	@HttpTest(order=1, method=Method.GET, path="/user/testUser", headers={@Header(name="Accept", value="application/json")})
+	@HttpTest(order=1, 
+			method=Method.GET, 
+			path="/user/testUser", 
+			headers={@Header(name="Accept", value="application/json")})
 	public void testGetNonExistentUser(){
 		Assert.assertNotFound(response);
 	}
 	
 	// authenticate = 404 
-	@HttpTest(order=1, method=Method.POST, path="/user/testUser/authenticate", 
-			headers={@Header(name="Accept", value="application/json")},
-			type=MediaType.APPLICATION_JSON, content="{\"password\":\"1234\"}")
+	@HttpTest(order=1, 
+			method=Method.POST, 
+			path="/user/testUser/authenticate", 
+			headers={@Header(name="Accept", 
+			value="application/json")},
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"password\":\"1234\"}")
 	public void testAuthNonExistentUser(){
 		Assert.assertNotFound(response);
 	}
 	
 	// update - 404
-	@HttpTest(order=1, method=Method.PUT, path="/user/testUser", headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=1, 
+			method=Method.PUT, 
+			path="/user/testUser", 
+			headers={@Header(name="Accept", value="application/json")},
 			type=MediaType.APPLICATION_JSON, 
 			content="{\"password\":\"4321\"}")
 	public void testUpdateUserNotFound(){
@@ -63,37 +76,54 @@ public class UserServiceIT {
 	}
 	
 	// sign up - 201
-	@HttpTest(order=2, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
-			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"testUser\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
+	@HttpTest(order=2, 
+			method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/user/signup", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"userName\":\"testUser\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
 	public void testSignup(){
 		Assert.assertCreated(response);
 	}
 	
 	// sign up - 200
-	@HttpTest(order=3, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
-			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"testUser\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
+	@HttpTest(order=3, 
+			method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/user/signup", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"userName\":\"testUser\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
 	public void testSignupExisting(){
 		Assert.assertOk(response);
 	}
 	
 	// authenticate = 200
-	@HttpTest(order=3, method=Method.POST, path="/user/testUser/authenticate", 
+	@HttpTest(order=3, 
+			method=Method.POST, 
+			path="/user/testUser/authenticate", 
 			headers={@Header(name="Accept", value="application/json")},
-			type=MediaType.APPLICATION_JSON, content="{\"password\":\"1234\"}")
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"password\":\"1234\"}")
 	public void testAuthExistingUser(){
 		Assert.assertOk(response);
 	}
 	
 	// authenticate = 401
-	@HttpTest(order=3, method=Method.POST, path="/user/testUser/authenticate", 
+	@HttpTest(order=3, 
+			method=Method.POST, 
+			path="/user/testUser/authenticate", 
 			headers={@Header(name="Accept", value="application/json")},
-			type=MediaType.APPLICATION_JSON, content="{\"password\":\"4321\"}")
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"password\":\"4321\"}")
 	public void testAuthInvalidPassword(){
 		Assert.assertUnauthorized(response);
 	}
 	
 	// get all users, should exist
-	@HttpTest(order=3, method=Method.GET, path="/users", headers={@Header(name="Accept", value="application/json")})
+	@HttpTest(order=3, 
+			method=Method.GET, 
+			path="/users", 
+			headers={@Header(name="Accept", value="application/json")})
 	public void testGetExistingUsers(){
 		assertOk(response);
 		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
@@ -109,7 +139,9 @@ public class UserServiceIT {
 	}
 	
 	// update - 200 (change password)
-	@HttpTest(order=4, method=Method.PUT, path="/user/testUser", headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=4, 
+			method=Method.PUT, path="/user/testUser", 
+			headers={@Header(name="Accept", value="application/json")},
 			type=MediaType.APPLICATION_JSON, 
 			content="{\"password\":\"4321\"}")
 	public void testUpdateUserPassword(){
@@ -117,7 +149,10 @@ public class UserServiceIT {
 	}
 	
 	// update - 201 (change name)
-	@HttpTest(order=5, method=Method.PUT, path="/user/testUser", headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=5, 
+			method=Method.PUT, 
+			path="/user/testUser", 
+			headers={@Header(name="Accept", value="application/json")},
 			type=MediaType.APPLICATION_JSON, 
 			content="{\"userName\":\"testUser1\"}")
 	public void testUpdateUserWithNoChanges(){
@@ -125,9 +160,12 @@ public class UserServiceIT {
 	}
 	
 	// authenticate with new password
-	@HttpTest(order=6, method=Method.POST, path="/user/testUser1/authenticate", 
+	@HttpTest(order=6, 
+			method=Method.POST, 
+			path="/user/testUser1/authenticate", 
 			headers={@Header(name="Accept", value="application/json")},
-			type=MediaType.APPLICATION_JSON, content="{\"password\":\"4321\"}")
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"password\":\"4321\"}")
 	public void testAuthExistingUserAfterUpdate(){
 		Assert.assertOk(response);
 	}
