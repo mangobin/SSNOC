@@ -116,24 +116,24 @@ public class UserServiceIT {
 		org.junit.Assert.assertTrue("User not found in list of users", userFound);
 	}
 	
-	// update - 201 (change password)
+	// update - 200 (change password)
 	@HttpTest(order=4, method=Method.PUT, path="/user/testUser", headers={@Header(name="Accept", value="application/json")},
 			type=MediaType.APPLICATION_JSON, 
 			content="{\"password\":\"4321\"}")
 	public void testUpdateUserPassword(){
-		Assert.assertCreated(response);
-	}
-	
-	// update - 200
-	@HttpTest(order=4, method=Method.PUT, path="/user/testUser", headers={@Header(name="Accept", value="application/json")},
-			type=MediaType.APPLICATION_JSON, 
-			content="{\"userName\":\"testUser\"}")
-	public void testUpdateUserWithNoChanges(){
 		Assert.assertOk(response);
 	}
 	
+	// update - 201 (change name)
+	@HttpTest(order=5, method=Method.PUT, path="/user/testUser", headers={@Header(name="Accept", value="application/json")},
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"userName\":\"testUser1\"}")
+	public void testUpdateUserWithNoChanges(){
+		Assert.assertCreated(response);
+	}
+	
 	// authenticate with new password
-	@HttpTest(order=5, method=Method.POST, path="/user/testUser/authenticate", 
+	@HttpTest(order=6, method=Method.POST, path="/user/testUser1/authenticate", 
 			headers={@Header(name="Accept", value="application/json")},
 			type=MediaType.APPLICATION_JSON, content="{\"password\":\"4321\"}")
 	public void testAuthExistingUserAfterUpdate(){

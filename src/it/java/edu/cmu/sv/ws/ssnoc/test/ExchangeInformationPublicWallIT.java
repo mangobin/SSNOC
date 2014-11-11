@@ -29,7 +29,7 @@ public class ExchangeInformationPublicWallIT {
 			"http://localhost:1234/ssnoc");
 	@Context
 	public Response response;
-
+	
 	// setup tests
 	// create two users
 	@HttpTest(order=1, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
@@ -83,4 +83,6 @@ public class ExchangeInformationPublicWallIT {
 	/*
 	 * TODO: Get Message by ID
 	 */
+	
+	// how to provide dynamic id ... ?
 }
