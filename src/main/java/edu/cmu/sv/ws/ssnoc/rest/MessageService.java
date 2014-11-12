@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import edu.cmu.sv.ws.ssnoc.common.exceptions.DBException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
@@ -20,6 +21,7 @@ import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IMessageDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
 
 
@@ -35,14 +37,17 @@ public class MessageService extends BaseService {
 		
 		Message dtoMsg = new Message();
 		try{
-			
-			if(userName == null) {
-				throw new ServiceException();
+			UserPO userPO = DAOFactory.getInstance().getUserDAO().findByName(userName);
+			if(userPO == null) {
+				return badRequest();
 			}
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 			msg.setAuthor(userName);
 			msg.setMessageType(SQL.MESSAGE_TYPE_WALL);
 			MessagePO po = ConverterUtils.convert(msg);
+			if(po == null || po.getPostedAt() == null) {
+				return badRequest();
+			}
 
 			long messageID = dao.save(po);
 			po.setMessageId(messageID);
@@ -70,8 +75,11 @@ public class MessageService extends BaseService {
 		
 		Message dtoMsg = new Message();
 		try{
-			if(msg.getAuthor() == null) {
-				throw new ServiceException();
+			String author = msg.getAuthor();
+			
+			UserPO userPO = DAOFactory.getInstance().getUserDAO().findByName(author);
+			if(userPO == null) {
+				return badRequest();
 			}
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 			msg.setMessageType(SQL.MESSAGE_TYPE_ANNOUNCEMENT);
@@ -119,8 +127,10 @@ public class MessageService extends BaseService {
 		Log.enter(sendingUsername);
 		Log.enter(receivingUserName);
 		Log.enter(msg);
-		if(sendingUsername == null || receivingUserName == null) {
-			throw new ServiceException();
+		UserPO  authorPO = DAOFactory.getInstance().getUserDAO().findByName(sendingUsername);
+		UserPO  targetPO = DAOFactory.getInstance().getUserDAO().findByName(receivingUserName);
+		if(authorPO == null || targetPO == null) {
+			return badRequest();
 		}
 		msg.setAuthor(sendingUsername);
 		msg.setTarget(receivingUserName);
