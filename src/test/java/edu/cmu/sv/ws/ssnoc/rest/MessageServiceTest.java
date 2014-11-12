@@ -226,7 +226,8 @@ public class MessageServiceTest {
 		assertEquals(201, r.getStatus());
 		
 		MessagesService m = new MessagesService();
-		List<Message> messages = m.retrieveAllMessagesBetweenTwoUsers("Nikhil", "Cef");
+		Response res = m.retrieveAllMessagesBetweenTwoUsers("Nikhil", "Cef");
+		List<Message> messages = (List<Message>)res.getEntity();
 		assertEquals("Message", messages.get(0).getContent());
 	}
 	

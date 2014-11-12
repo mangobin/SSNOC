@@ -164,8 +164,10 @@ public class ExchangeInformationPrivateChatIT {
 			headers={@Header(name="Accept", value="application/json")},
 			path="/users/unknownUser/chatbuddies")
 	public void testUnkownUserChatBuddies(){
-		//FIXME
-		//Assert.assertNotFound(response);
+		Assert.assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		org.junit.Assert.assertEquals(0, objects.size());
 	}
 	
 	/*
@@ -175,8 +177,10 @@ public class ExchangeInformationPrivateChatIT {
 			headers={@Header(name="Accept", value="application/json")},
 			path="/messages/user1/unknownUser")
 	public void testGetChatMessagesBetweenUser1AndUnknownUser(){
-		//FIXME
-		//Assert.assertNotFound(response);
+		Assert.assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		org.junit.Assert.assertEquals(0, objects.size());
 	}
 	
 	/*
@@ -186,8 +190,10 @@ public class ExchangeInformationPrivateChatIT {
 			headers={@Header(name="Accept", value="application/json")},
 			path="/messages/unknownUser/user2")
 	public void testGetChatMessagesBetweenUnknownUserAndUser2(){
-		//FIXME
-		//Assert.assertNotFound(response);
+		Assert.assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		org.junit.Assert.assertEquals(0, objects.size());
 	}
 	
 	/*
@@ -197,8 +203,10 @@ public class ExchangeInformationPrivateChatIT {
 			headers={@Header(name="Accept", value="application/json")},
 			path="/messages/unknownUser1/unknownUser2")
 	public void testGetChatMessagesBetweenUnknownUser1AndUnknownUser2(){
-		//FIXME
-		//Assert.assertNotFound(response);
+		Assert.assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		org.junit.Assert.assertEquals(0, objects.size());
 	}
 	
 	/*
@@ -210,8 +218,7 @@ public class ExchangeInformationPrivateChatIT {
 			type=MediaType.APPLICATION_JSON, 
 			content="{\"content\":\"test message from user1 to unknown user\", \"postedAt\":\"2014-09-24 09:15\"}")
 	public void testSendMessageFromUser1ToUnknownUser(){
-		//FIXME
-		//Assert.assertNotFound(response);
+		Assert.assertBadRequest(response);
 	}
 	
 	/*
@@ -223,8 +230,7 @@ public class ExchangeInformationPrivateChatIT {
 			type=MediaType.APPLICATION_JSON, 
 			content="{\"content\":\"test message from unknown user to user2\", \"postedAt\":\"2014-09-24 09:15\"}")
 	public void testSendMessageFromUnknownUserToUser2(){
-		//FIXME
-		//Assert.assertNotFound(response);
+		Assert.assertBadRequest(response);
 	}
 	
 	/*
@@ -236,7 +242,6 @@ public class ExchangeInformationPrivateChatIT {
 			type=MediaType.APPLICATION_JSON, 
 			content="{\"content\":\"test message from unknown user 1 to unknown user 2\", \"postedAt\":\"2014-09-24 09:15\"}")
 	public void testSendMessageFromUnknownUser1ToUnknownUser2(){
-		//FIXME
-		//Assert.assertNotFound(response);
+		Assert.assertBadRequest(response);
 	}
 }

@@ -143,7 +143,6 @@ public class MessagesService extends BaseService {
 		Log.exit(listDto);
 		
 		return ok(listDto);
-		
 	}
 	
 	@GET
