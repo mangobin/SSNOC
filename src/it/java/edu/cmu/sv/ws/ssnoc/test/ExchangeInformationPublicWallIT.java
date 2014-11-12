@@ -13,6 +13,7 @@ import com.eclipsesource.restfuse.Destination;
 import com.eclipsesource.restfuse.HttpJUnitRunner;
 import com.eclipsesource.restfuse.MediaType;
 import com.eclipsesource.restfuse.Method;
+import com.eclipsesource.restfuse.RequestContext;
 import com.eclipsesource.restfuse.Response;
 import com.eclipsesource.restfuse.annotation.Context;
 import com.eclipsesource.restfuse.annotation.Header;
@@ -24,9 +25,20 @@ import edu.cmu.sv.ws.ssnoc.dto.Message;
 
 @RunWith(HttpJUnitRunner.class)
 public class ExchangeInformationPublicWallIT {
+	
+	static long messageID = -1;
+	
+	private Destination getDestination() {
+	    Destination destination = new Destination( this, 
+	    											"http://localhost:1234/ssnoc" );
+	    RequestContext context = destination.getRequestContext();
+	    context.addPathSegment("messageID", String.valueOf(messageID));
+	    return destination;
+	}
+	
 	@Rule
-	public Destination destination = new Destination(this,
-			"http://localhost:1234/ssnoc");
+	public Destination destination = getDestination();
+	
 	@Context
 	public Response response;
 	
@@ -80,6 +92,10 @@ public class ExchangeInformationPublicWallIT {
 		Message msg = new Gson().fromJson(response.getBody(), Message.class);
 		org.junit.Assert.assertEquals("test wall message", msg.getContent());
 		org.junit.Assert.assertEquals("user1", msg.getAuthor());
+		org.junit.Assert.assertEquals("WALL", msg.getMessageType());
+		org.junit.Assert.assertNotEquals(0, msg.getMessageID());
+		// store created messageID for querying later
+		messageID = msg.getMessageID();
 	}
 	
 	/*
@@ -97,6 +113,7 @@ public class ExchangeInformationPublicWallIT {
 		Message msg = objects.get(0);
 		org.junit.Assert.assertEquals("test wall message", msg.getContent());
 		org.junit.Assert.assertEquals("user1", msg.getAuthor());
+		org.junit.Assert.assertEquals("WALL", msg.getMessageType());
 	}
 	
 	/*
@@ -126,8 +143,17 @@ public class ExchangeInformationPublicWallIT {
 	}
 	
 	/*
-	 * TODO: Get Message by ID
+	 * Get Message by ID
 	 */
-	
-	// how to provide dynamic id ... ?
+	@HttpTest(order=6,
+			method=Method.GET,
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/{messageID}")
+	public void testGetMessageByID(){
+		assertOk(response);
+		Message msg = new Gson().fromJson(response.getBody(), Message.class);
+		org.junit.Assert.assertEquals("test wall message", msg.getContent());
+		org.junit.Assert.assertEquals("user1", msg.getAuthor());
+		org.junit.Assert.assertEquals("WALL", msg.getMessageType());
+	}
 }
