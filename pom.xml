@@ -204,8 +204,8 @@
 					<reportsDirectory>shippable/testresults</reportsDirectory>
 					<systemProperties>
 						<property>
-							<name>configEnv</name>
-							<value>${thisCanBePassedIn}</value>
+							<name>databaseEnv</name>
+							<value>${databaseEnv}</value>
 						</property>
 					</systemProperties>
 				</configuration>
