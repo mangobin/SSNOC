@@ -35,7 +35,9 @@ public class ExchangeInformationPublicWallIT {
 	@HttpTest(order=1, 
 			method=Method.POST, 
 			headers={@Header(name="Accept", value="application/json")},
-			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"user1\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
+			path="/user/signup", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"userName\":\"user1\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
 	public void setupUser1(){
 		org.junit.Assert.assertTrue("Response should be 200 or 201, but was " + response.getStatus(), response.getStatus() == 200 || response.getStatus() == 201); 
 	}
@@ -43,7 +45,9 @@ public class ExchangeInformationPublicWallIT {
 	@HttpTest(order=1, 
 			method=Method.POST, 
 			headers={@Header(name="Accept", value="application/json")},
-			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"user2\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
+			path="/user/signup", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"userName\":\"user2\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
 	public void setupUser2(){
 		org.junit.Assert.assertTrue("Response should be 200 or 201, but was " + response.getStatus(), response.getStatus() == 200 || response.getStatus() == 201); 
 	}
@@ -65,7 +69,9 @@ public class ExchangeInformationPublicWallIT {
 	@HttpTest(order=3, 
 			method=Method.POST, 
 			headers={@Header(name="Accept", value="application/json")},
-			path="/message/user1",  type=MediaType.APPLICATION_JSON, content="{\"content\":\"test wall message\", \"postedAt\":\"2014-09-24 09:15\"}")
+			path="/message/user1",  
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"content\":\"test wall message\", \"postedAt\":\"2014-09-24 09:15\"}")
 	public void testCanPostPublicWallMessage(){
 		Assert.assertCreated(response);
 		Message msg = new Gson().fromJson(response.getBody(), Message.class);
