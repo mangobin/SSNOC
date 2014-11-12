@@ -139,6 +139,7 @@ public class ExchangeInformationPublicWallIT {
 			type=MediaType.APPLICATION_JSON,
 			content="{\"content\":\"test wall message\", \"postedAt\":\"\"}")
 	public void testPostInvalidMessage(){
+		//FIXME
 		//Assert.assertBadRequest(response);
 	}
 	

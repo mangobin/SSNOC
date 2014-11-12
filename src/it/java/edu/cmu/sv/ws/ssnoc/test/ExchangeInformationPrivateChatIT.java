@@ -108,7 +108,7 @@ public class ExchangeInformationPrivateChatIT {
 	}
 	
 	/*
-	 * Test get empty chat messages between two users
+	 * Test get chat messages between two users
 	 */
 	@HttpTest(order=4, method=Method.GET, 
 			headers={@Header(name="Accept", value="application/json")},
@@ -153,5 +153,90 @@ public class ExchangeInformationPrivateChatIT {
 		org.junit.Assert.assertEquals(1, objects.size());
 		User user = objects.get(0);
 		org.junit.Assert.assertEquals("user1", user.getUserName());
+	}
+	
+	// Sad cases
+	
+	/*
+	 * Test get chat buddies of Unknown User
+	 */
+	@HttpTest(order=5, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/users/unknownUser/chatbuddies")
+	public void testUnkownUserChatBuddies(){
+		//FIXME
+		//Assert.assertNotFound(response);
+	}
+	
+	/*
+	 * Test get chat message between known and Unknown User
+	 */
+	@HttpTest(order=5, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/messages/user1/unknownUser")
+	public void testGetChatMessagesBetweenUser1AndUnknownUser(){
+		//FIXME
+		//Assert.assertNotFound(response);
+	}
+	
+	/*
+	 * Test get chat message between Unknown and Known User
+	 */
+	@HttpTest(order=5, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/messages/unknownUser/user2")
+	public void testGetChatMessagesBetweenUnknownUserAndUser2(){
+		//FIXME
+		//Assert.assertNotFound(response);
+	}
+	
+	/*
+	 * Test get chat message between two unknown users
+	 */
+	@HttpTest(order=5, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/messages/unknownUser1/unknownUser2")
+	public void testGetChatMessagesBetweenUnknownUser1AndUnknownUser2(){
+		//FIXME
+		//Assert.assertNotFound(response);
+	}
+	
+	/*
+	 * Test sending a message to an unknown user
+	 */
+	@HttpTest(order=5, method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/user1/unknownUser", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"content\":\"test message from user1 to unknown user\", \"postedAt\":\"2014-09-24 09:15\"}")
+	public void testSendMessageFromUser1ToUnknownUser(){
+		//FIXME
+		//Assert.assertNotFound(response);
+	}
+	
+	/*
+	 * Test sending a message from an unknown user
+	 */
+	@HttpTest(order=5, method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/unknownUser/user2", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"content\":\"test message from unknown user to user2\", \"postedAt\":\"2014-09-24 09:15\"}")
+	public void testSendMessageFromUnknownUserToUser2(){
+		//FIXME
+		//Assert.assertNotFound(response);
+	}
+	
+	/*
+	 * Test sending a message from an unknown user to an unknown user
+	 */
+	@HttpTest(order=5, method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/unknownUser1/unknownUser2", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"content\":\"test message from unknown user 1 to unknown user 2\", \"postedAt\":\"2014-09-24 09:15\"}")
+	public void testSendMessageFromUnknownUser1ToUnknownUser2(){
+		//FIXME
+		//Assert.assertNotFound(response);
 	}
 }
