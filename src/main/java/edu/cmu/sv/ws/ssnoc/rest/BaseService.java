@@ -1,5 +1,6 @@
 package edu.cmu.sv.ws.ssnoc.rest;
 
+
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -30,6 +31,9 @@ public class BaseService {
 	
 	protected Response created(Object obj) {
 		return Response.status(Status.CREATED).entity(obj).build();
+	}
+	protected Response badRequest() {
+		return Response.status(Status.BAD_REQUEST).build();
 	}
 
 	protected UserPO loadExistingUser(String userName) {
