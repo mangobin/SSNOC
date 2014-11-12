@@ -52,6 +52,9 @@ public class ExchangeInformationPublicWallIT {
 		org.junit.Assert.assertTrue("Response should be 200 or 201, but was " + response.getStatus(), response.getStatus() == 200 || response.getStatus() == 201); 
 	}
 	
+	/*
+	 * Test getting an empty wall
+	 */
 	@HttpTest(order=2, 
 			method=Method.GET, 
 			headers={@Header(name="Accept", value="application/json")},
@@ -94,6 +97,32 @@ public class ExchangeInformationPublicWallIT {
 		Message msg = objects.get(0);
 		org.junit.Assert.assertEquals("test wall message", msg.getContent());
 		org.junit.Assert.assertEquals("user1", msg.getAuthor());
+	}
+	
+	/*
+	 * Sad case, posting a message from an invalid user
+	 */
+	@HttpTest(order=5,
+			method=Method.POST,
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/unknownUser",
+			type=MediaType.APPLICATION_JSON,
+			content="{\"content\":\"test wall message\", \"postedAt\":\"2014-09-24 09:15\"}")
+	public void testUnknownUserCannotPostMessages(){
+		//Assert.assertBadRequest(response);
+	}
+	
+	/*
+	 * Sad case, posting an invalid message
+	 */
+	@HttpTest(order=5,
+			method=Method.POST,
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/user1",
+			type=MediaType.APPLICATION_JSON,
+			content="{\"content\":\"test wall message\", \"postedAt\":\"\"}")
+	public void testPostInvalidMessage(){
+		//Assert.assertBadRequest(response);
 	}
 	
 	/*
