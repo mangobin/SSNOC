@@ -144,5 +144,34 @@ public class PublicAnnouncementsMessageServiceTest {
 		List<Message> messages = messagesService.retrieveAllVisibleAnnouncement();
 		assertEquals(0, messages.size());
 	}
+	
+	@Test
+	public void testPostAnnouncementFromUnknownUser(){
+		Message msg = new Message();
+		msg.setAuthor("Unknown User");
+		msg.setContent("Test Announcement");
+		msg.setPostedAt("2014-11-11 14:00");
+		Response response = messageService.postAnnouncement(msg);
+		assertEquals(400, response.getStatus());
+		
+		List<Message> messages = messagesService.retrieveAllAnnouncement();
+		assertEquals(0, messages.size());
+	}
 
+	@Test
+	public void testSQLInjection(){
+		Message msg = new Message();
+		msg.setAuthor(sUser.getUserName());
+		msg.setContent("(SELECT * SSN_USERS)");
+		msg.setPostedAt("2014-11-11 14:00");
+		Response response = messageService.postAnnouncement(msg);
+		assertEquals(201, response.getStatus());
+		
+		Message result = (Message)response.getEntity();
+		assertEquals(msg.getAuthor(), result.getAuthor());
+		assertEquals(msg.getContent(), result.getContent());
+		assertEquals(msg.getPostedAt(), result.getPostedAt());
+		assertNotEquals(-1, result.getMessageID());
+	}
+	
 }
