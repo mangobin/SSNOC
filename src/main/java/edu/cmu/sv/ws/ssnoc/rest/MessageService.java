@@ -10,8 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import edu.cmu.sv.ws.ssnoc.common.exceptions.DBException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownMessageException;
+import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownUserException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
@@ -33,6 +35,10 @@ public class MessageService extends BaseService {
 		
 		Message dtoMsg = new Message();
 		try{
+			
+			if(userName == null) {
+				throw new ServiceException();
+			}
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 			msg.setAuthor(userName);
 			msg.setMessageType(SQL.MESSAGE_TYPE_WALL);
@@ -42,6 +48,10 @@ public class MessageService extends BaseService {
 			po.setMessageId(messageID);
 			dtoMsg = ConverterUtils.convert(po);
 			
+		}  catch(DBException e) {
+			throw new DBException(e);	
+		} catch (UnknownMessageException e) {
+			throw new UnknownMessageException(msg.getMessageID());
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} finally {
@@ -60,6 +70,9 @@ public class MessageService extends BaseService {
 		
 		Message dtoMsg = new Message();
 		try{
+			if(msg.getAuthor() == null) {
+				throw new ServiceException();
+			}
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 			msg.setMessageType(SQL.MESSAGE_TYPE_ANNOUNCEMENT);
 			MessagePO po = ConverterUtils.convert(msg);
@@ -68,6 +81,10 @@ public class MessageService extends BaseService {
 			po.setMessageId(messageID);
 			dtoMsg = ConverterUtils.convert(po);
 			
+		} catch(DBException e) {
+			throw new DBException(e);	
+		} catch (UnknownMessageException e) {
+			throw new UnknownMessageException(msg.getMessageID());
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} finally {
@@ -102,6 +119,9 @@ public class MessageService extends BaseService {
 		Log.enter(sendingUsername);
 		Log.enter(receivingUserName);
 		Log.enter(msg);
+		if(sendingUsername == null || receivingUserName == null) {
+			throw new ServiceException();
+		}
 		msg.setAuthor(sendingUsername);
 		msg.setTarget(receivingUserName);
 		msg.setMessageType(SQL.MESSAGE_TYPE_CHAT);
