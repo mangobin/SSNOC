@@ -207,7 +207,13 @@ public class DBUtils {
 	 */
 	public static final Connection getConnection() throws SQLException {
 		IConnectionPool pool = null;
-		if(!TEST_MODE){
+		String configEnv = System.getProperty("configEnv");
+		System.out.println("==================================");
+		System.out.println("==================================");
+		System.out.println("Config environment: " + configEnv);
+		System.out.println("==================================");
+		System.out.println("==================================");
+		if(!TEST_MODE && !"test".equalsIgnoreCase(configEnv)){
 			pool = ConnectionPoolFactory.getInstance()
 					.getH2ConnectionPool();
 		} else {

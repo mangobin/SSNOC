@@ -202,6 +202,12 @@
 				<configuration>
 					<redirectTestOutputToFile>true</redirectTestOutputToFile>
 					<reportsDirectory>shippable/testresults</reportsDirectory>
+					<systemProperties>
+						<property>
+							<name>configEnv</name>
+							<value>${thisCanBePassedIn}</value>
+						</property>
+					</systemProperties>
 				</configuration>
 			</plugin>
 
