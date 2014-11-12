@@ -156,4 +156,15 @@ public class ExchangeInformationPublicWallIT {
 		org.junit.Assert.assertEquals("user1", msg.getAuthor());
 		org.junit.Assert.assertEquals("WALL", msg.getMessageType());
 	}
+	
+	/*
+	 * Get Unknown message by ID
+	 */
+	@HttpTest(order=6,
+			method=Method.GET,
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/0")
+	public void testGetNonExistentMessage(){
+		Assert.assertNotFound(response);
+	}
 }
