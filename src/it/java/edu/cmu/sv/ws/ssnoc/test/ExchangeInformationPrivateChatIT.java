@@ -33,13 +33,19 @@ public class ExchangeInformationPrivateChatIT {
 
 	// setup tests
 	// create two users
-	@HttpTest(order=1, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
-			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"user1\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
+	@HttpTest(order=1, 
+			method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/user/signup", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"userName\":\"user1\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
 	public void setupUser1(){
 		org.junit.Assert.assertTrue("Response should be 200 or 201, but was " + response.getStatus(), response.getStatus() == 200 || response.getStatus() == 201); 
 	}
 	
-	@HttpTest(order=1, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=1, 
+			method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/user/signup", type=MediaType.APPLICATION_JSON, content="{\"userName\":\"user2\",\"password\":\"1234\",\"createdAt\":\"2014-09-24 09:15\"}")
 	public void setupUser2(){
 		org.junit.Assert.assertTrue("Response should be 200 or 201, but was " + response.getStatus(), response.getStatus() == 200 || response.getStatus() == 201); 
@@ -48,7 +54,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get empty chat messages between two users
 	 */
-	@HttpTest(order=2, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=2, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/messages/user1/user2")
 	public void testGetEmptyChatMessages(){
 		assertOk(response);
@@ -60,7 +67,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get empty chat buddies of user1 
 	 */
-	@HttpTest(order=2, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=2, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/users/user1/chatbuddies")
 	public void testEmptyUser1ChatBuddies(){
 		assertOk(response);
@@ -72,7 +80,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get empty chat buddies of user2 
 	 */
-	@HttpTest(order=2, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=2, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/users/user2/chatbuddies")
 	public void testEmptyUser2ChatBuddies(){
 		assertOk(response);
@@ -84,8 +93,11 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Send a message from user1 to user2
 	 */
-	@HttpTest(order=3, method=Method.POST, headers={@Header(name="Accept", value="application/json")},
-			path="/message/user1/user2", type=MediaType.APPLICATION_JSON, content="{\"content\":\"test message from user1 to user2\", \"postedAt\":\"2014-09-24 09:15\"}")
+	@HttpTest(order=3, method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/user1/user2", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"content\":\"test message from user1 to user2\", \"postedAt\":\"2014-09-24 09:15\"}")
 	public void testSendMessageFromUser1ToUser2(){
 		Assert.assertCreated(response);
 		Message msg = new Gson().fromJson(response.getBody(), Message.class);
@@ -96,9 +108,10 @@ public class ExchangeInformationPrivateChatIT {
 	}
 	
 	/*
-	 * Test get empty chat messages between two users
+	 * Test get chat messages between two users
 	 */
-	@HttpTest(order=4, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=4, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/messages/user1/user2")
 	public void testGetChatMessagesBetweenUser1AndUser2(){
 		assertOk(response);
@@ -115,7 +128,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get chat buddies of user1 
 	 */
-	@HttpTest(order=4, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=4, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/users/user1/chatbuddies")
 	public void testUser1ChatBuddies(){
 		assertOk(response);
@@ -129,7 +143,8 @@ public class ExchangeInformationPrivateChatIT {
 	/*
 	 * Test get chat buddies of user2 
 	 */
-	@HttpTest(order=4, method=Method.GET, headers={@Header(name="Accept", value="application/json")},
+	@HttpTest(order=4, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
 			path="/users/user2/chatbuddies")
 	public void testUser2ChatBuddies(){
 		assertOk(response);
@@ -138,5 +153,95 @@ public class ExchangeInformationPrivateChatIT {
 		org.junit.Assert.assertEquals(1, objects.size());
 		User user = objects.get(0);
 		org.junit.Assert.assertEquals("user1", user.getUserName());
+	}
+	
+	// Sad cases
+	
+	/*
+	 * Test get chat buddies of Unknown User
+	 */
+	@HttpTest(order=5, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/users/unknownUser/chatbuddies")
+	public void testUnkownUserChatBuddies(){
+		Assert.assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		org.junit.Assert.assertEquals(0, objects.size());
+	}
+	
+	/*
+	 * Test get chat message between known and Unknown User
+	 */
+	@HttpTest(order=5, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/messages/user1/unknownUser")
+	public void testGetChatMessagesBetweenUser1AndUnknownUser(){
+		Assert.assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		org.junit.Assert.assertEquals(0, objects.size());
+	}
+	
+	/*
+	 * Test get chat message between Unknown and Known User
+	 */
+	@HttpTest(order=5, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/messages/unknownUser/user2")
+	public void testGetChatMessagesBetweenUnknownUserAndUser2(){
+		Assert.assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		org.junit.Assert.assertEquals(0, objects.size());
+	}
+	
+	/*
+	 * Test get chat message between two unknown users
+	 */
+	@HttpTest(order=5, method=Method.GET, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/messages/unknownUser1/unknownUser2")
+	public void testGetChatMessagesBetweenUnknownUser1AndUnknownUser2(){
+		Assert.assertOk(response);
+		TypeToken<List<User>> token = new TypeToken<List<User>>() {};
+		List<User> objects = new Gson().fromJson(response.getBody(), token.getType());
+		org.junit.Assert.assertEquals(0, objects.size());
+	}
+	
+	/*
+	 * Test sending a message to an unknown user
+	 */
+	@HttpTest(order=5, method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/user1/unknownUser", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"content\":\"test message from user1 to unknown user\", \"postedAt\":\"2014-09-24 09:15\"}")
+	public void testSendMessageFromUser1ToUnknownUser(){
+		Assert.assertBadRequest(response);
+	}
+	
+	/*
+	 * Test sending a message from an unknown user
+	 */
+	@HttpTest(order=5, method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/unknownUser/user2", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"content\":\"test message from unknown user to user2\", \"postedAt\":\"2014-09-24 09:15\"}")
+	public void testSendMessageFromUnknownUserToUser2(){
+		Assert.assertBadRequest(response);
+	}
+	
+	/*
+	 * Test sending a message from an unknown user to an unknown user
+	 */
+	@HttpTest(order=5, method=Method.POST, 
+			headers={@Header(name="Accept", value="application/json")},
+			path="/message/unknownUser1/unknownUser2", 
+			type=MediaType.APPLICATION_JSON, 
+			content="{\"content\":\"test message from unknown user 1 to unknown user 2\", \"postedAt\":\"2014-09-24 09:15\"}")
+	public void testSendMessageFromUnknownUser1ToUnknownUser2(){
+		Assert.assertBadRequest(response);
 	}
 }

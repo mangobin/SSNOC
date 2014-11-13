@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import org.h2.util.StringUtils;
 
+import edu.cmu.sv.ws.ssnoc.common.exceptions.DBException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.UnauthorizedUserException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownUserException;
@@ -88,7 +89,12 @@ public class UserService extends BaseService {
 			dao.save(po);
 			resp = ConverterUtils.convert(po);
 			
-		} catch (Exception e) {
+		} catch(DBException e) {
+			throw new DBException(e);	
+		} catch(UnauthorizedUserException e) {
+			throw new UnauthorizedUserException("Unauthorized!");
+		}
+		catch (Exception e) {
 			handleException(e);
 		} finally {
 			Log.exit();
@@ -128,6 +134,10 @@ public class UserService extends BaseService {
 			if (!validateUserPassword(pass.getPassword(), po)) {
 				throw new UnauthorizedUserException(userName, "Invalid password");
 			}
+		} catch(DBException e) {
+			throw new DBException(e);	
+		} catch (UnknownUserException e) {
+			throw new UnknownUserException("unknown user");
 		} catch (Exception e) {
 			handleException(e);
 		} finally {
@@ -184,6 +194,10 @@ public class UserService extends BaseService {
 		try {
 			UserPO po = loadExistingUser(userName);
 			user = ConverterUtils.convert(po);
+		}  catch(DBException e) {
+			throw new DBException(e);	
+		} catch (UnknownUserException e) {
+			throw new UnknownUserException("unknown user");
 		} catch (Exception e) {
 			handleException(e);
 		} finally {
@@ -236,7 +250,11 @@ public class UserService extends BaseService {
 
 			dao.save(existingUser);
 			temp =  ConverterUtils.convert(existingUser);
-		}catch (Exception e) {
+		}  catch(DBException e) {
+			throw new DBException(e);	
+		} catch (UnknownUserException e) {
+			throw new UnknownUserException("unknown user");
+		} catch (Exception e) {
 			handleException(e);
 		} finally {
 			Log.exit();

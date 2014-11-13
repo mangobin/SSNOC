@@ -3,6 +3,7 @@ package edu.cmu.sv.ws.ssnoc.data.analyzers;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,13 +24,16 @@ public class SocialNetworkAnalyzerTest {
 	static String cef;
 	static String bin;
 	static String nikhil;
+	static String jian;
+	static String member5;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		 cef = "Cef";
 		 bin = "Bin";
 		 nikhil = "Nikhil";
-		 
+		 jian = "jian";
+		 member5 = "member5";
 	}
 
 	@AfterClass
@@ -168,4 +172,41 @@ public class SocialNetworkAnalyzerTest {
 		}
 	}
 	
+	@Test
+	public void testBigGroup(){
+		users = new ArrayList<User>();
+		messages = new ArrayList<Message>();
+		String names[] = {cef, bin, nikhil, jian, member5};
+		for(int i=0; i < names.length; i++){
+			User user = new User();
+			user.setUserName(names[i]);
+			users.add(user);
+		}
+		
+		String msgs[][] = {{cef, bin}, {bin, nikhil}, {nikhil, jian}, {jian, bin}, {jian, member5}};
+		for(int i=0; i < msgs.length; i++){
+			Message msg = new Message();
+			msg.setAuthor(msgs[i][0]);
+			msg.setTarget(msgs[i][1]);
+			messages.add(msg);
+		}
+		
+		sut.loadUsers(users);
+		sut.loadMessages(messages);
+		
+		Set<Set<String>> unconnected = new HashSet<Set<String>>(sut.getUnconnectedUsers());
+				
+		// use sets to ignore order
+		Set<Set<String>> expected = new HashSet<Set<String>>();
+		String results[][] = {{bin, member5}, {nikhil, member5, cef}, {jian, cef}};
+		for(int i=0; i < results.length; i++){
+			Set<String> group = new HashSet<String>();
+			for(int j=0; j < results[i].length; j++){
+				group.add(results[i][j]);
+			}
+			expected.add(group);
+		}
+		
+		assertEquals(expected, unconnected);
+	}
 }

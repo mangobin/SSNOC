@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
@@ -77,7 +78,7 @@ public class UsersService extends BaseService {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{userName}/chatbuddies")
-	public List<User> retrieveChatBuddies(@PathParam("userName") String userName) {
+	public Response retrieveChatBuddies(@PathParam("userName") String userName) {
 		Log.enter("retrieve chat buddies for: "+ userName);
 		long userID = DAOFactory.getInstance().getUserDAO().findByName(userName).getUserId();
 		List<UserPO> usersPO = DAOFactory.getInstance().getMessageDAO().findChatBuddies(userID);
@@ -92,7 +93,7 @@ public class UsersService extends BaseService {
 		
 		Log.exit(userDto);
 		
-		return userDto;
+		return ok(userDto);
 	}
 	
 }
