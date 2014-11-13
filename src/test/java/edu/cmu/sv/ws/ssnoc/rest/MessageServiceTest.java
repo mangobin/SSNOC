@@ -83,6 +83,28 @@ public class MessageServiceTest {
 		assertTrue(result instanceof ServiceException);
 	}	
 	
+	@Test
+	public void testPostingOnWallIfDateIsInvalid(){
+		User u = new User();
+		u.setUserName("Nikhil");
+		u.setPassword("pass");
+		u.setAccountStatus("Active");
+		u.setCreatedAt("2014-01-01 01:01");
+		u.setPrivilegeLevel("Citizen");
+		
+		UserService user = new UserService();
+		user.addUser(u);
+		MessageService input = new MessageService();
+		Message message = new Message();
+		message.setAuthor("Nikhil");
+		message.setContent("Message");
+		message.setMessageID(1);
+		message.setMessageType("WALL");
+		message.setPostedAt("2014-01-01");
+		Response r = input.postMessageOnPublicWall("Nikhil", message);
+		assertEquals(400, r.getStatus());
+	}
+	
 	
 	@Test
 	public void testRetrievingMessageById(){		
@@ -241,6 +263,32 @@ public class MessageServiceTest {
 		assertEquals(201, r.getStatus());
 		Message m = (Message)r.getEntity();
 		assertEquals("Nikhil", m.getAuthor());
+	}
+	
+	@Test
+	public void testSendingChatMessageIfUserIsNull() {
+		
+		User u1 = new User();
+		u1.setUserName("Nikhil");
+		u1.setPassword("pass");
+		u1.setAccountStatus("Active");
+		u1.setCreatedAt("2014-01-01 01:01");
+		u1.setPrivilegeLevel("Citizen");
+		
+		UserService user = new UserService();
+		user.addUser(u1);
+		
+		Message msg = new Message();
+		msg.setAuthor("Nikhil");
+		msg.setContent("Message");
+		msg.setMessageID(1);
+		msg.setMessageType("CHAT");
+		msg.setPostedAt("2014-01-01 01:01");
+		msg.setTarget("Cef");
+		
+		MessageService input = new MessageService();
+		Response r = input.sendChatMessages("Nikhil", "Cef", msg);
+		assertEquals(400, r.getStatus());
 	}
 	
 	@Test
