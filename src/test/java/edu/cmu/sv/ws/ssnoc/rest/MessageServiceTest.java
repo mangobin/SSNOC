@@ -74,13 +74,8 @@ public class MessageServiceTest {
 		user.addUser(u);
 		MessageService input = new MessageService();
 		Message message = null;
-		Exception result = null;
-		try{
-			Response r = input.postMessageOnPublicWall("Nikhil", message);
-		}catch(Exception e){
-			result = e;
-		}
-		assertTrue(result instanceof ServiceException);
+		Response r = input.postMessageOnPublicWall("Nikhil", message);
+		assertEquals(400, r.getStatus());
 	}	
 	
 	@Test
