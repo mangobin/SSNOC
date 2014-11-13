@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
 import edu.cmu.sv.ws.ssnoc.data.util.DBUtils;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
 import edu.cmu.sv.ws.ssnoc.dto.User;
@@ -48,6 +49,42 @@ public class MessageServiceTest {
 	}	
 	
 	@Test
+	public void testPostingOnWallIfUserIsNull(){
+		MessageService input = new MessageService();
+		Message message = new Message();
+		message.setAuthor("Nikhil");
+		message.setContent("Message");
+		message.setMessageID(1);
+		message.setMessageType("WALL");
+		message.setPostedAt("2014-01-01 01:01");
+		Response r = input.postMessageOnPublicWall("Nikhil", message);
+		assertEquals(400, r.getStatus());
+	}	
+	
+	@Test
+	public void testPostingOnWallIfMessageIsNull(){
+		User u = new User();
+		u.setUserName("Nikhil");
+		u.setPassword("pass");
+		u.setAccountStatus("Active");
+		u.setCreatedAt("2014-01-01 01:01");
+		u.setPrivilegeLevel("Citizen");
+		
+		UserService user = new UserService();
+		user.addUser(u);
+		MessageService input = new MessageService();
+		Message message = null;
+		Exception result = null;
+		try{
+			Response r = input.postMessageOnPublicWall("Nikhil", message);
+		}catch(Exception e){
+			result = e;
+		}
+		assertTrue(result instanceof ServiceException);
+	}	
+	
+	
+	@Test
 	public void testRetrievingMessageById(){		
 		User u = new User();
 		u.setUserName("Nikhil");
@@ -75,6 +112,19 @@ public class MessageServiceTest {
 		Message message1 = output1.retrieveMesssageById(ID);
 		assertEquals("Nikhil", message1.getAuthor());
 		
+	}
+	
+	@Test
+	public void testRetrievingNullMessage() {
+		MessageService output1 = new MessageService();
+		Exception result = null;
+		try{
+			Message message1 = output1.retrieveMesssageById(-1);
+		}
+		catch(Exception e){
+			result = e;
+		}
+		assertNotNull(result);
 	}
 	
 	@Test
