@@ -268,7 +268,7 @@ public class MessageServiceTest {
 	}
 	
 	@Test
-	public void testRetrievingInvisibleChatMessagesReturnsNothing() {
+	public void testRetrievingInvisibleChatMessagesWhenBothAreInactiveReturnsNothing() {
 		User u1 = new User();
 		u1.setUserName("Nikhil");
 		u1.setPassword("pass");
@@ -278,7 +278,58 @@ public class MessageServiceTest {
 		User u2 = new User();
 		u2.setUserName("Cef");
 		u2.setPassword("pass");
-		u2.setAccountStatus("Inactive");
+		u2.setCreatedAt("2014-01-01 01:01");
+		u2.setPrivilegeLevel("Citizen");
+		
+		UserService user = new UserService();
+		user.addUser(u1);
+		user.addUser(u2);
+		
+		Message msg = new Message();
+		msg.setAuthor("Nikhil");
+		msg.setContent("Message");
+		msg.setMessageID(1);
+		msg.setMessageType("CHAT");
+		msg.setPostedAt("2014-01-01 01:01");
+		msg.setTarget("Cef");
+		
+		MessageService input = new MessageService();
+		Response r = input.sendChatMessages("Nikhil", "Cef", msg);
+		assertEquals(201, r.getStatus());
+		MessagesService m1 = new MessagesService();
+		List<Message> messages1 = m1.retrieveAllVisibleMessagesBetweenTwoUsers("Nikhil", "Cef");
+		assertEquals("Message", messages1.get(0).getContent());
+		
+		
+		UserService user1 = new UserService();
+		User u3 = new User();
+		u3.setAccountStatus("Inactive");
+		Response r1 = user1.updateUser("Nikhil", u3);
+		assertEquals(200, r1.getStatus());
+		
+		UserService user2 = new UserService();
+		User u4 = new User();
+		u4.setAccountStatus("Inactive");
+		Response r2 = user2.updateUser("Cef", u4);
+		assertEquals(200, r2.getStatus());
+		
+		MessagesService m = new MessagesService();
+		List<Message> messages = m.retrieveAllVisibleMessagesBetweenTwoUsers("Nikhil", "Cef");
+		assertTrue(messages.isEmpty());
+		
+	}
+	
+	@Test
+	public void testRetrievingInvisibleChatMessagesWhenAuthorIsInactiveReturnsNothing() {
+		User u1 = new User();
+		u1.setUserName("Nikhil");
+		u1.setPassword("pass");
+		u1.setCreatedAt("2014-01-01 01:01");
+		u1.setPrivilegeLevel("Citizen");
+		
+		User u2 = new User();
+		u2.setUserName("Cef");
+		u2.setPassword("pass");
 		u2.setCreatedAt("2014-01-01 01:01");
 		u2.setPrivilegeLevel("Citizen");
 		
@@ -310,6 +361,56 @@ public class MessageServiceTest {
 		
 		UserService user2 = new UserService();
 		Response r2 = user2.updateUser("Cef", u2);
+		assertEquals(200, r2.getStatus());
+		
+		MessagesService m = new MessagesService();
+		List<Message> messages = m.retrieveAllVisibleMessagesBetweenTwoUsers("Nikhil", "Cef");
+		assertTrue(messages.isEmpty());
+		
+	}
+	
+	@Test
+	public void testRetrievingInvisibleChatMessagesWhenTargetIsInactiveReturnsNothing() {
+		User u1 = new User();
+		u1.setUserName("Nikhil");
+		u1.setPassword("pass");
+		u1.setCreatedAt("2014-01-01 01:01");
+		u1.setPrivilegeLevel("Citizen");
+		
+		User u2 = new User();
+		u2.setUserName("Cef");
+		u2.setPassword("pass");
+		u2.setCreatedAt("2014-01-01 01:01");
+		u2.setPrivilegeLevel("Citizen");
+		
+		UserService user = new UserService();
+		user.addUser(u1);
+		user.addUser(u2);
+		
+		Message msg = new Message();
+		msg.setAuthor("Nikhil");
+		msg.setContent("Message");
+		msg.setMessageID(1);
+		msg.setMessageType("CHAT");
+		msg.setPostedAt("2014-01-01 01:01");
+		msg.setTarget("Cef");
+		
+		MessageService input = new MessageService();
+		Response r = input.sendChatMessages("Nikhil", "Cef", msg);
+		assertEquals(201, r.getStatus());
+		MessagesService m1 = new MessagesService();
+		List<Message> messages1 = m1.retrieveAllVisibleMessagesBetweenTwoUsers("Nikhil", "Cef");
+		assertEquals("Message", messages1.get(0).getContent());
+		
+		
+		UserService user1 = new UserService();
+		Response r1 = user1.updateUser("Nikhil", u1);
+		assertEquals(200, r1.getStatus());
+		
+		UserService user2 = new UserService();
+		User u4 = new User();
+		u4.setAccountStatus("Inactive");
+		Response r2 = user2.updateUser("Cef", u4);
 		assertEquals(200, r2.getStatus());
 		
 		MessagesService m = new MessagesService();

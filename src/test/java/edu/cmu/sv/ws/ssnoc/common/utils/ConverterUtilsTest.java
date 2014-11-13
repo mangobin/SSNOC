@@ -38,6 +38,14 @@ public class ConverterUtilsTest {
 	}
 	
 	@Test
+	public void testConvertingNullMesssagePO() {
+		MessagePO input = null;
+		Message output = ConverterUtils.convert(input);
+		assertNull(output);
+	}
+	
+	
+	@Test
 	public void testConvertMessageDtoToPo() {
 		Message input = new Message();
 		input.setContent("Message");
@@ -48,6 +56,13 @@ public class ConverterUtilsTest {
 		MessagePO output = ConverterUtils.convert(input);
 		
 		assertEquals("Message", output.getContent());
+	}
+	
+	@Test
+	public void testConvertingNullMessageDto() {
+		Message input = null;
+		MessagePO output = ConverterUtils.convert(input);
+		assertNull(output);
 	}
 
 }
