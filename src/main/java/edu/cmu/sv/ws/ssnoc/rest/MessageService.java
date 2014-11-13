@@ -38,14 +38,15 @@ public class MessageService extends BaseService {
 		Message dtoMsg = new Message();
 		try{
 			UserPO userPO = DAOFactory.getInstance().getUserDAO().findByName(userName);
-			if(userPO == null) {
+			if(userPO == null || msg == null ) {
 				return badRequest();
 			}
+			
 			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 			msg.setAuthor(userName);
 			msg.setMessageType(SQL.MESSAGE_TYPE_WALL);
 			MessagePO po = ConverterUtils.convert(msg);
-			if(po == null || po.getPostedAt() == null) {
+			if(po.getPostedAt() == null) {
 				return badRequest();
 			}
 
