@@ -78,22 +78,24 @@ public class UsersService extends BaseService {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{userName}/chatbuddies")
-	public Response retrieveChatBuddies(@PathParam("userName") String userName) {
+	public List<User> retrieveChatBuddies(@PathParam("userName") String userName) {
 		Log.enter("retrieve chat buddies for: "+ userName);
-		long userID = DAOFactory.getInstance().getUserDAO().findByName(userName).getUserId();
-		List<UserPO> usersPO = DAOFactory.getInstance().getMessageDAO().findChatBuddies(userID);
-		
+		UserPO user = DAOFactory.getInstance().getUserDAO().findByName(userName);
 		List<User> userDto = new ArrayList<User>();
-		
-		for(UserPO po : usersPO) {
-			User user = new User();
-			user = ConverterUtils.convert(po);
-			userDto.add(user);
+
+		if(user != null){
+			long userID = user.getUserId();
+			List<UserPO> usersPO = DAOFactory.getInstance().getMessageDAO().findChatBuddies(userID);
+			
+			for(UserPO po : usersPO) {
+				User usr = ConverterUtils.convert(po);
+				userDto.add(usr);
+			}
 		}
 		
 		Log.exit(userDto);
 		
-		return ok(userDto);
+		return userDto;
 	}
 	
 }
