@@ -207,7 +207,8 @@ public class DBUtils {
 	 */
 	public static final Connection getConnection() throws SQLException {
 		IConnectionPool pool = null;
-		if(!TEST_MODE){
+		String configEnv = System.getProperty("databaseEnv");
+		if(!TEST_MODE && !"test".equalsIgnoreCase(configEnv)){
 			pool = ConnectionPoolFactory.getInstance()
 					.getH2ConnectionPool();
 		} else {

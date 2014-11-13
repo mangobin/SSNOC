@@ -7,6 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -14,6 +15,7 @@ import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IMessageDAO;
+import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
@@ -119,7 +121,7 @@ public class MessagesService extends BaseService {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/{userName1}/{userName2}")
-	public Response retrieveAllMessagesBetweenTwoUsers (@PathParam("userName1") String userName1, 
+	public List<Message> retrieveAllMessagesBetweenTwoUsers (@PathParam("userName1") String userName1, 
 			@PathParam("userName2") String userName2) {
 		Log.enter(userName1);
 		Log.enter(userName2);
@@ -127,11 +129,14 @@ public class MessagesService extends BaseService {
 		List<MessagePO> list = new ArrayList<MessagePO>();
 		
 		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
-
-		long authorId = DAOFactory.getInstance().getUserDAO().findByName(userName1).getUserId();
-		long targetId = DAOFactory.getInstance().getUserDAO().findByName(userName2).getUserId();
+		IUserDAO userDao = DAOFactory.getInstance().getUserDAO();
 		
-		list = dao.findChatHistoryBetweenTwoUsers(authorId, targetId);
+		UserPO author = userDao.findByName(userName1);
+		UserPO target = userDao.findByName(userName2);
+				
+		if(author != null && target != null){
+			list = dao.findChatHistoryBetweenTwoUsers(author.getUserId(), target.getUserId());
+		}
 		
 		List<Message> listDto = new ArrayList<Message>();
 		
@@ -142,7 +147,7 @@ public class MessagesService extends BaseService {
 		
 		Log.exit(listDto);
 		
-		return ok(listDto);
+		return listDto;
 	}
 	
 	@GET
