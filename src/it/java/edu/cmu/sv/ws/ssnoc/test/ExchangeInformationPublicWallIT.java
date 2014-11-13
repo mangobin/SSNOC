@@ -126,7 +126,7 @@ public class ExchangeInformationPublicWallIT {
 			type=MediaType.APPLICATION_JSON,
 			content="{\"content\":\"test wall message\", \"postedAt\":\"2014-09-24 09:15\"}")
 	public void testUnknownUserCannotPostMessages(){
-		//Assert.assertBadRequest(response);
+		Assert.assertBadRequest(response);
 	}
 	
 	/*
@@ -139,8 +139,7 @@ public class ExchangeInformationPublicWallIT {
 			type=MediaType.APPLICATION_JSON,
 			content="{\"content\":\"test wall message\", \"postedAt\":\"\"}")
 	public void testPostInvalidMessage(){
-		//FIXME
-		//Assert.assertBadRequest(response);
+		Assert.assertBadRequest(response);
 	}
 	
 	/*
