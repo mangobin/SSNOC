@@ -16,7 +16,7 @@ public interface IUserDAO {
 	 * @param userPO
 	 *            - User information to be saved.
 	 */
-	void save(UserPO userPO);
+	long save(UserPO userPO);
 
 	/**
 	 * This method will load all the users in the

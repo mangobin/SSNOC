@@ -59,6 +59,25 @@ public class SocialNetworkAnalyzer {
 			map.put(user.getUsername(), user);
 		}
 		
+		refactorFilter(filteredSets, map);
+		
+		System.out.println("elimination sets stage : " + filteredSets);
+		
+		for(Set<String> result : filteredSets){
+			refiner.addResult(result);
+		}
+		
+		System.out.println("refined sets: " + refiner.getResults());
+				
+		return new ArrayList<Set<String>>(refiner.getResults());
+	}
+
+	/**
+	 * @param filteredSets
+	 * @param map
+	 */
+	private void refactorFilter(Set<Set<String>> filteredSets,
+			Map<String, UserConnections> map) {
 		List<Set<String>> copyOfSets = new ArrayList<Set<String>>(filteredSets);
 		for(Set<String> set : copyOfSets){
 			List<String> names = new ArrayList<String>(set);
@@ -77,16 +96,6 @@ public class SocialNetworkAnalyzer {
 				}
 			}
 		}
-		
-		System.out.println("elimination sets stage : " + filteredSets);
-		
-		for(Set<String> result : filteredSets){
-			refiner.addResult(result);
-		}
-		
-		System.out.println("refined sets: " + refiner.getResults());
-				
-		return new ArrayList<Set<String>>(refiner.getResults());
 	}
 
 }

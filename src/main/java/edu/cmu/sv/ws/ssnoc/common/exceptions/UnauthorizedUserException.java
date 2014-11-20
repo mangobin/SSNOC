@@ -6,21 +6,22 @@ import javax.ws.rs.core.Response.Status;
 
 public class UnauthorizedUserException extends CheckedException {
 	private static final long serialVersionUID = -6940340725011302810L;
+	private static final String unAuthorizedUser = "Unauthorized User: ";
 
 	/**
 	 * Default constructor to raise an unauthorized user validation exception.
 	 */
 	public UnauthorizedUserException(String userName) {
-		super("Unauthorized User: " + userName, null, Response
+		super(unAuthorizedUser + userName, null, Response
 				.status(Status.UNAUTHORIZED)
-				.entity("Unauthorized User: " + userName)
+				.entity(unAuthorizedUser + userName)
 				.type(MediaType.TEXT_PLAIN_TYPE).build());
 	}
 	
 	public UnauthorizedUserException(String userName, String reason){
-		super("Unauthorized User: " + userName + " (Reason:" + reason + ")", null, Response
+		super(unAuthorizedUser + userName + " (Reason:" + reason + ")", null, Response
 				.status(Status.UNAUTHORIZED)
-				.entity("Unauthorized User: " + userName + " (Reason:" + reason + ")")
+				.entity(unAuthorizedUser + userName + " (Reason:" + reason + ")")
 				.type(MediaType.TEXT_PLAIN_TYPE).build());
 	}
 }

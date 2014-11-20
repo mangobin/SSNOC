@@ -5,19 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
-import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.common.utils.SSNCipher;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
-import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
-import edu.cmu.sv.ws.ssnoc.dto.Status;
 
 /**
  * This is a utility class to provide common functions to access and handle
@@ -211,7 +207,8 @@ public class DBUtils {
 	 */
 	public static final Connection getConnection() throws SQLException {
 		IConnectionPool pool = null;
-		if(!TEST_MODE){
+		String configEnv = System.getProperty("databaseEnv");
+		if(!TEST_MODE && !"test".equalsIgnoreCase(configEnv)){
 			pool = ConnectionPoolFactory.getInstance()
 					.getH2ConnectionPool();
 		} else {

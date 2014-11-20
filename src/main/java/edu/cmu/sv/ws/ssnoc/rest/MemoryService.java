@@ -18,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
-import edu.cmu.sv.ws.ssnoc.common.utils.TimestampUtil;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.po.MemoryPO;
 import edu.cmu.sv.ws.ssnoc.dto.Memory;
@@ -31,7 +30,7 @@ public class MemoryService extends BaseService {
 	
 	@POST
 	@Path("/start")
-	public void startMemoryMeasurement() {
+	public synchronized void startMemoryMeasurement() {
 		if(timer == null) {
 			timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask() {
@@ -59,7 +58,7 @@ public class MemoryService extends BaseService {
 	
 	@POST
 	@Path("/stop")
-	public void stopMemoryMeasurement() {
+	public synchronized void stopMemoryMeasurement() {
 		Log.enter("stop the memory measurement");
 		if(timer != null){
 			timer.cancel();

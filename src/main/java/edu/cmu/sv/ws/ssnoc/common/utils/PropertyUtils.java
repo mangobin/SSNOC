@@ -107,8 +107,8 @@ public class PropertyUtils {
 		}
 		
 		if (DB_TEST_CONN_URL == null) {
-			Log.warn("Initializing DB_CONN_URL to system default values ...");
-			DB_TEST_CONN_URL = "jdbc:h2:file:~/h2db-test";
+			Log.warn("Initializing DB_TEST_CONN_URL to system default values ...");
+			DB_TEST_CONN_URL = "jdbc:h2:mem:ssnoc_test";
 		}
 
 		if (DB_USERNAME == null) {

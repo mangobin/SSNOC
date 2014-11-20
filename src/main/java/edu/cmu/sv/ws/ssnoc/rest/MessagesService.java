@@ -7,12 +7,15 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IMessageDAO;
+import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
@@ -20,6 +23,7 @@ import edu.cmu.sv.ws.ssnoc.dto.Message;
 
 @Path("/messages")
 public class MessagesService extends BaseService {
+	private static final String ACTIVE = "Active";
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -56,7 +60,7 @@ public class MessagesService extends BaseService {
 		
 		for(MessagePO m : list) {
 			UserPO po = DAOFactory.getInstance().getUserDAO().findByUserID(m.getAuthor());
-			if(po.getAccountStatus().equals("Active")) {
+			if(po.getAccountStatus().equals(ACTIVE)) {
 				Message msg = ConverterUtils.convert(m);
 				listDto.add(msg);
 			}
@@ -103,7 +107,7 @@ public class MessagesService extends BaseService {
 		
 		for(MessagePO m : list) {
 			UserPO po = DAOFactory.getInstance().getUserDAO().findByUserID(m.getAuthor());
-			if(po.getAccountStatus().equals("Active")) {
+			if(po.getAccountStatus().equals(ACTIVE)) {
 				Message msg = ConverterUtils.convert(m);
 				listDto.add(msg);
 			}
@@ -125,11 +129,14 @@ public class MessagesService extends BaseService {
 		List<MessagePO> list = new ArrayList<MessagePO>();
 		
 		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
-
-		long authorId = DAOFactory.getInstance().getUserDAO().findByName(userName1).getUserId();
-		long targetId = DAOFactory.getInstance().getUserDAO().findByName(userName2).getUserId();
+		IUserDAO userDao = DAOFactory.getInstance().getUserDAO();
 		
-		list = dao.findChatHistoryBetweenTwoUsers(authorId, targetId);
+		UserPO author = userDao.findByName(userName1);
+		UserPO target = userDao.findByName(userName2);
+				
+		if(author != null && target != null){
+			list = dao.findChatHistoryBetweenTwoUsers(author.getUserId(), target.getUserId());
+		}
 		
 		List<Message> listDto = new ArrayList<Message>();
 		
@@ -139,8 +146,8 @@ public class MessagesService extends BaseService {
 		}
 		
 		Log.exit(listDto);
-		return listDto;
 		
+		return listDto;
 	}
 	
 	@GET
@@ -160,7 +167,7 @@ public class MessagesService extends BaseService {
 		long targetId = targetPO.getUserId();
 		
 		List<Message> listDto = new ArrayList<Message>();
-		if(authorPO.getAccountStatus().equals("Active") && targetPO.getAccountStatus().equals("Active")) {
+		if(authorPO.getAccountStatus().equals(ACTIVE) && targetPO.getAccountStatus().equals(ACTIVE)) {
 			list = dao.findChatHistoryBetweenTwoUsers(authorId, targetId);
 			for(MessagePO m : list) {
 				Message msg = ConverterUtils.convert(m);

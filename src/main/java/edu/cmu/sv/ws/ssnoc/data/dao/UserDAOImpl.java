@@ -124,12 +124,14 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 	 *            - User information to be saved.
 	 */
 	@Override
-	public void save(UserPO userPO) {
+	public long save(UserPO userPO) {
 		Log.enter(userPO);
 		if (userPO == null) {
 			Log.warn("Inside save method with userPO == NULL");
-			return;
+			return -1;
 		}
+		
+		long insertedId=-1;
 
 		try {
 			Connection conn = getConnection();
@@ -160,12 +162,18 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 			}
 			int rowCount = stmt.executeUpdate();
 			Log.trace("Statement executed, and " + rowCount + " rows inserted.");
+			ResultSet generatedKeys = stmt.getGeneratedKeys();
+			if(generatedKeys.next()){
+				insertedId = generatedKeys.getLong(1);
+			}
 			conn.close();
 		} catch (SQLException e) {
 			handleException(e);
 		} finally {
 			Log.exit();
 		}
+		
+		return insertedId;
 	}
 
 	@Override
