@@ -1,13 +1,18 @@
 package edu.cmu.sv.ws.ssnoc.common.utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.MemoryPO;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.data.po.RequestPO;
 import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Memory;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
+import edu.cmu.sv.ws.ssnoc.dto.Request;
 import edu.cmu.sv.ws.ssnoc.dto.Status;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 
@@ -204,6 +209,52 @@ public class ConverterUtils {
 		
 		return dto;
 		
+	}
+	
+	public static final Request convert(RequestPO po) {
+		if(po == null) {
+			return null;
+		}
+		
+		Request dto = new Request();
+		dto.setCreated_at(TimestampUtil.convert(po.getCreated_at()));
+		dto.setUpdated_at(TimestampUtil.convert(po.getUpdated_at()));
+		dto.setDescription(po.getDescription());
+		dto.setLocation(po.getLocation());
+		dto.setRequesterId(po.getRequesterId());
+		dto.setRequestId(po.getRequestId());
+		dto.setResolutionDetails(po.getResolutionDetails());
+		dto.setResponders(Arrays.asList(po.getResponders()));
+		dto.setStatus(po.getStatus());
+		dto.setType(Arrays.asList(po.getType()));
+
+		return dto;
+	}
+	
+	public static final RequestPO convert(Request dto) {
+		if(dto == null) {
+			return null;
+		}
+		
+		RequestPO po = new RequestPO();
+		po.setCreated_at(TimestampUtil.convert(dto.getCreated_at()));
+		po.setUpdated_at(TimestampUtil.convert(dto.getUpdated_at()));
+		po.setDescription(dto.getDescription());
+		po.setLocation(dto.getLocation());
+		po.setRequesterId(dto.getRequesterId());
+		po.setRequestId(dto.getRequestId());
+		po.setResolutionDetails(dto.getResolutionDetails());
+		po.setStatus(dto.getStatus());
+		
+		List<String> typeList = dto.getType();
+		String[] type = typeList.toArray(new String[typeList.size()]);
+		po.setType(type);		
+		
+		List<String> responderList = dto.getResponders();
+		String[] responders = responderList.toArray(new String[responderList.size()]);
+		po.setResponders(responders);
+		
+		return po;
 	}
 	
 	

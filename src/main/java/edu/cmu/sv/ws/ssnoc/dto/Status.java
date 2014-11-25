@@ -16,15 +16,6 @@ public class Status {
 	
 	private long statusId;
 	
-//	private long userId;
-//	
-//	public long getUserId() {
-//		return userId;
-//	}
-//
-//	public void setUserId(long userId) {
-//		this.userId = userId;
-//	}
 
 	public long getStatusId() {
 		return statusId;

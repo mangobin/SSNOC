@@ -61,4 +61,8 @@ public class DAOFactory {
 	public IMemoryDAO getMemoryDAO() {
 		return new MemoryDAOImpl();
 	}
+	
+	public IRequestDAO getRequestDAO() {
+		return new RequestDAOImpl();
+	}
 }

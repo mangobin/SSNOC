@@ -33,6 +33,7 @@ public class DBUtils {
 		CREATE_TABLE_MAP.put(SQL.SSN_MEMORY, SQL.CREATE_MEMORY);
 		//create fake message table
 		CREATE_TABLE_MAP.put(SQL.SSN_FAKE_MESSAGES, SQL.CREATE_FAKE_MESSAGES);
+		CREATE_TABLE_MAP.put(SQL.SSN_REQUEST, SQL.CREATE_REQUESTS);
 	}
 	
 	/*
@@ -104,16 +105,6 @@ public class DBUtils {
 			userPO = SSNCipher.encryptPassword(userPO);
 			userPO.setLastStatusID(0);
 			DAOFactory.getInstance().getUserDAO().save(userPO);
-			
-//			UserPO user = DAOFactory.getInstance().getUserDAO().findByName(userPO.getUserName());
-//			StatusPO status = new StatusPO();
-//			status.setUserId(userPO.getUserId());
-//			status.setStatusCode("GREEN");
-//			status.setUpdatedAt(new Date());
-//
-//			long id = DAOFactory.getInstance().getStatusDAO().save(status);
-//			userPO.setLastStatusID(0);
-//			DAOFactory.getInstance().getUserDAO().save(user);	
 		}
 	}
 
