@@ -12,7 +12,6 @@ public class RequestPO {
 	private String description;
 	private String status;
 	private String resolutionDetails;
-	private String[] responders;
 	
 	public long getRequestId() {
 		return requestId;
@@ -67,12 +66,6 @@ public class RequestPO {
 	}
 	public void setResolutionDetails(String resolutionDetails) {
 		this.resolutionDetails = resolutionDetails;
-	}
-	public String[] getResponders() {
-		return responders;
-	}
-	public void setResponders(String[] responders) {
-		this.responders = responders;
 	}
 	
 }

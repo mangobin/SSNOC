@@ -223,8 +223,9 @@ public class ConverterUtils {
 		dto.setLocation(po.getLocation());
 		dto.setRequesterId(po.getRequesterId());
 		dto.setRequestId(po.getRequestId());
+		//waiting for responder dto to completed
 		dto.setResolutionDetails(po.getResolutionDetails());
-		dto.setResponders(Arrays.asList(po.getResponders()));
+		//dto.setResponders(Arrays.asList(po.getResponders()));
 		dto.setStatus(po.getStatus());
 		dto.setType(Arrays.asList(po.getType()));
 
@@ -249,10 +250,10 @@ public class ConverterUtils {
 		List<String> typeList = dto.getType();
 		String[] type = typeList.toArray(new String[typeList.size()]);
 		po.setType(type);		
-		
-		List<String> responderList = dto.getResponders();
-		String[] responders = responderList.toArray(new String[responderList.size()]);
-		po.setResponders(responders);
+		//waiting for responder dto to completed
+//		List<String> responderList = dto.getResponders();
+//		String[] responders = responderList.toArray(new String[responderList.size()]);
+//		po.setResponders(responders);
 		
 		return po;
 	}

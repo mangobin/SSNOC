@@ -42,6 +42,9 @@ public class RequestService extends BaseService {
 			dto.setRequesterId(userPO.getUserId());
 			
 			RequestPO requestpo = ConverterUtils.convert(dto);
+			if(requestpo.getCreated_at() == null){
+				return badRequest();
+			}
 
 			long requestID = dao.save(requestpo);
 			requestpo.setRequestId(requestID);

@@ -33,21 +33,19 @@ public class RequestDAOImpl extends BaseDAOImpl implements IRequestDAO {
 					stmt.setObject(2, po.getType());
 					stmt.setTimestamp(3, new Timestamp(po.getCreated_at().getTime()));
 					stmt.setString(4, po.getLocation());
-					stmt.setObject(5, po.getResponders());
-					stmt.setString(6, po.getDescription());
-					stmt.setString(7, po.getStatus());
-					stmt.setString(8, po.getResolutionDetails());
+					stmt.setString(5, po.getDescription());
+					stmt.setString(6, po.getStatus());
+					stmt.setString(7, po.getResolutionDetails());
 				} else {
 					stmt = conn.prepareStatement(SQL.UPDATE_REQUEST);
 					stmt.setLong(1,po.getRequesterId());
 					stmt.setObject(2, po.getType());
 					stmt.setTimestamp(3, new Timestamp(po.getUpdated_at().getTime()));
 					stmt.setString(4, po.getLocation());
-					stmt.setObject(5, po.getResponders());
-					stmt.setString(6, po.getDescription());
-					stmt.setString(7, po.getStatus());
-					stmt.setString(8, po.getResolutionDetails());
-					stmt.setLong(9, po.getRequestId());
+					stmt.setString(5, po.getDescription());
+					stmt.setString(6, po.getStatus());
+					stmt.setString(7, po.getResolutionDetails());
+					stmt.setLong(8, po.getRequestId());
 				}
 				int rowCount = stmt.executeUpdate();
 				Log.debug("Statement executed, and " + rowCount + " rows inserted.");
@@ -123,8 +121,7 @@ public class RequestDAOImpl extends BaseDAOImpl implements IRequestDAO {
 				po.setDescription(rs.getString(6));
 				po.setStatus(rs.getString(7));
 				po.setResolutionDetails(rs.getString(8));
-				po.setResponders((String[]) rs.getObject(9));
-				po.setUpdated_at(new Date(rs.getTimestamp(10).getTime()));
+				po.setUpdated_at(new Date(rs.getTimestamp(9).getTime()));
 				request.add(po);
 			}
 			if(rs != null){

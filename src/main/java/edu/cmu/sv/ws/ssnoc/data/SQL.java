@@ -269,19 +269,19 @@ public class SQL {
 	public static final String CREATE_REQUESTS = "create table IF NOT EXISTS "
 			+ SSN_REQUEST + " ( requestId IDENTITY PRIMARY KEY,"
 			+ " requesterId BIGINT," + " type ARRAY," + " created_at DATETIME,"
-			+ " location VARCHAR(50), " + " description VARCHAR(50), "
-			+ " status VARCHAR(30), " + " resolutionDetails VARCHAR(100), "
-			+ " responders ARRAY, " + " updated_at DATETIME )";
+			+ " location VARCHAR , " + " description VARCHAR , "
+			+ " status VARCHAR (30), " + " resolutionDetails VARCHAR , "
+			+ " updated_at DATETIME )";
 
 	public static final String INSERT_REQUEST = "INSERT INTO "
 			+ SSN_REQUEST
-			+ " (requesterId, type, created_at, location, responders"
-			+ " description, status, resolutionDetails)" + " values(?,?,?,?,?,?,?,?)";
+			+ " (requesterId, type, created_at, location "
+			+ " description, status, resolutionDetails)" + " values(?,?,?,?,?,?,?)";
 
 	public static final String UPDATE_REQUEST = "UPDATE "
 			+ SSN_REQUEST
 			+ " SET "
-			+ " requesterId=?, type=?, updated_at=?, location=?, responders=?, "
+			+ " requesterId=?, type=?, updated_at=?, location=?, "
 			+ " description=?, status=?, resolutionDetails=?, "
 			+ " where requestId=?";
 
