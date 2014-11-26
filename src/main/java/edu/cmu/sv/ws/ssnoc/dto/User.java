@@ -11,9 +11,36 @@ public class User {
 	private String userName;
 	private String password;
 	private String createdAt;
-	private Status lastStatus;
+	private Status lastStatusCode;
 	private String privilegeLevel;
 	private String accountStatus;
+	private String latitude;
+	private String longitude;
+	private String location_updatedAt;
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLocation_updatedAt() {
+		return location_updatedAt;
+	}
+
+	public void setLocation_updatedAt(String location_updatedAt) {
+		this.location_updatedAt = location_updatedAt;
+	}
 
 	public String getPrivilegeLevel() {
 		return privilegeLevel;
@@ -32,11 +59,11 @@ public class User {
 	}
 
 	public Status getLastStatusCode() {
-		return lastStatus;
+		return lastStatusCode;
 	}
 
 	public void setLastStatusCode(Status lastStatus) {
-		this.lastStatus = lastStatus;
+		this.lastStatusCode = lastStatus;
 	}
 
 	public String getCreatedAt() {

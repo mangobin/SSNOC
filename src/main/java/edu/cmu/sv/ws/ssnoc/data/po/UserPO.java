@@ -21,6 +21,33 @@ public class UserPO {
 	private long lastStatusID;
 	private String privilegeLevel;
 	private String accountStatus;
+	private String latitude;
+	private String longitude;
+	private Date location_updatedAt;
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public Date getLocation_updatedAt() {
+		return location_updatedAt;
+	}
+
+	public void setLocation_updatedAt(Date location_updatedAt) {
+		this.location_updatedAt = location_updatedAt;
+	}
 
 	public String getPrivilegeLevel() {
 		return privilegeLevel;

@@ -48,7 +48,10 @@ public class ConverterUtils {
 			dto.setLastStatusCode(null);
 		}
 		dto.setAccountStatus(po.getAccountStatus());
-		dto.setPrivilegeLevel(po.getPrivilegeLevel());		
+		dto.setPrivilegeLevel(po.getPrivilegeLevel());
+		dto.setLongitude(po.getLongitude());
+		dto.setLatitude(po.getLatitude());
+		dto.setLocation_updatedAt(TimestampUtil.convert(po.getLocation_updatedAt()));
 
 		return dto;
 	}
@@ -72,6 +75,9 @@ public class ConverterUtils {
 		po.setCreatedAt(TimestampUtil.convert(dto.getCreatedAt()));
 		po.setAccountStatus(dto.getAccountStatus());
 		po.setPrivilegeLevel(dto.getPrivilegeLevel());
+		po.setLatitude(dto.getLatitude());
+		po.setLongitude(dto.getLongitude());
+		po.setLocation_updatedAt(TimestampUtil.convert(dto.getLocation_updatedAt()));
 
 		return po;
 	}

@@ -65,6 +65,9 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				po.setLastStatusID(rs.getLong(7));
 				po.setPrivilegeLevel(rs.getString(8));
 				po.setAccountStatus(rs.getString(9));
+				po.setLatitude(rs.getString(10));
+				po.setLongitude(rs.getString(11));
+				po.setLocation_updatedAt(new Date(rs.getTimestamp(12).getTime()));
 				users.add(po);
 			}
 		} catch (SQLException e) {
@@ -148,6 +151,9 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				stmt.setLong(6, 0); // by default no status
 				stmt.setString(7, userPO.getPrivilegeLevel());
 				stmt.setString(8, userPO.getAccountStatus());
+				stmt.setString(9, userPO.getLatitude());
+				stmt.setString(10, userPO.getLongitude());
+				stmt.setTimestamp(11, new Timestamp(userPO.getLocation_updatedAt().getTime()));
 			} else {
 				stmt = conn.prepareStatement(SQL.UPDATE_USER);
 				stmt.setString(1, userPO.getUserName());
@@ -158,7 +164,10 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				stmt.setLong(6, userPO.getLastStatusID());
 				stmt.setString(7, userPO.getPrivilegeLevel());
 				stmt.setString(8, userPO.getAccountStatus());
-				stmt.setLong(9, userPO.getUserId());
+				stmt.setString(9, userPO.getLatitude());
+				stmt.setString(10, userPO.getLongitude());
+				stmt.setTimestamp(11, new Timestamp(userPO.getLocation_updatedAt().getTime()));
+				stmt.setLong(12, userPO.getUserId());
 			}
 			int rowCount = stmt.executeUpdate();
 			Log.trace("Statement executed, and " + rowCount + " rows inserted.");

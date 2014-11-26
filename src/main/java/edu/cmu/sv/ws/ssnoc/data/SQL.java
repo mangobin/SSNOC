@@ -39,13 +39,16 @@ public class SQL {
 			+ " user_name VARCHAR(100)," + " password VARCHAR(512),"
 			+ " salt VARCHAR(512)," + " createdAt DATETIME, "
 			+ " modifiedAt DATETIME, " + " lastStatusId BIGINT, "
-			+ " privilegeLevel VARCHAR(20), " + " accountStatus VARCHAR(20))";
+			+ " privilegeLevel VARCHAR(20), " + " accountStatus VARCHAR(20), "
+			+ " latitude VARCHAR(30), " + " longitude VARCHAR(30), "
+			+ " location_updatedAt DATETIME ) ";
 
 	/**
 	 * Query to load all users in the system.
 	 */
 	public static final String FIND_ALL_USERS = "select user_id, user_name, password,"
-			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus "
+			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus, "
+			+ " latitude, longitude, location_updatedAt "
 			+ " from " + SSN_USERS + " order by user_name";
 
 	/**
@@ -54,10 +57,12 @@ public class SQL {
 	 */
 	public static final String FIND_USER_BY_NAME = "select user_id, user_name, password,"
 			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus  "
+			+ " latitude, longitude, location_updatedAt "
 			+ " from " + SSN_USERS + " where UPPER(user_name) = UPPER(?)";
 
 	public static final String FIND_USER_BY_ID = "select user_id, user_name, password,"
 			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus  "
+			+ " latitude, longitude, location_updatedAt "
 			+ " from " + SSN_USERS + " where user_id = ?";
 
 	/**
@@ -66,8 +71,8 @@ public class SQL {
 	public static final String INSERT_USER = "insert into "
 			+ SSN_USERS
 			+ " (user_name, password, salt, createdAt, modifiedAt, lastStatusId, "
-			+ " privilegeLevel, accountStatus ) "
-			+ " values (?, ?, ?, ?, ?, ?, ?, ?)";
+			+ " privilegeLevel, accountStatus, latitude, longitude, location_updatedAt ) "
+			+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * Query to update a row into the users table.
@@ -75,7 +80,9 @@ public class SQL {
 	public static final String UPDATE_USER = "update " + SSN_USERS + " set "
 			+ " user_name=?," + " password=?," + " salt=?," + " createdAt=?,"
 			+ " modifiedAt=?," + " lastStatusId=?," + " privilegeLevel=?,"
-			+ " accountStatus=?" + " where user_id=?";
+			+ " accountStatus=?, " 
+			+ " latitude=?," + " longitude=?," + " location_updatedAt=? "
+			+ " where user_id=?";
 
 	// ****************************************************************
 	// All queries related to STATUSES

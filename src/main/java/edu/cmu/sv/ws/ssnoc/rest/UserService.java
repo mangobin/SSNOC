@@ -21,6 +21,7 @@ import edu.cmu.sv.ws.ssnoc.common.exceptions.ValidationException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.common.utils.SSNCipher;
+import edu.cmu.sv.ws.ssnoc.common.utils.TimestampUtil;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
@@ -226,6 +227,9 @@ public class UserService extends BaseService {
 		String newPassWord = user.getPassword();
 		String newAccountStatus = user.getAccountStatus();
 		String newPrivilegeLevel  = user.getPrivilegeLevel();
+		String newLongitude = user.getLongitude();
+		String newLatitude = user.getLatitude();
+		String locationUpdatedAt = user.getLocation_updatedAt();
 		
 		User temp = new User();
 		
@@ -243,6 +247,16 @@ public class UserService extends BaseService {
 			setAccountStatusIfNotNull(newAccountStatus, existingUser);
 			
 			setPrivilegeLevelIfNotNull(newPrivilegeLevel, existingUser);
+			
+			if(newLongitude != null || newLatitude != null || locationUpdatedAt != null ) {
+				if(newLongitude == null || newLatitude == null || locationUpdatedAt == null ) {
+					badRequest();
+				} else {
+					existingUser.setLongitude(newLongitude);
+					existingUser.setLatitude(newLatitude);
+					existingUser.setLocation_updatedAt(TimestampUtil.convert(locationUpdatedAt));
+				}
+			}
 			
 			UserValidator validator = new UserValidator();
 			
