@@ -41,7 +41,7 @@ public class SQL {
 			+ " modifiedAt DATETIME, " + " lastStatusId BIGINT, "
 			+ " privilegeLevel VARCHAR(20), " + " accountStatus VARCHAR(20), "
 			+ " latitude VARCHAR(30), " + " longitude VARCHAR(30), "
-			+ " location_updatedAt DATETIME DEFAULT NULL ) ";
+			+ " location_updatedAt DATETIME ) ";
 
 	/**
 	 * Query to load all users in the system.
@@ -54,17 +54,22 @@ public class SQL {
 	/**
 	 * Query to find a user details depending on his name. Note that this query
 	 * does a case insensitive search with the user name.
-	 */
-	public static final String FIND_USER_BY_NAME = "select user_id, user_name, password,"
-			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus  "
-			+ " latitude, longitude, location_updatedAt "
+//	 */
+//	public static final String FIND_USER_BY_NAME = "select user_id, user_name, password,"
+//			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus  "
+//			+ " latitude, longitude, location_updatedAt "
+//			+ " from " + SSN_USERS + " where UPPER(user_name) = UPPER(?)";
+
+	public static final String FIND_USER_BY_NAME = "select * "
 			+ " from " + SSN_USERS + " where UPPER(user_name) = UPPER(?)";
+//
+//	public static final String FIND_USER_BY_ID = "select user_id, user_name, password,"
+//			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus  "
+//			+ " latitude, longitude, location_updatedAt  "
+//			+ " from " + SSN_USERS + " where user_id = ?";
 
-	public static final String FIND_USER_BY_ID = "select user_id, user_name, password,"
-			+ " salt, createdAt, modifiedAt, lastStatusId, privilegeLevel, accountStatus  "
-			+ " latitude, longitude, location_updatedAt "
+	public static final String FIND_USER_BY_ID = "select * "
 			+ " from " + SSN_USERS + " where user_id = ?";
-
 	/**
 	 * Query to insert a row into the users table.
 	 */

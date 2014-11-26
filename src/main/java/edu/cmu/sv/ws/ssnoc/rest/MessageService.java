@@ -9,12 +9,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import edu.cmu.sv.ws.ssnoc.common.exceptions.DBException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownMessageException;
-import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownUserException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
