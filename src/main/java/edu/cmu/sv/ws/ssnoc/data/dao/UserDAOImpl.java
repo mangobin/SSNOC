@@ -153,7 +153,12 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				stmt.setString(8, userPO.getAccountStatus());
 				stmt.setString(9, userPO.getLatitude());
 				stmt.setString(10, userPO.getLongitude());
-				stmt.setTimestamp(11, new Timestamp(userPO.getLocation_updatedAt().getTime()));
+				if(userPO.getLocation_updatedAt() != null) {
+					stmt.setTimestamp(11, new Timestamp(userPO.getLocation_updatedAt().getTime()));
+				} else {
+					stmt.setTimestamp(11, null);
+				}
+				
 			} else {
 				stmt = conn.prepareStatement(SQL.UPDATE_USER);
 				stmt.setString(1, userPO.getUserName());
@@ -166,7 +171,11 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				stmt.setString(8, userPO.getAccountStatus());
 				stmt.setString(9, userPO.getLatitude());
 				stmt.setString(10, userPO.getLongitude());
-				stmt.setTimestamp(11, new Timestamp(userPO.getLocation_updatedAt().getTime()));
+				if(userPO.getLocation_updatedAt() != null) {
+					stmt.setTimestamp(11, new Timestamp(userPO.getLocation_updatedAt().getTime()));
+				} else {
+					stmt.setTimestamp(11, null);
+				}
 				stmt.setLong(12, userPO.getUserId());
 			}
 			int rowCount = stmt.executeUpdate();
