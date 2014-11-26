@@ -287,5 +287,14 @@ public class SQL {
 
 	public static final String FIND_REQUEST_BY_ID = "SELECT * FROM "
 			+ SSN_REQUEST + " WHERE requestId = ?";
+	
 
+	public static final String FIND_ALL_REQUEST = "SELECT * FROM "
+			+ SSN_REQUEST 
+			+ " order by created_at desc" + " limit ?"
+			+ " offset ?";
+	
+	public static final String FIND_ALL_REQUEST_BY_USER = "SELECT * FROM "
+			+ SSN_REQUEST
+			+ " WHERE requesterId = ?";
 }

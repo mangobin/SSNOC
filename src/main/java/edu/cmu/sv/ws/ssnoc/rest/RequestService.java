@@ -1,7 +1,11 @@
 package edu.cmu.sv.ws.ssnoc.rest;
 
+import java.util.Date;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -10,8 +14,10 @@ import javax.ws.rs.core.Response;
 
 import edu.cmu.sv.ws.ssnoc.common.exceptions.DBException;
 import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
+import edu.cmu.sv.ws.ssnoc.common.exceptions.UnknownRequestException;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
+import edu.cmu.sv.ws.ssnoc.common.utils.TimestampUtil;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IRequestDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.RequestPO;
@@ -61,5 +67,48 @@ public class RequestService extends BaseService {
 		return created(dtoReq);
 		
 	}
+	
 
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/{id}")
+	public Response getRequestById(@PathParam("id") long requestId) {
+		Log.enter(requestId);
+		RequestPO po = DAOFactory.getInstance().getRequestDAO().findRequestById(requestId);
+		if(po == null) {
+			throw new UnknownRequestException(requestId);
+		}
+		
+		Request dto = ConverterUtils.convert(po);
+		Log.exit(dto);
+		return ok(dto);
+	}
+	
+	@PUT
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/{id}")
+	public Response updateRequestById(@PathParam("id") long requestId, Request request) {
+		Log.enter(requestId);
+		RequestPO po = DAOFactory.getInstance().getRequestDAO().findRequestById(requestId);
+		if(po == null) {
+			throw new UnknownRequestException(requestId);
+		}
+		
+		String newStatus = request.getStatus();
+		Date updatedAt = TimestampUtil.convert(request.getUpdated_at());
+		if(updatedAt == null || newStatus == null ) {
+			return badRequest();
+		} else {
+			po.setUpdated_at(updatedAt);
+			po.setStatus(newStatus);
+			DAOFactory.getInstance().getRequestDAO().save(po);
+			Request dto = ConverterUtils.convert(po);
+			
+			Log.exit(dto);
+			return ok(dto);
+		}
+		
+		
+	}
+	
 }

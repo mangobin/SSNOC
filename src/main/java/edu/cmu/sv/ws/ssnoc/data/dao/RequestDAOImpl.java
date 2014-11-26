@@ -13,6 +13,7 @@ import java.util.List;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.po.RequestPO;
+import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 
 public class RequestDAOImpl extends BaseDAOImpl implements IRequestDAO {
 
@@ -92,12 +93,46 @@ public class RequestDAOImpl extends BaseDAOImpl implements IRequestDAO {
 
 	@Override
 	public List<RequestPO> findAllRequestsByUserName(String userName) {
-		return null;
+		Log.enter("Find all requests by username: "+ userName);
+		
+		UserPO userPO = DAOFactory.getInstance().getUserDAO().findByName(userName);
+		long userId = userPO.getUserId();
+		List<RequestPO> requestPOList = null;
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_ALL_REQUEST_BY_USER);
+			stmt.setLong(1, userId);
+			requestPOList = processResults(stmt);
+			conn.close();
+		} catch(SQLException e){
+			handleException(e);
+		} finally {
+			Log.exit(requestPOList);
+		}
+		
+		return requestPOList;
 	}
 
 	@Override
 	public List<RequestPO> getAllRequests(int limit, int offset) {
-		return null;
+		Log.enter("Find all requests (limit: " + limit 
+				+ ", offset: " + offset + ")");
+		
+		List<RequestPO> requestPOList = null;
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_ALL_REQUEST);
+			stmt.setInt(1, limit);
+			stmt.setInt(2, offset);
+			requestPOList = processResults(stmt);
+			conn.close();
+		} catch(SQLException e){
+			handleException(e);
+		} finally {
+			Log.exit(requestPOList);
+		}
+		
+		return requestPOList;
 	}
 	
 	private List<RequestPO> processResults(PreparedStatement stmt) {
