@@ -67,6 +67,7 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				po.setAccountStatus(rs.getString(9));
 				po.setLatitude(rs.getString(10));
 				po.setLongitude(rs.getString(11));
+				
 				if(rs.getTimestamp(12) != null) {
 					po.setLocation_updatedAt(new Date(rs.getTimestamp(12).getTime()));
 				}
@@ -157,9 +158,7 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				stmt.setString(10, userPO.getLongitude());
 				if(userPO.getLocation_updatedAt() != null) {
 					stmt.setTimestamp(11, new Timestamp(userPO.getLocation_updatedAt().getTime()));
-				} else {
-					stmt.setTimestamp(11, null);
-				}
+				} 
 				
 			} else {
 				stmt = conn.prepareStatement(SQL.UPDATE_USER);

@@ -41,7 +41,7 @@ public class SQL {
 			+ " modifiedAt DATETIME, " + " lastStatusId BIGINT, "
 			+ " privilegeLevel VARCHAR(20), " + " accountStatus VARCHAR(20), "
 			+ " latitude VARCHAR(30), " + " longitude VARCHAR(30), "
-			+ " location_updatedAt DATETIME ) ";
+			+ " location_updatedAt DATETIME DEFAULT NULL ) ";
 
 	/**
 	 * Query to load all users in the system.
