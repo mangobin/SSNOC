@@ -67,7 +67,9 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
 				po.setAccountStatus(rs.getString(9));
 				po.setLatitude(rs.getString(10));
 				po.setLongitude(rs.getString(11));
-				po.setLocation_updatedAt(new Date(rs.getTimestamp(12).getTime()));
+				if(rs.getTimestamp(12) != null) {
+					po.setLocation_updatedAt(new Date(rs.getTimestamp(12).getTime()));
+				}
 				users.add(po);
 			}
 		} catch (SQLException e) {
