@@ -95,12 +95,20 @@ public class RequestService extends BaseService {
 		}
 		
 		String newStatus = request.getStatus();
+		String resolutionDetails = request.getResolutionDetails();
 		Date updatedAt = TimestampUtil.convert(request.getUpdated_at());
-		if(updatedAt == null || newStatus == null ) {
+		if(updatedAt == null ) {
 			return badRequest();
-		} else {
+		} else if ( newStatus == null && resolutionDetails == null) {
+			return badRequest();
+		}else {
 			po.setUpdated_at(updatedAt);
-			po.setStatus(newStatus);
+			if(newStatus != null) {
+				po.setStatus(newStatus);
+			}
+			if(resolutionDetails != null){ 
+				po.setResolutionDetails(resolutionDetails);
+			}
 			DAOFactory.getInstance().getRequestDAO().save(po);
 			Request dto = ConverterUtils.convert(po);
 			
