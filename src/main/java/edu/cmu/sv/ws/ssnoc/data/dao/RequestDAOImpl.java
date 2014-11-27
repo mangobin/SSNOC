@@ -94,14 +94,17 @@ public class RequestDAOImpl extends BaseDAOImpl implements IRequestDAO {
 	@Override
 	public List<RequestPO> findAllRequestsByUserName(String userName) {
 		Log.enter("Find all requests by username: "+ userName);
+		List<RequestPO> requestPOList = new ArrayList<RequestPO>();
 		
 		UserPO userPO = DAOFactory.getInstance().getUserDAO().findByName(userName);
-		long userId = userPO.getUserId();
-		List<RequestPO> requestPOList = null;
+		if(userPO == null) {
+			return requestPOList;
+		}
+		
 		try {
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_ALL_REQUEST_BY_USER);
-			stmt.setLong(1, userId);
+			stmt.setLong(1, userPO.getUserId());
 			requestPOList = processResults(stmt);
 			conn.close();
 		} catch(SQLException e){

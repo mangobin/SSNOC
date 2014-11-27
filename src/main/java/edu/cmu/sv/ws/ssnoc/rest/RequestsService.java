@@ -41,7 +41,7 @@ public class RequestsService extends BaseService{
 	public List<Request> getAllRequestsSentByAUser(@PathParam("username") String username) {
 		Log.enter("retrieve all requests sent by a user");
 		List<RequestPO> poList = DAOFactory.getInstance().getRequestDAO().findAllRequestsByUserName(username);
-		
+
 		List<Request> dtoList = new ArrayList<Request>();
 		for(RequestPO po : poList) {
 			Request dto = ConverterUtils.convert(po);

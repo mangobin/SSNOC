@@ -13,8 +13,7 @@ public class Request {
 	private String status;
 	private String resolutionDetails;
 	private List<String> responders;
-	public final static String DEFAULT_STATUS = "pending";
-	
+	public final static String DEFAULT_STATUS = "Pending";
 	
 	public long getRequestId() {
 		return requestId;
