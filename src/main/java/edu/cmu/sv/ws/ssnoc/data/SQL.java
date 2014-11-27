@@ -287,14 +287,14 @@ public class SQL {
 
 	public static final String INSERT_REQUEST = "INSERT INTO "
 			+ SSN_REQUEST
-			+ " (requesterId, type, created_at, location "
+			+ " (requesterId, type, created_at, location, "
 			+ " description, status, resolutionDetails)" + " values(?,?,?,?,?,?,?)";
 
 	public static final String UPDATE_REQUEST = "UPDATE "
 			+ SSN_REQUEST
 			+ " SET "
 			+ " requesterId=?, type=?, updated_at=?, location=?, "
-			+ " description=?, status=?, resolutionDetails=?, "
+			+ " description=?, status=?, resolutionDetails=? "
 			+ " where requestId=?";
 
 	public static final String FIND_REQUEST_BY_ID = "SELECT * FROM "

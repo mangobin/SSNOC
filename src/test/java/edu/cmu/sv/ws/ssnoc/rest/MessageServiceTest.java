@@ -2,7 +2,6 @@ package edu.cmu.sv.ws.ssnoc.rest;
 
 import static org.junit.Assert.*;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -10,7 +9,6 @@ import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.cmu.sv.ws.ssnoc.common.exceptions.ServiceException;
 import edu.cmu.sv.ws.ssnoc.data.util.DBUtils;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
 import edu.cmu.sv.ws.ssnoc.dto.User;

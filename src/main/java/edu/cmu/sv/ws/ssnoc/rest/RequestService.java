@@ -46,6 +46,7 @@ public class RequestService extends BaseService {
 			IRequestDAO dao = DAOFactory.getInstance().getRequestDAO();
 
 			dto.setRequesterId(userPO.getUserId());
+			dto.setStatus(Request.DEFAULT_STATUS);
 			
 			RequestPO requestpo = ConverterUtils.convert(dto);
 			if(requestpo.getCreated_at() == null){

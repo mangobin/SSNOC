@@ -227,13 +227,15 @@ public class ConverterUtils {
 		
 		Request dto = new Request();
 		dto.setCreated_at(TimestampUtil.convert(po.getCreated_at()));
-		dto.setUpdated_at(TimestampUtil.convert(po.getUpdated_at()));
+		if(po.getUpdated_at() != null) {
+			dto.setUpdated_at(TimestampUtil.convert(po.getUpdated_at()));
+		}
 		dto.setDescription(po.getDescription());
 		dto.setLocation(po.getLocation());
 		dto.setRequesterId(po.getRequesterId());
 		dto.setRequestId(po.getRequestId());
-		//waiting for responder dto to completed
 		dto.setResolutionDetails(po.getResolutionDetails());
+		//waiting for responder dto to completed
 		//dto.setResponders(Arrays.asList(po.getResponders()));
 		dto.setStatus(po.getStatus());
 		dto.setType(Arrays.asList(po.getType()));
@@ -248,7 +250,9 @@ public class ConverterUtils {
 		
 		RequestPO po = new RequestPO();
 		po.setCreated_at(TimestampUtil.convert(dto.getCreated_at()));
-		po.setUpdated_at(TimestampUtil.convert(dto.getUpdated_at()));
+		if(dto.getUpdated_at() != null) {
+			po.setUpdated_at(TimestampUtil.convert(dto.getUpdated_at()));
+		}
 		po.setDescription(dto.getDescription());
 		po.setLocation(dto.getLocation());
 		po.setRequesterId(dto.getRequesterId());

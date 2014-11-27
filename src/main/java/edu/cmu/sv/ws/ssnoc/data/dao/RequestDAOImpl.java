@@ -156,7 +156,9 @@ public class RequestDAOImpl extends BaseDAOImpl implements IRequestDAO {
 				po.setDescription(rs.getString(6));
 				po.setStatus(rs.getString(7));
 				po.setResolutionDetails(rs.getString(8));
-				po.setUpdated_at(new Date(rs.getTimestamp(9).getTime()));
+				if(rs.getTimestamp(9) != null) {
+					po.setUpdated_at(new Date(rs.getTimestamp(9).getTime()));
+				}
 				request.add(po);
 			}
 			if(rs != null){
