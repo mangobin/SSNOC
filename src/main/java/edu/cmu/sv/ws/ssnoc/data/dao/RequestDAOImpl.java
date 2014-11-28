@@ -102,12 +102,10 @@ public class RequestDAOImpl extends BaseDAOImpl implements IRequestDAO {
 			return requestPOList;
 		}
 		try {
-			Log.info("userID"+ userPO.getUserId());
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_ALL_REQUEST_BY_USER);
 			stmt.setLong(1, userPO.getUserId());
 			requestPOList = processResults(stmt);
-			Log.info("size"+ requestPOList.size());
 			conn.close();
 		} catch(SQLException e){
 			handleException(e);
