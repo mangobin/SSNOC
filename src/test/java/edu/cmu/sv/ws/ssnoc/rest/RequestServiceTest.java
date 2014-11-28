@@ -68,6 +68,7 @@ public class RequestServiceTest {
 		Request ret2 = (Request) r2.getEntity();
 		assertEquals("cmu",ret2.getLocation());
 		assertEquals("urgent",ret2.getDescription());
+		assertEquals("Nikhil",ret2.getUsername());
 	}
 	
 	@Test

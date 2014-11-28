@@ -5,6 +5,7 @@ import java.util.List;
 public class Request {
 	private long requestId;
 	private long requesterId;
+	private String username;
 	private List<String> type;
 	private String created_at;
 	private String updated_at;
@@ -74,6 +75,12 @@ public class Request {
 	}
 	public void setResponders(List<String> responders) {
 		this.responders = responders;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	

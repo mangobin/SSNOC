@@ -239,6 +239,12 @@ public class ConverterUtils {
 		//dto.setResponders(Arrays.asList(po.getResponders()));
 		dto.setStatus(po.getStatus());
 		dto.setType(Arrays.asList(po.getType()));
+		
+		UserPO user = DAOFactory.getInstance().getUserDAO().findByUserID(po.getRequesterId());
+		if(user != null) {
+			String userName = user.getUserName();
+			dto.setUsername(userName);
+		}
 
 		return dto;
 	}
