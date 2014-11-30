@@ -1,6 +1,8 @@
 package edu.cmu.sv.ws.ssnoc.rest;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,9 +22,12 @@ import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.common.utils.TimestampUtil;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IRequestDAO;
+import edu.cmu.sv.ws.ssnoc.data.dao.IResponderDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.RequestPO;
+import edu.cmu.sv.ws.ssnoc.data.po.ResponderPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Request;
+import edu.cmu.sv.ws.ssnoc.dto.Responder;
 
 @Path("/request")
 public class RequestService extends BaseService {
@@ -117,7 +122,48 @@ public class RequestService extends BaseService {
 			return ok(dto);
 		}
 		
+	}
+	
+	@POST
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/responder/{requestid}")
+	public List<Responder> setRespondersForARequest(@PathParam("requestid") long requestid, Responder dto) {
+		Log.enter("setRespondersForARequest"+ dto.getUsername());
+		
+		List<Responder> responderList = new ArrayList<Responder>();
+		try {
+			UserPO userPO = DAOFactory.getInstance().getUserDAO().findByName(dto.getUsername());
+			
+			if(userPO == null || TimestampUtil.convert(dto.getUpdated_at()) == null) {
+				return responderList;
+			}
+			
+			dto.setRequestId(requestid);
+			dto.setUserId(userPO.getUserId());
+			dto.setStatus(Responder.DEFAULT_STATUS);
+			
+			ResponderPO po = ConverterUtils.convert(dto);
+			IResponderDAO responderDAO = DAOFactory.getInstance().getResponderDAO();
+			responderDAO.save(po);
+			List<ResponderPO> poList = responderDAO.findRespondersByRequestId(requestid);
+			
+			for(ResponderPO responderPO : poList) {
+				Responder responderdto = ConverterUtils.convert(responderPO);
+				responderList.add(responderdto);
+			}
+			
+		}  catch(DBException e) {
+			throw new DBException(e);	
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} finally {
+			Log.exit(responderList);
+		}
+		
+		return responderList;
 		
 	}
+	
 	
 }

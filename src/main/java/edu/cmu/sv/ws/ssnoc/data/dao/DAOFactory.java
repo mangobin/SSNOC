@@ -65,4 +65,8 @@ public class DAOFactory {
 	public IRequestDAO getRequestDAO() {
 		return new RequestDAOImpl();
 	}
+	
+	public IResponderDAO getResponderDAO() {
+		return new ResponderDAOImpl();
+	}
 }

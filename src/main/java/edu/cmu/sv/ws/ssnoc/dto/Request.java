@@ -13,7 +13,7 @@ public class Request {
 	private String description;
 	private String status;
 	private String resolutionDetails;
-	private List<String> responders;
+	private List<Responder> responders;
 	public final static String DEFAULT_STATUS = "Pending";
 	
 	public long getRequestId() {
@@ -70,10 +70,10 @@ public class Request {
 	public void setResolutionDetails(String resolutionDetails) {
 		this.resolutionDetails = resolutionDetails;
 	}
-	public List<String> getResponders() {
+	public List<Responder> getResponders() {
 		return responders;
 	}
-	public void setResponders(List<String> responders) {
+	public void setResponders(List<Responder> responders) {
 		this.responders = responders;
 	}
 	public String getUsername() {

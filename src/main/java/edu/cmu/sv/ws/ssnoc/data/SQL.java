@@ -1,6 +1,7 @@
 package edu.cmu.sv.ws.ssnoc.data;
 
 
+
 /**
  * This class contains all the SQL related code that is used by the project.
  * Note that queries are grouped by their purpose and table associations for
@@ -17,7 +18,8 @@ public class SQL {
 	public static final String SSN_MEMORY = "SSN_MEMORY";
 	public static final String SSN_FAKE_MESSAGES = "SSN_FAKE_MESSAGES";
 	public static final String SSN_REQUEST = "SSN_REQUEST";
-
+	public static final String SSN_RESPONDER = "SSN_RESPONDER";
+	
 	public static final String DROP_TABLE_IN_DB = "DROP TABLE IF EXISTS ";
 	public static final String TRUNCATE_TABLE_IN_DB = "TRUNCATE TABLE ";
 
@@ -309,4 +311,42 @@ public class SQL {
 	public static final String FIND_ALL_REQUEST_BY_USER = "SELECT * FROM "
 			+ SSN_REQUEST
 			+ " WHERE requesterId = ?";
+	
+
+	// ****************************************************************
+	// All queries related to Responder SQL
+	// ****************************************************************
+	
+	public static final String CREATE_RESPONDERS = "create table IF NOT EXISTS "
+			+ SSN_RESPONDER + " ( responderId IDENTITY PRIMARY KEY,"
+			+ " requestId BIGINT," + " userId BIGINT," 
+			+ " status VARCHAR (30), " 
+			+ " updated_at DATETIME )";
+	
+	public static final String INSERT_RESPONDER = "INSERT INTO "
+			+ SSN_RESPONDER
+			+ " (requestId, userId, status, "
+			+ " updated_at )" + " values(?,?,?,?)";
+
+	public static final String UPDATE_RESPONDER = "UPDATE "
+			+ SSN_RESPONDER
+			+ " SET "
+			+ " requestId=?, userId=?, status=?, "
+			+ " updated_at=? "
+			+ " where responderId=?";
+	
+	public static final String FIND_RESPONDER_BY_ID = "SELECT * FROM "
+			+ SSN_RESPONDER + " WHERE responderId = ?";
+	
+	public static final String FIND_ALL_RESPONDER_BY_USERID = "SELECT * FROM "
+			+ SSN_RESPONDER
+			+ " WHERE userId = ?"
+			+ " order by updated_at desc";
+	
+	public static final String FIND_ALL_RESPONDER_BY_REQUESTID = "SELECT * FROM "
+			+ SSN_RESPONDER
+			+ " WHERE requestId = ?"
+			+ " order by updated_at desc";
+	
+	
 }

@@ -1,5 +1,6 @@
 package edu.cmu.sv.ws.ssnoc.common.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,11 +9,13 @@ import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.MemoryPO;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 import edu.cmu.sv.ws.ssnoc.data.po.RequestPO;
+import edu.cmu.sv.ws.ssnoc.data.po.ResponderPO;
 import edu.cmu.sv.ws.ssnoc.data.po.StatusPO;
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.Memory;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
 import edu.cmu.sv.ws.ssnoc.dto.Request;
+import edu.cmu.sv.ws.ssnoc.dto.Responder;
 import edu.cmu.sv.ws.ssnoc.dto.Status;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 
@@ -245,7 +248,17 @@ public class ConverterUtils {
 			String userName = user.getUserName();
 			dto.setUsername(userName);
 		}
-
+		
+		//get List of responder objects for this request
+		List<ResponderPO> responderPOList = DAOFactory.getInstance().getResponderDAO()
+				.findRespondersByRequestId(po.getRequestId());
+		List<Responder> responderList = new ArrayList<Responder>();
+		for(ResponderPO responderPO : responderPOList) {
+			Responder responderDTO = convert(responderPO);
+			responderList.add(responderDTO);
+		}
+		dto.setResponders(responderList);
+		
 		return dto;
 	}
 	
@@ -273,6 +286,41 @@ public class ConverterUtils {
 //		List<String> responderList = dto.getResponders();
 //		String[] responders = responderList.toArray(new String[responderList.size()]);
 //		po.setResponders(responders);
+		
+		return po;
+	}
+	
+	public static final Responder convert(ResponderPO po) {
+		if(po == null) {
+			return null;
+		}
+		
+		Responder dto = new Responder();
+		dto.setRequestId(po.getRequestId());
+		dto.setResponderId(po.getResponderId());
+		dto.setStatus(po.getStatus());
+		dto.setUpdated_at(TimestampUtil.convert(po.getUpdated_at()));
+		dto.setUserId(po.getUserId());
+		
+		UserPO user = DAOFactory.getInstance().getUserDAO().findByUserID(po.getUserId());
+		if(user != null) {
+			String userName = user.getUserName();
+			dto.setUsername(userName);
+		}
+		return dto;
+	}
+	
+	public static final ResponderPO convert(Responder dto) {
+		if(dto == null) {
+			return null;
+		}
+		
+		ResponderPO po = new ResponderPO();
+		po.setRequestId(dto.getRequestId());
+		po.setResponderId(dto.getResponderId());
+		po.setStatus(dto.getStatus());
+		po.setUserId(dto.getUserId());
+		po.setUpdated_at(TimestampUtil.convert(dto.getUpdated_at()));
 		
 		return po;
 	}
