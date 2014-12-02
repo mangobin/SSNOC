@@ -2,8 +2,10 @@ package edu.cmu.sv.ws.ssnoc.rest;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.Consumes;
@@ -177,12 +179,10 @@ public class RequestService extends BaseService {
 		IResponderDAO responderDAO = DAOFactory.getInstance().getResponderDAO();
 		List<ResponderPO> originalResponderList = responderDAO.findRespondersByRequestId(requestid);
 		//record userid
-		Set<Long> set = new HashSet<Long>();
+		Map<Long,Boolean> map = new HashMap<Long,Boolean>();
 		for(ResponderPO po : originalResponderList ) {
-			set.add(po.getUserId());
+			map.put(po.getUserId(),false);
 		}
-		
-		responderDAO.deleteAllRespondersByRequestId(requestid);
 		
 		List<Responder> responderList = new ArrayList<Responder>();
 		try {
@@ -192,6 +192,10 @@ public class RequestService extends BaseService {
 				
 				if(userPO == null || TimestampUtil.convert(dto.getUpdated_at()) == null) {
 					return responderList;
+				}
+				if(map.containsKey(userPO.getUserId())) {
+					map.put(userPO.getUserId(), true);
+					continue;
 				}
 				
 				dto.setRequestId(requestid);
@@ -203,10 +207,17 @@ public class RequestService extends BaseService {
 				responderDAO.save(po);
 			}
 			
+			//delete unselected user
+			for(long userid : map.keySet()) {
+				if(!map.get(userid)) {
+					responderDAO.deleteResponderByUserId(userid);
+				}
+			}
+			
 			List<ResponderPO> poList = responderDAO.findRespondersByRequestId(requestid);
 			
 			for(ResponderPO responderPO : poList) {
-				if(!set.contains(responderPO.getUserId())) {
+				if(!map.containsKey(responderPO.getUserId())) {
 					Responder responderdto = ConverterUtils.convert(responderPO);
 					responderList.add(responderdto);	
 				}

@@ -352,5 +352,9 @@ public class SQL {
 			+ SSN_RESPONDER
 			+ " WHERE requestId = ?";
 	
+	public static final String DELETE_RESPONDER_BY_USERID = "DELETE  FROM "
+			+ SSN_RESPONDER
+			+ " WHERE userId = ?";
+	
 	
 }
