@@ -152,14 +152,17 @@ public class ConverterUtils {
 			dto.setAuthor(null);
 		}
 		
-		if( ! po.getMessageType().equals(SQL.MESSAGE_TYPE_REQUEST)) {
-			user = dao.findByUserID(po.getTarget());
-			if(user != null){
-				dto.setTarget(user.getUserName());
-			} else {
-				dto.setTarget(null);
+		if(po.getMessageType() != null) {
+			if( ! po.getMessageType().equals(SQL.MESSAGE_TYPE_REQUEST)) {
+				user = dao.findByUserID(po.getTarget());
+				if(user != null){
+					dto.setTarget(user.getUserName());
+				} else {
+					dto.setTarget(null);
+				}
 			}
 		}
+		
 		
 		return dto;
 		
