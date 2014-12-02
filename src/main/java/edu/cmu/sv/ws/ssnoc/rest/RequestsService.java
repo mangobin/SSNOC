@@ -62,7 +62,7 @@ public class RequestsService extends BaseService{
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@Path("/missions/{username}")
+	@Path("/missions/user/{username}")
 	public List<Responder> getAllMissionsForAUser(@PathParam("username") String username) {
 		Log.enter("retrieve all Missions sent by a user: "+ username);
 		
@@ -81,7 +81,7 @@ public class RequestsService extends BaseService{
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	@Path("/missions/{responderid}")
+	@Path("/missions/responder/{responderid}")
 	public Response getAResponderById(@PathParam("responderid") long responderid) {
 		Log.enter("getAResponseById: "+ responderid);
 		ResponderPO po = DAOFactory.getInstance().getResponderDAO().findResponderById(responderid);
