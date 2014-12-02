@@ -302,4 +302,28 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
 		return messages;
 	}
 
+	@Override
+	public List<MessagePO> findAllRequestMessages(long requestid, int limit, int offset) {
+		Log.enter("Find Request messages (limit: " + limit 
+				+ ", offset: " + offset + ")");
+		
+		List<MessagePO> messages = null;
+		try {
+			Connection conn = getConnection();
+			PreparedStatement stmt = conn.prepareStatement(SQL.FIND_LATEST_MESSAGES_OF_REQUEST);
+			stmt.setString(1, SQL.MESSAGE_TYPE_REQUEST);
+			stmt.setLong(2, requestid);
+			stmt.setInt(3, limit);
+			stmt.setInt(4, offset);
+			messages = processResults(stmt);
+			conn.close();
+		} catch(SQLException e){
+			handleException(e);
+		} finally {
+			Log.exit(messages);
+		}
+		
+		return messages;
+	}
+
 }

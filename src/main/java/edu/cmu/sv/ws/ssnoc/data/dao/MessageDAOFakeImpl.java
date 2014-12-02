@@ -179,4 +179,10 @@ public class MessageDAOFakeImpl extends BaseDAOImpl implements IMessageDAO{
 	public List<MessagePO> findAllAnnouncement(int limit, int offset) {
 		return null;
 	}
+
+	@Override
+	public List<MessagePO> findAllRequestMessages(long requestid,int limit, int offset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

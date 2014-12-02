@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
 import edu.cmu.sv.ws.ssnoc.data.dao.IUserDAO;
 import edu.cmu.sv.ws.ssnoc.data.po.MemoryPO;
@@ -151,11 +152,13 @@ public class ConverterUtils {
 			dto.setAuthor(null);
 		}
 		
-		user = dao.findByUserID(po.getTarget());
-		if(user != null){
-			dto.setTarget(user.getUserName());
-		} else {
-			dto.setTarget(null);
+		if( ! po.getMessageType().equals(SQL.MESSAGE_TYPE_REQUEST)) {
+			user = dao.findByUserID(po.getTarget());
+			if(user != null){
+				dto.setTarget(user.getUserName());
+			} else {
+				dto.setTarget(null);
+			}
 		}
 		
 		return dto;
@@ -182,12 +185,18 @@ public class ConverterUtils {
 			po.setAuthor(0);
 		}
 		
-		user = dao.findByName(dto.getTarget());
-		if(user != null){
-			po.setTarget(user.getUserId());
+		if(dto.getMessageType().equals(SQL.MESSAGE_TYPE_REQUEST)) {
+			po.setTarget(Long.parseLong(dto.getTarget()));
 		} else {
-			po.setTarget(0);
+			user = dao.findByName(dto.getTarget());
+			if (user != null) {
+				po.setTarget(user.getUserId());
+			} else {
+				po.setTarget(0);
+			}
+			
 		}
+		
 
 		return po;
 	}

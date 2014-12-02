@@ -7,10 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.common.utils.ConverterUtils;
 import edu.cmu.sv.ws.ssnoc.data.dao.DAOFactory;
@@ -33,6 +30,27 @@ public class MessagesService extends BaseService {
 		
 		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
 		list = dao.findLatestWallMessages(50, 0);
+		
+		List<Message> listDto = new ArrayList<Message>();
+		
+		for(MessagePO m : list) {
+			Message msg = ConverterUtils.convert(m);
+			listDto.add(msg);
+		}
+		
+		Log.exit(listDto);
+		return listDto;
+		
+	}
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/request/{requestid}")
+	public List<Message> retrieveAllMsgOnRequest (@PathParam ("requestid") long requestid) {
+		List<MessagePO> list = new ArrayList<MessagePO>();
+		
+		IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
+		list = dao.findAllRequestMessages(requestid, 50, 0);
 		
 		List<Message> listDto = new ArrayList<Message>();
 		

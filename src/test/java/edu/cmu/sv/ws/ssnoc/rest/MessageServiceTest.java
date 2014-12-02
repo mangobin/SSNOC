@@ -2,6 +2,7 @@ package edu.cmu.sv.ws.ssnoc.rest;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import edu.cmu.sv.ws.ssnoc.data.util.DBUtils;
 import edu.cmu.sv.ws.ssnoc.dto.Message;
+import edu.cmu.sv.ws.ssnoc.dto.Request;
 import edu.cmu.sv.ws.ssnoc.dto.User;
 
 public class MessageServiceTest {
@@ -45,6 +47,80 @@ public class MessageServiceTest {
 		Message m = (Message)r.getEntity();
 		assertEquals("Nikhil", m.getAuthor());
 	}	
+	
+	@Test
+	public void testPostingOnRequest(){
+		User u = new User();
+		u.setUserName("Nikhil");
+		u.setPassword("pass");
+		u.setAccountStatus("Active");
+		u.setCreatedAt("2014-01-01 01:01");
+		u.setPrivilegeLevel("Citizen");
+		
+		UserService user = new UserService();
+		user.addUser(u);
+		
+		RequestService reqService = new RequestService();
+		Request req = new Request();
+		req.setCreated_at("2014-01-01 01:01");
+		List<String> list = new ArrayList<String>();
+		list.add("fire");
+		list.add("earthquake");
+		req.setType(list);
+		req.setLocation("cmu");
+		req.setDescription("urgent");
+		reqService.postRequest("Nikhil", req);
+		
+		MessageService input = new MessageService();
+		Message message = new Message();
+		message.setAuthor("Nikhil");
+		message.setContent("Message");
+		message.setMessageID(1);
+		message.setMessageType("WALL");
+		message.setPostedAt("2014-01-01 01:01");
+		Response r = input.postMessageOnRequest("1","Nikhil", message);
+		assertEquals(201, r.getStatus());
+		Message m = (Message)r.getEntity();
+		assertEquals("Nikhil", m.getAuthor());
+		assertEquals("REQUEST", m.getMessageType());
+	}
+	
+	@Test
+	public void testRetrieveMsgOnRequest(){
+		User u = new User();
+		u.setUserName("Nikhil");
+		u.setPassword("pass");
+		u.setAccountStatus("Active");
+		u.setCreatedAt("2014-01-01 01:01");
+		u.setPrivilegeLevel("Citizen");
+		
+		UserService user = new UserService();
+		user.addUser(u);
+		
+		RequestService reqService = new RequestService();
+		Request req = new Request();
+		req.setCreated_at("2014-01-01 01:01");
+		List<String> list = new ArrayList<String>();
+		list.add("fire");
+		list.add("earthquake");
+		req.setType(list);
+		req.setLocation("cmu");
+		req.setDescription("urgent");
+		reqService.postRequest("Nikhil", req);
+		
+		MessageService input = new MessageService();
+		Message message = new Message();
+		message.setAuthor("Nikhil");
+		message.setContent("Message");
+		message.setMessageID(1);
+		message.setMessageType("WALL");
+		message.setPostedAt("2014-01-01 01:01");
+		input.postMessageOnRequest("1","Nikhil", message);
+		
+		MessagesService messagesService = new MessagesService();
+		List<Message> msgList = messagesService.retrieveAllMsgOnRequest(1);
+		assertEquals("Message",msgList.get(0).getContent());
+	}
 	
 	@Test
 	public void testPostingOnWallIfUserIsNull(){
@@ -134,7 +210,7 @@ public class MessageServiceTest {
 		MessageService output1 = new MessageService();
 		Exception result = null;
 		try{
-			Message message1 = output1.retrieveMesssageById(-1);
+			 output1.retrieveMesssageById(-1);
 		}
 		catch(Exception e){
 			result = e;

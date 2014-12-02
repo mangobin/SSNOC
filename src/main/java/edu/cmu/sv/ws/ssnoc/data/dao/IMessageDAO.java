@@ -26,6 +26,7 @@ public interface IMessageDAO {
 	 * @return - List of messages.
 	 */
 	List<MessagePO> findLatestWallMessages(int limit, int offset);
+	List<MessagePO> findAllRequestMessages(long requestid,int limit, int offset);
 	
 	/**
 	 * This method will search the database for a message of the

@@ -151,6 +151,7 @@ public class SQL {
 
 	public static final String MESSAGE_TYPE_WALL = "WALL";
 	public static final String MESSAGE_TYPE_CHAT = "CHAT";
+	public static final String MESSAGE_TYPE_REQUEST = "REQUEST";
 	public static final String MESSAGE_TYPE_ANNOUNCEMENT = "PA";
 	/**
 	 * Query to create the MESSAGES table.
@@ -220,6 +221,11 @@ public class SQL {
 	 */
 	public static final String FIND_LATEST_MESSAGES_OF_TYPE = "select * from "
 			+ SSN_MESSAGES + " where UPPER(message_type) = " + " UPPER(?)"
+			+ " order by posted_at desc" + " limit ?" + " offset ?";
+	
+	public static final String FIND_LATEST_MESSAGES_OF_REQUEST = "select * from "
+			+ SSN_MESSAGES + " where UPPER(message_type) = " + " UPPER(?)"
+			+" AND target = ? "
 			+ " order by posted_at desc" + " limit ?" + " offset ?";
 
 	public static final String FIND_FAKE_LATEST_MESSAGES_OF_TYPE = "select * from "

@@ -67,6 +67,47 @@ public class MessageService extends BaseService {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/request/{requestid}/{userName}")
+	public Response postMessageOnRequest(@PathParam ("requestid") String requestid, @PathParam ("userName") String userName, Message msg) {
+		Log.enter(msg);
+		
+		Message dtoMsg = new Message();
+		try{
+			UserPO userPO = DAOFactory.getInstance().getUserDAO().findByName(userName);
+			if(userPO == null || msg == null ) {
+				return badRequest();
+			}
+			
+			IMessageDAO dao = DAOFactory.getInstance().getMessageDAO();
+			msg.setAuthor(userName);
+			msg.setMessageType(SQL.MESSAGE_TYPE_REQUEST);
+			msg.setTarget(requestid);
+			MessagePO po = ConverterUtils.convert(msg);
+			if(po.getPostedAt() == null) {
+				return badRequest();
+			}
+
+			long messageID = dao.save(po);
+			po.setMessageId(messageID);
+			dtoMsg = ConverterUtils.convert(po);
+			
+		}  catch(DBException e) {
+			throw new DBException(e);	
+		} catch (UnknownMessageException e) {
+			throw new UnknownMessageException(msg.getMessageID());
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} finally {
+			Log.exit(dtoMsg);
+		}
+		
+		return created(dtoMsg);
+	}
+	
+	
+	@POST
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/announcement")
 	public Response postAnnouncement(Message msg) {
 		Log.enter(msg);
