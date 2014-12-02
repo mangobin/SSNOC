@@ -210,7 +210,7 @@ public class RequestService extends BaseService {
 			//delete unselected user
 			for(long userid : map.keySet()) {
 				if(!map.get(userid)) {
-					responderDAO.deleteResponderByUserId(userid);
+					responderDAO.deleteResponderByUserId(userid,requestid);
 				}
 			}
 			

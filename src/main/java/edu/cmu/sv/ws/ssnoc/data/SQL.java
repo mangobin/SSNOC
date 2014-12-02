@@ -354,7 +354,7 @@ public class SQL {
 	
 	public static final String DELETE_RESPONDER_BY_USERID = "DELETE  FROM "
 			+ SSN_RESPONDER
-			+ " WHERE userId = ?";
+			+ " WHERE userId = ? AND requestId = ?";
 	
 	
 }

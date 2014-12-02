@@ -183,12 +183,13 @@ public class ResponderDAOImpl extends BaseDAOImpl implements IResponderDAO {
 	}
 
 	@Override
-	public void deleteResponderByUserId(long userId) {
+	public void deleteResponderByUserId(long userId,long requestId) {
 		Log.enter("Delete  responders by userId: "+ userId);
 		try {
 			Connection conn = getConnection();
 			PreparedStatement stmt = conn.prepareStatement(SQL.DELETE_RESPONDER_BY_USERID);
 			stmt.setLong(1, userId);
+			stmt.setLong(2, requestId);
 			stmt.executeUpdate();
 			conn.close();
 		} catch(SQLException e){
