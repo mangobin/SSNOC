@@ -348,5 +348,9 @@ public class SQL {
 			+ " WHERE requestId = ?"
 			+ " order by updated_at desc";
 	
+	public static final String DELETE_ALL_RESPONDER_BY_REQUESTID = "DELETE  FROM "
+			+ SSN_RESPONDER
+			+ " WHERE requestId = ?";
+	
 	
 }

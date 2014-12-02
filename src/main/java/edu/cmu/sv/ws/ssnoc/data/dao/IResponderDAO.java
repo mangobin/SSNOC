@@ -10,6 +10,7 @@ public interface IResponderDAO {
 	ResponderPO findResponderById(long id);
 	List<ResponderPO> findRespondersByUserName(String username);
 	List<ResponderPO> findRespondersByRequestId(long requestId);
+	void deleteAllRespondersByRequestId(long requestId);
 	
 	
 

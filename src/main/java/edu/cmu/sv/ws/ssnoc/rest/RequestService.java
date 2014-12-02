@@ -2,7 +2,9 @@ package edu.cmu.sv.ws.ssnoc.rest;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -165,5 +167,61 @@ public class RequestService extends BaseService {
 		
 	}
 	
+	@POST
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("/responderlist/{requestid}")
+	public List<Responder> setResponderListForARequest(@PathParam("requestid") long requestid, List<Responder> dtoList) {
+		Log.enter("setResponderListForARequest"+ dtoList.size());
+		
+		IResponderDAO responderDAO = DAOFactory.getInstance().getResponderDAO();
+		List<ResponderPO> originalResponderList = responderDAO.findRespondersByRequestId(requestid);
+		//record userid
+		Set<Long> set = new HashSet<Long>();
+		for(ResponderPO po : originalResponderList ) {
+			set.add(po.getUserId());
+		}
+		
+		responderDAO.deleteAllRespondersByRequestId(requestid);
+		
+		List<Responder> responderList = new ArrayList<Responder>();
+		try {
+			
+			for(Responder dto : dtoList) {
+				UserPO userPO = DAOFactory.getInstance().getUserDAO().findByName(dto.getUsername());
+				
+				if(userPO == null || TimestampUtil.convert(dto.getUpdated_at()) == null) {
+					return responderList;
+				}
+				
+				dto.setRequestId(requestid);
+				dto.setUserId(userPO.getUserId());
+				dto.setStatus(Responder.DEFAULT_STATUS);
+				
+				ResponderPO po = ConverterUtils.convert(dto);
+
+				responderDAO.save(po);
+			}
+			
+			List<ResponderPO> poList = responderDAO.findRespondersByRequestId(requestid);
+			
+			for(ResponderPO responderPO : poList) {
+				if(!set.contains(responderPO.getUserId())) {
+					Responder responderdto = ConverterUtils.convert(responderPO);
+					responderList.add(responderdto);	
+				}
+			}
+			
+		}  catch(DBException e) {
+			throw new DBException(e);	
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} finally {
+			Log.exit(responderList);
+		}
+		
+		return responderList;
+		
+	}
 	
 }

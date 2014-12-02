@@ -42,6 +42,14 @@ public class ResponderServiceTest {
 		u.setCreatedAt("2014-01-01 01:01");
 		u.setPrivilegeLevel("Citizen");
 		user.addUser(u);
+		
+		u = new User();
+		u.setUserName("Cef");
+		u.setPassword("pass");
+		u.setAccountStatus("Active");
+		u.setCreatedAt("2014-01-01 01:01");
+		u.setPrivilegeLevel("Citizen");
+		user.addUser(u);
 
 		reqService = new RequestService();
 		req = new Request();
@@ -82,6 +90,36 @@ public class ResponderServiceTest {
 
 	}
 
+	@Test
+	public void testSetResponderListForARequest() {
+		Responder responder = new Responder();
+		responder.setUsername("Bin");
+		responder.setUpdated_at("2014-02-01 01:01");
+		List<Responder> list = reqService.setRespondersForARequest(requestId,
+				responder);
+		assertEquals(1, list.size());
+		
+		List<Responder> newResponderList = new ArrayList<Responder>();
+		responder = new Responder();
+		responder.setUsername("Cef");
+		responder.setUpdated_at("2014-03-01 01:01");
+		newResponderList.add(responder);
+	
+		responder = new Responder();
+		responder.setUsername("Nikhil");
+		responder.setUpdated_at("2014-04-01 01:01");
+		newResponderList.add(responder);
+		
+		List<Responder> list2 = reqService.setResponderListForARequest(requestId, newResponderList);
+		
+		assertEquals(2, list2.size());
+		Responder ret = list2.get(0);
+		assertEquals("Nikhil", ret.getUsername());
+
+		 ret = list2.get(1);
+		assertEquals("Cef", ret.getUsername());
+
+	}
 	@Test
 	public void testSetNonExistingRespondersForARequest() {
 		Responder responder = new Responder();
